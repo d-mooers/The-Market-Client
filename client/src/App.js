@@ -1,25 +1,18 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense } from "react";
+import { Route, withRouter } from "react-router-dom";
+import HomePage from "./containers/HomePage";
+import Header from "./components/Header";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const RoutedHeader = withRouter(Header);
+
+const App = () => (
+  <>
+    <RoutedHeader />
+    <Suspense fallback={null}>
+      <Route path="/" exact component={HomePage} />
+      {/*Add new routes here!*/}
+    </Suspense>
+  </>
+);
 
 export default App;
