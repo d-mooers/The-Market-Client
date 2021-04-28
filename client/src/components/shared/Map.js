@@ -11,9 +11,9 @@ export default function App(props) {
   const [viewPort, setViewPort] = useState({
     latitude: 45.4211,
     longitude: -75.6903,
-    zoom: 10,
+    zoom: 0,
     width: "fit",
-    height: "20rem",
+    height: "15rem",
   });
 
   const waypoints = props.markers.map((lngLat, i) => (

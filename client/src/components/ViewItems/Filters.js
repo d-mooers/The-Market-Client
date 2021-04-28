@@ -26,12 +26,16 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(0),
   },
   slider: {
+    marginTop: "1rem",
     width: "80%",
     marginLeft: "1rem",
     marginRight: "auto",
   },
   priceInput: {
     width: "25%",
+    marginRight: "auto",
+    marginLeft: "auto",
+    marginBottom: "0.5rem",
   },
 }));
 

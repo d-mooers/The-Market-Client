@@ -11,11 +11,18 @@ const useStyles = makeStyles((theme) => ({
   },
   mapContainer: {
     width: "100%",
-    height: "5rem",
+    height: "15rem",
+    marginTop: theme.spacing(1),
   },
   sideBar: {
     outline: "1px black solid",
     marginLeft: theme.spacing(1),
+    position: "sticky",
+    top: 0,
+    left: 0,
+  },
+  container2: {
+    marginTop: theme.spacing(3),
   },
 }));
 
@@ -26,7 +33,7 @@ const ViewItems = (props) => {
       <Grid xs={12} container justify="center">
         <SearchBar />
       </Grid>
-      <Grid xs={12} container>
+      <Grid xs={12} container className={classes.container2}>
         <Grid
           container
           lg={1}
@@ -41,6 +48,10 @@ const ViewItems = (props) => {
           <Divider />
           <Grid item>
             <PriceSlider />
+          </Grid>
+          <Divider />
+          <Grid item className={classes.mapContainer}>
+            <Map markers={[]} />
           </Grid>
         </Grid>
       </Grid>
