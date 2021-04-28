@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "auto",
   },
   priceInput: {
-    width: "25%",
+    width: "33%",
     marginRight: "auto",
     marginLeft: "auto",
     marginBottom: "0.5rem",
