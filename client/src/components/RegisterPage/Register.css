@@ -1,0 +1,35 @@
+.Title {
+    font-size: 32px;
+    text-align: center;
+}
+
+.box {
+    border: 3px solid black;
+    text-align: left;
+    margin: 0 40%;
+    padding: 0 10px;
+    padding-bottom: 20px;
+    padding-top: 2px;
+    margin-bottom: 50px;
+}
+
+.Log_in {
+    text-align: center;
+}
+
+input {
+    margin: 3% 2%;
+    width: 80%;
+}
+
+.largeInput {
+    width: 50%;
+}
+
+.passInput {
+    width: 70%;
+}
+
+.button {
+    width: 95%;
+}
