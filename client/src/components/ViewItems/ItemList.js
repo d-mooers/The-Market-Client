@@ -6,7 +6,7 @@ const ItemList = (props) => {
   return (
     <Grid container wrap="wrap" spacing={2}>
       {props.items.map((itm, i) => (
-        <Grid item xl={2} lg={3} md={4} sm={5}>
+        <Grid item xl={3} lg={3} md={4} sm={5}>
           <Item {...itm} key={`itm-${i}`} />
         </Grid>
       ))}

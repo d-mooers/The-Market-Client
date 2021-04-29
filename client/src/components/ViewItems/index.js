@@ -4,6 +4,8 @@ import Map from "../shared/Map";
 import SearchBar from "./SearchBar";
 import { Filters, PriceSlider } from "./Filters";
 import ItemList from "./ItemList";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTheme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   },
   mapContainer: {
     width: "100%",
-    height: "15rem",
+    height: "20rem",
     marginTop: theme.spacing(1),
   },
   sideBar: {
@@ -27,57 +29,27 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const listings = [
-  {
-    title: "Bicycle",
-    price: 100.29,
-    desc:
-      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
-    latLng: [35.38, -120.45],
-    imgUrl:
-      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
-    id: "asdbcs",
-  },
-  {
-    title: "Bicycle",
-    price: 100.29,
-    desc:
-      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
-    latLng: [35.38, -120.45],
-    imgUrl:
-      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
-    id: "asdbcs",
-  },
-  {
-    title: "Bicycle",
-    price: 100.29,
-    desc:
-      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
-    latLng: [35.38, -120.45],
-    imgUrl:
-      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
-    id: "asdbcs",
-  },
-  {
-    title: "Bicycle",
-    price: 100.29,
-    desc:
-      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
-    latLng: [35.38, -120.45],
-    imgUrl:
-      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
-    id: "asdbcs",
-  },
-];
-
 const ViewItems = (props) => {
+  const theme = useTheme();
+  const largeScreen = useMediaQuery(theme.breakpoints.up("lg"));
   const classes = useStyles();
+
+  const map = (
+    <Grid item className={classes.mapContainer}>
+      <Map markers={listings.map((l) => l.lngLat)} />
+    </Grid>
+  );
   return (
     <div className={classes.root}>
       <Grid xs={12} container justify="center">
         <SearchBar />
       </Grid>
-      <Grid container className={classes.container2} spacing={3}>
+      <Grid
+        container
+        className={classes.container2}
+        spacing={3}
+        justify="center"
+      >
         <Grid item xl={2} lg={3} md={3} sm={3}>
           <Grid container direction="column" className={classes.sideBar}>
             <Grid item>
@@ -88,17 +60,110 @@ const ViewItems = (props) => {
               <PriceSlider />
             </Grid>
             <Divider />
-            <Grid item className={classes.mapContainer}>
-              <Map markers={[]} />
-            </Grid>
+            {map}
           </Grid>
         </Grid>
-        <Grid item lg={8} md={8} sm={8}>
-          <ItemList items={listings} />
+        <Grid container item xl={8} lg={9} md={9} sm={9}>
+          <Grid item xl={7} lg={8} md={8} sm={8}>
+            <ItemList items={listings} />
+          </Grid>
         </Grid>
       </Grid>
     </div>
   );
 };
+
+const listings = [
+  {
+    title: "Bicycle",
+    price: 100.29,
+    desc:
+      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
+    lngLat: [-120.45, 35.38],
+    imgUrl:
+      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
+    id: "asdbcs",
+  },
+  {
+    title: "Bicycle",
+    price: 100.29,
+    desc:
+      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
+    lngLat: [-120.452, 35.37],
+    imgUrl:
+      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
+    id: "asdbcs",
+  },
+  {
+    title: "Bicycle",
+    price: 100.29,
+    desc:
+      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
+    lngLat: [-120.442, 35.383],
+    imgUrl:
+      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
+    id: "asdbcs",
+  },
+  {
+    title: "Bicycle",
+    price: 100.29,
+    desc:
+      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
+    lngLat: [-120.42, 35.38],
+    imgUrl:
+      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
+    id: "asdbcs",
+  },
+  {
+    title: "Bicycle",
+    price: 100.29,
+    desc:
+      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
+    lngLat: [-120.45, 35.38],
+    imgUrl:
+      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
+    id: "asdbcs",
+  },
+  {
+    title: "Bicycle",
+    price: 100.29,
+    desc:
+      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
+    lngLat: [-120.45, 35.3801],
+    imgUrl:
+      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
+    id: "asdbcs",
+  },
+  {
+    title: "Bicycle",
+    price: 100.29,
+    desc:
+      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
+    lngLat: [-120.45, 36.38],
+    imgUrl:
+      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
+    id: "asdbcs",
+  },
+  {
+    title: "Bicycle",
+    price: 100.29,
+    desc:
+      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
+    lngLat: [-120.851173, 35.370781],
+    imgUrl:
+      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
+    id: "asdbcs",
+  },
+  {
+    title: "Bicycle",
+    price: 100.29,
+    desc:
+      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
+    lngLat: [-120.45, 35.38],
+    imgUrl:
+      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
+    id: "asdbcs",
+  },
+];
 
 export default ViewItems;

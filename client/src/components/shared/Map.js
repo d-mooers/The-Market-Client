@@ -13,7 +13,7 @@ export default function App(props) {
     longitude: -75.6903,
     zoom: 0,
     width: "fit",
-    height: "15rem",
+    height: "20rem",
   });
 
   const waypoints = props.markers.map((lngLat, i) => (
