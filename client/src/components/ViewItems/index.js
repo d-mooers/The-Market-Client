@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
   sideBar: {
     outline: "1px black solid",
     marginLeft: theme.spacing(1),
+    boxShadow: "7px 6px 5px gray",
     position: "sticky",
     top: 0,
     left: 0,
@@ -64,7 +65,7 @@ const ViewItems = (props) => {
           </Grid>
         </Grid>
         <Grid container item xl={8} lg={9} md={9} sm={9}>
-          <Grid item xl={7} lg={8} md={8} sm={8}>
+          <Grid item xl={7} lg={9} md={9} sm={9}>
             <ItemList items={listings} />
           </Grid>
         </Grid>

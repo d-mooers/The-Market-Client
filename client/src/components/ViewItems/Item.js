@@ -12,6 +12,7 @@ import { formatMoney } from "../../utils/utils";
 const useStyles = makeStyles({
   root: {
     maxWidth: "100%",
+    "&:hover": { boxShadow: "7px 6px 5px gray" },
   },
   media: {
     height: 140,
