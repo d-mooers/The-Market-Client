@@ -48,7 +48,7 @@ const Header = (props) => {
           className={classes.buttonGroup}
         >
           <ButtonGroup size="small" aria-label="website router">
-            <Button onClick={() => console.log("Buy was clicked")}>Buy</Button>
+            <Button onClick={() => props.history.push("/browse")}>Buy</Button>
             <Button onClick={() => console.log("Sell was clicked")}>
               Sell
             </Button>
