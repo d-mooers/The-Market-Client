@@ -12,6 +12,7 @@ const App = () => (
     <Suspense fallback={null}>
       <Route path="/" exact component={HomePage} />
       <Route path="/browse" exact component={ViewItemsPage} />
+      <Route path="/item" component={null} />
       {/*Add new routes here!*/}
     </Suspense>
   </>
