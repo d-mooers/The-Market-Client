@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, Divider, makeStyles } from "@material-ui/core";
 import Map from "../shared/Map";
+import Loading from "../shared/Loading";
+import Dialog from "../shared/Dialog";
 import SearchBar from "./SearchBar";
 import { Filters, PriceSlider } from "./Filters";
 import ItemList from "./ItemList";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
+import { getItems } from "../../utils/requests/items";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,9 +34,25 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ViewItems = (props) => {
+  const [listings, setListings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const theme = useTheme();
   const largeScreen = useMediaQuery(theme.breakpoints.up("lg"));
   const classes = useStyles();
+  const fetchItems = async () => {
+    setLoading(true);
+    const itms = await getItems();
+    if (itms.success) {
+      setListings(itms.listings);
+      setError(false);
+    } else setError(true);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
 
   const map = (
     <Grid item className={classes.mapContainer}>
@@ -42,6 +61,14 @@ const ViewItems = (props) => {
   );
   return (
     <div className={classes.root}>
+      <Dialog
+        open={error}
+        onClose={() => setError(false)}
+        onAccept={fetchItems}
+        title="Error Getting Items"
+        buttonText="Retry"
+        content="Unable to retrieve items at this time"
+      />
       <Grid xs={12} container justify="center">
         <SearchBar />
       </Grid>
@@ -66,105 +93,12 @@ const ViewItems = (props) => {
         </Grid>
         <Grid container item xl={8} lg={9} md={9} sm={9}>
           <Grid item xl={7} lg={9} md={9} sm={9}>
-            <ItemList items={listings} />
+            {loading ? <Loading /> : <ItemList items={listings} />}
           </Grid>
         </Grid>
       </Grid>
     </div>
   );
 };
-
-const listings = [
-  {
-    title: "Bicycle",
-    price: 100.29,
-    desc:
-      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
-    lngLat: [-120.45, 35.38],
-    imgUrl:
-      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
-    id: "asdbcs",
-  },
-  {
-    title: "Bicycle",
-    price: 100.29,
-    desc:
-      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
-    lngLat: [-120.452, 35.37],
-    imgUrl:
-      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
-    id: "asdbcs",
-  },
-  {
-    title: "Bicycle",
-    price: 100.29,
-    desc:
-      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
-    lngLat: [-120.442, 35.383],
-    imgUrl:
-      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
-    id: "asdbcs",
-  },
-  {
-    title: "Bicycle",
-    price: 100.29,
-    desc:
-      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
-    lngLat: [-120.42, 35.38],
-    imgUrl:
-      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
-    id: "asdbcs",
-  },
-  {
-    title: "Bicycle",
-    price: 100.29,
-    desc:
-      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
-    lngLat: [-120.45, 35.38],
-    imgUrl:
-      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
-    id: "asdbcs",
-  },
-  {
-    title: "Bicycle",
-    price: 100.29,
-    desc:
-      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
-    lngLat: [-120.45, 35.3801],
-    imgUrl:
-      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
-    id: "asdbcs",
-  },
-  {
-    title: "Bicycle",
-    price: 100.29,
-    desc:
-      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
-    lngLat: [-120.45, 36.38],
-    imgUrl:
-      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
-    id: "asdbcs",
-  },
-  {
-    title: "Bicycle",
-    price: 100.29,
-    desc:
-      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
-    lngLat: [-120.851173, 35.370781],
-    imgUrl:
-      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
-    id: "asdbcs",
-  },
-  {
-    title: "Bicycle",
-    price: 100.29,
-    desc:
-      "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
-    lngLat: [-120.45, 35.38],
-    imgUrl:
-      "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
-    id: "asdbcs",
-  },
-];
 
 export default ViewItems;
