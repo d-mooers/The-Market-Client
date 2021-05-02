@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Header = (props) => {
-  const classes = useStyles();
+  const classes = useStyles({ buttonIsBlue: true });
   return (
     <div className={classes.root}>
       <Grid container justify="space-between" align-items="center" spacing={0}>
