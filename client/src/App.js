@@ -15,6 +15,7 @@ const App = () => (
       <Route path="/browse" exact component={ViewItemsPage} />
       <Route path="/profile" exact component={ViewProfilePage} />
 
+      <Route path="/item" component={null} />
       {/*Add new routes here!*/}
     </Suspense>
   </>
