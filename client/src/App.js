@@ -3,6 +3,7 @@ import { Route, withRouter } from "react-router-dom";
 import HomePage from "./containers/HomePage";
 import Header from "./components/Header";
 import ViewItemsPage from "./containers/ViewItemsPage";
+import ViewProfilePage from "./containers/ViewProfilePage";
 
 const RoutedHeader = withRouter(Header);
 
@@ -12,6 +13,8 @@ const App = () => (
     <Suspense fallback={null}>
       <Route path="/" exact component={HomePage} />
       <Route path="/browse" exact component={ViewItemsPage} />
+      <Route path="/profile" exact component={ViewProfilePage} />
+
       {/*Add new routes here!*/}
     </Suspense>
   </>

@@ -52,7 +52,7 @@ const Header = (props) => {
             <Button onClick={() => console.log("Sell was clicked")}>
               Sell
             </Button>
-            <Button onClick={() => console.log("Profile was clicked")}>
+            <Button onClick={() => props.history.push("/profile")}>
               Profile
             </Button>
           </ButtonGroup>
