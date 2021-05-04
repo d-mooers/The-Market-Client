@@ -53,8 +53,8 @@ const Details = (props) => {
           </Button>
           <Button
             variant="contained"
-            className={classes.buttton}
             onClick={() => console.log("User wants to ask a question")}
+            className={classes.button}
           >
             Ask A Question
           </Button>
