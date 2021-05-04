@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid, makeStyles, Button } from "@material-ui/core";
 import { getItem } from "../../utils/requests/items";
+import Details from "./Details";
+import Loading from "../shared/Loading";
+import { StaticMap } from "../shared/Map";
 
 const parseId = (path) => {
   const toks = path.split("/");
@@ -13,8 +16,15 @@ const parseId = (path) => {
 
 const useStyles = makeStyles((theme) => ({
   image: {
-    width: "100%",
-    height: "100%",
+    width: "min(100%, 30rem)",
+    height: "auto",
+    padding: 0,
+  },
+  leftPanel: {
+    width: "min(100%, 30rem)",
+  },
+  root: {
+    marginTop: "3rem",
   },
 }));
 
@@ -37,16 +47,32 @@ const ItemView = (props) => {
   useEffect(() => {
     fetchItem();
   }, []);
-  return (
-    <Grid container direction="column">
-      <Grid item container direction="row">
-        <Grid item xs>
-          <img src={item.imgUrl} className={classes.image} />
+  return loading ? (
+    <Loading />
+  ) : (
+    <Grid
+      className={classes.root}
+      container
+      direction="column"
+      wrap
+      alignItems="center"
+    >
+      <Grid xs={10} item container direction="row" spacing={1}>
+        <Grid
+          item
+          container
+          direction="column"
+          className={classes.leftPanel}
+          xs={3}
+        >
+          <Grid item>
+            <img src={item.imgUrl} className={classes.image} />
+          </Grid>
+          <Grid item>
+            <StaticMap lngLat={item.lngLat} />
+          </Grid>
         </Grid>
-        <Grid item xs container direction="column">
-          <Grid item>{item.title}</Grid>
-          <Grid item>{item.desc}</Grid>
-        </Grid>
+        <Details xs={8} {...item} soldBy="Billy Bob" />
       </Grid>
     </Grid>
   );
