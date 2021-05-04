@@ -42,7 +42,9 @@ const Details = (props) => {
         justify="space-between"
         className={classes.description}
       >
-        <Typography variant="body1">{desc}</Typography>
+        <Grid item xs={9}>
+          <Typography variant="body1">{desc}</Typography>
+        </Grid>
         <Box className={classes.buttonGroup}>
           <Button
             variant="contained"
