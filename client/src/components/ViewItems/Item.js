@@ -7,7 +7,7 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { formatMoney } from "../../utils/utils";
+import { formatMoney, shortenString } from "../../utils/utils";
 
 const useStyles = makeStyles({
   root: {
@@ -31,11 +31,11 @@ export default function Item(props) {
       <CardActionArea onClick={handleClick}>
         <CardMedia className={classes.media} image={imgUrl} title={title} />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography gutterBottom variant="h6">
             {title}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {desc}
+            {shortenString(desc, 75)}
           </Typography>
         </CardContent>
       </CardActionArea>
