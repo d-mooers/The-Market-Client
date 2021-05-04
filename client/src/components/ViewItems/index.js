@@ -54,6 +54,8 @@ const ViewItems = (props) => {
     fetchItems();
   }, []);
 
+  const goToItem = (id) => props.history.push(`/item/${id}`);
+
   const map = (
     <Grid item className={classes.mapContainer}>
       <Map markers={listings.map((l) => l.lngLat)} />
@@ -93,7 +95,11 @@ const ViewItems = (props) => {
         </Grid>
         <Grid container item xl={8} lg={9} md={9} sm={9}>
           <Grid item xl={7} lg={9} md={9} sm={9}>
-            {loading ? <Loading /> : <ItemList items={listings} />}
+            {loading ? (
+              <Loading />
+            ) : (
+              <ItemList items={listings} goToItem={goToItem} />
+            )}
           </Grid>
         </Grid>
       </Grid>

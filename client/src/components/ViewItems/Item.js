@@ -26,10 +26,9 @@ export default function Item(props) {
   const classes = useStyles();
   const { title, price, desc, latLng, imgUrl, id } = props;
 
-  const handleClick = () => console.log(`User clicked on item ${id}`);
   return (
     <Card className={classes.root}>
-      <CardActionArea onClick={handleClick}>
+      <CardActionArea onClick={props.handleClick}>
         <CardMedia className={classes.media} image={imgUrl} title={title} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
