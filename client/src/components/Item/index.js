@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Grid, makeStyles, Button } from "@material-ui/core";
+import { Grid, makeStyles } from "@material-ui/core";
 import { getItem } from "../../utils/requests/items";
 import Details from "./Details";
 import Loading from "../shared/Loading";
@@ -7,7 +7,7 @@ import { StaticMap } from "../shared/Map";
 
 const parseId = (path) => {
   const toks = path.split("/");
-  if (toks.length != 3) {
+  if (toks.length !== 3) {
     console.log("Not sure what to do here");
     return null;
   }
@@ -44,6 +44,8 @@ const ItemView = (props) => {
     setLoading(false);
   };
 
+  error && console.log("F");
+
   useEffect(() => {
     fetchItem();
   }, []);
@@ -66,7 +68,7 @@ const ItemView = (props) => {
           xs={3}
         >
           <Grid item>
-            <img src={item.imgUrl} className={classes.image} />
+            <img src={item.imgUrl} className={classes.image} alt={item.title} />
           </Grid>
           <Grid item>
             <StaticMap lngLat={item.lngLat} />

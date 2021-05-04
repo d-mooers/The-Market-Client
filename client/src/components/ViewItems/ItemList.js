@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import Item from "./Item";
 
 const ItemList = (props) => {

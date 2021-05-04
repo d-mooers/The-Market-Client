@@ -6,7 +6,6 @@ import Dialog from "../shared/Dialog";
 import SearchBar from "./SearchBar";
 import { Filters, PriceSlider } from "./Filters";
 import ItemList from "./ItemList";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 import { getItems } from "../../utils/requests/items";
 
@@ -37,8 +36,8 @@ const ViewItems = (props) => {
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const theme = useTheme();
-  const largeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+  //const theme = useTheme();
+  //const largeScreen = useMediaQuery(theme.breakpoints.up("lg"));
   const classes = useStyles();
   const fetchItems = async () => {
     setLoading(true);

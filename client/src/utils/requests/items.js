@@ -10,7 +10,7 @@ export const getItems = async () => {
     const resp = await axios.get(url);
     console.log(resp.data.listings);
     return {
-      success: resp.status == 200,
+      success: resp.status === 200,
       listings: resp.data.listings,
     };
   } catch (e) {

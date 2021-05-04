@@ -5,11 +5,9 @@ import {
   makeStyles,
   Divider,
   Button,
-  ButtonGroup,
   Box,
 } from "@material-ui/core";
 import { formatMoney } from "../../utils/utils";
-import { StaticMap } from "../shared/Map";
 
 const useStyles = makeStyles((theme) => ({
   description: {
@@ -57,7 +55,6 @@ const Details = (props) => {
             variant="contained"
             className={classes.buttton}
             onClick={() => console.log("User wants to ask a question")}
-            className={classes.button}
           >
             Ask A Question
           </Button>

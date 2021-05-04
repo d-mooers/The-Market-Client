@@ -24,11 +24,11 @@ const useStyles = makeStyles({
 
 export default function Item(props) {
   const classes = useStyles();
-  const { title, price, desc, latLng, imgUrl, id } = props;
+  const { title, price, desc, imgUrl, handleClick } = props;
 
   return (
     <Card className={classes.root}>
-      <CardActionArea onClick={props.handleClick}>
+      <CardActionArea onClick={handleClick}>
         <CardMedia className={classes.media} image={imgUrl} title={title} />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
