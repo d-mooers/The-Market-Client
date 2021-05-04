@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { CATEGORIES } from "../../utils/constants";
-import { formatMoney, parseIntFromMoney } from "../../utils/utils";
+import { formatMoney } from "../../utils/utils";
 
 import {
-  Grid,
   FormControl,
   FormGroup,
   FormControlLabel,

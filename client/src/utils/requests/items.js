@@ -10,7 +10,7 @@ export const getItems = async () => {
     const resp = await axios.get(url);
     console.log(resp.data.listings);
     return {
-      success: resp.status == 200,
+      success: resp.status === 200,
       listings: resp.data.listings,
     };
   } catch (e) {
@@ -21,3 +21,14 @@ export const getItems = async () => {
     };
   }
 };
+
+export const getItem = (id) => ({
+  title: "Bicycle",
+  price: 100.29,
+  desc:
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+  lngLat: [-120.45, 35.38],
+  imgUrl:
+    "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
+  id: "asdbcs",
+});

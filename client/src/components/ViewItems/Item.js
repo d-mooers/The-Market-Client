@@ -24,9 +24,8 @@ const useStyles = makeStyles({
 
 export default function Item(props) {
   const classes = useStyles();
-  const { title, price, desc, latLng, imgUrl, id } = props;
+  const { title, price, desc, imgUrl, handleClick } = props;
 
-  const handleClick = () => console.log(`User clicked on item ${id}`);
   return (
     <Card className={classes.root}>
       <CardActionArea onClick={handleClick}>
