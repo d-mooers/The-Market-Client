@@ -4,6 +4,7 @@ import { getItem } from "../../utils/requests/items";
 import Details from "./Details";
 import Loading from "../shared/Loading";
 import { StaticMap } from "../shared/Map";
+import Dialog from "../shared/Dialog";
 
 const parseId = (path) => {
   const toks = path.split("/");
@@ -28,29 +29,47 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const DEFAULT_ITEM = {
+  title: "",
+  desc: "",
+  lngLat: [0, 0],
+  imgUrl: "",
+  id: "",
+};
+
 const ItemView = (props) => {
   const id = parseId(props.location.pathname);
-  const [item, setItem] = useState({});
+  const [item, setItem] = useState(DEFAULT_ITEM);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const classes = useStyles();
   const fetchItem = async () => {
     setLoading(true);
     const itm = await getItem(id);
-    if (itm) {
-      setItem(itm);
+    if (itm.success) {
+      setItem(itm.item);
       setError(false);
     } else setError(true);
     setLoading(false);
   };
 
-  error && console.log("F");
-
   useEffect(() => {
     fetchItem();
   }, []);
-  return loading ? (
-    <Loading />
+
+  return loading || error ? (
+    <>
+      <Dialog
+        open={error}
+        onClose={() => setError(false)}
+        onAccept={fetchItem}
+        title="Error Getting Item"
+        buttonText="Retry"
+        content="Unable to retrieve item details at this time"
+      />
+
+      <Loading />
+    </>
   ) : (
     <Grid
       className={classes.root}
