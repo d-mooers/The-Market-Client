@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Button, Grid, makeStyles } from "@material-ui/core";
+import Form from "../ListItem/Form";
 
 const StyledText = styled.h1`
   background-image: linear-gradient(white, black);
@@ -30,6 +31,7 @@ const LandingPage = (props) => {
     <div className={classes.root}>
       <Grid xs={12} container justify="center">
         <StyledText>The Market</StyledText>
+        <Form />
       </Grid>
 
       <Grid
