@@ -9,7 +9,7 @@ const styles = makeStyles((theme) => ({
   },
 }));
 
-const RegisterPage = (props) => {
+const Register = (props) => {
   const [user, setUser] = useState({
     username: "",
     email: "",
@@ -164,4 +164,4 @@ const RegisterPage = (props) => {
   );
 };
 
-export default RegisterPage;
+export default Register;
