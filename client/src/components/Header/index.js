@@ -53,7 +53,7 @@ const Header = (props) => {
               Sell
             </Button>
             <Button onClick={() => console.log("Profile was clicked")}>
-              Profile
+              <a href="../RegisterPage/index.js">Profile</a> 
             </Button>
           </ButtonGroup>
         </Grid>
