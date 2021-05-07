@@ -20,6 +20,7 @@ const StyledText = styled.h1`
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    marginBottom: "1rem",
   },
   h1: {
     fontSize: "2.5rem",

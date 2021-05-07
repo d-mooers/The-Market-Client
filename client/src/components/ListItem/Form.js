@@ -3,7 +3,7 @@ import { Grid, TextField, Radio, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "min(750px, 90%)",
+    width: "90%",
     display: "flex",
     flexDirection: "column",
   },
@@ -28,13 +28,16 @@ const Form = (props) => {
 
   const genRadios = (options) =>
     options.map((name) => (
-      <Radio
-        key={`condition-${name}`}
-        label={name}
-        checked={fields.condition == name}
-        onChange={(e) => updateText("condition", e)}
-        value={name}
-      />
+      <>
+        <Radio
+          key={`condition-${name}`}
+          label={name}
+          checked={fields.condition == name}
+          onChange={(e) => updateText("condition", e)}
+          value={name}
+        />
+        {name}
+      </>
     ));
 
   return (
