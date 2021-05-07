@@ -18,7 +18,7 @@ const App = () => (
       <Route path="/browse" exact component={ViewItemsPage} />
       <Route path="/profile" exact component={ViewProfilePage} />
       <Route path="/register" exact component={Register} />
-      <Route path="/questions" exact component={Questions} />
+      <Route path="/questions" component={Questions} />
       <Route path="/item" component={ItemPage} />
       {/*Add new routes here!*/}
     </Suspense>
