@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from Utils import verifyListingShape, makeId
 app = Flask(__name__)
 CORS(app)
 
@@ -28,10 +29,19 @@ listings = [
 ]
 
 
-@app.route('/items')
+@app.route('/items', methods=['GET', 'POST'])
 def get_items():
     if request.method == 'GET':
         return jsonify({"listings": listings}), 200
+    if request.method == 'POST':
+        listing = request.get_json()
+        issues = verifyListingShape(listing)
+        if len(issues) > 0:
+            return jsonify({"message": "Bad request, missing fields",
+                            "details": issues}), 400
+        listing['id'] = makeId()
+        listings.append(listing)
+        return jsonify(listing), 201
 
 
 @app.route('/items/<id>')
