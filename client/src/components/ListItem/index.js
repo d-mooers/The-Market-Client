@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Grid, Paper, makeStyles, Typography, Button } from "@material-ui/core";
 import Form from "./Form";
 import { postItem } from "../../utils/requests/items";
+import Dialog from "../shared/Dialog";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -31,20 +32,29 @@ const ListItem = (props) => {
   const [error, setError] = useState(false);
   const [itemId, setItemId] = useState("");
 
-  const getPosition = () => {
+  const getCoords = () =>
+    new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject);
+    });
+
+  const getPosition = async () => {
     if (!"geolocation" in navigator) {
       console.log("Geolocation not available");
       return [0, 0];
     }
-    return navigator.geolocation.getCurrentPosition((pos) => [
-      pos.coords.longitude,
-      pos.coords.latitude,
-    ]);
+    let position;
+    await getCoords().then((pos) => {
+      console.log(pos);
+      position = [pos.coords.longitude, pos.coords.latitude];
+    });
+    return position;
   };
 
   const handleSubmit = async () => {
-    const listing = { ...fields, lngLat: getPosition() };
+    const listing = { ...fields, lngLat: await getPosition() };
+    console.log(listing);
     setLoading(true);
+    setError(false);
     const resp = await postItem(listing);
     if (resp.success) {
       setItemId(resp.id);
@@ -56,21 +66,49 @@ const ListItem = (props) => {
   const handleCancel = () => {
     props.history.goBack();
   };
+
   return (
-    <Grid container alignItems="center" direction="column">
-      <Typography variant="h3">List an Item</Typography>
-      <Paper className={classes.paper}>
-        <Form fields={fields} setFields={setFields} />
-      </Paper>
-      <div className={classes.buttonGroup}>
-        <Button variant="contained" onClick={handleCancel}>
-          Back
-        </Button>
-        <Button variant="contained" onClick={handleSubmit}>
-          Submit
-        </Button>
-      </div>
-    </Grid>
+    <>
+      <Dialog
+        title="Item Listed"
+        description={`Your item, ${fields.title}, has been successfully listed`}
+        onClose={() => props.history.push("/")}
+        onAccept={() => props.history.push(`item/${itemId}`)}
+        buttonText="Go to Item Page"
+        open={itemId != ""}
+      />
+      <Dialog
+        title="An error has occured"
+        description={`Your item, ${fields.title}, has failed to be listed`}
+        onClose={() => setError(false)}
+        onAccept={handleSubmit}
+        buttonText="Try Again"
+        open={error}
+      />
+      <Dialog
+        title="Loading"
+        description={"Shuffling some shelves to list your item..."}
+        onClose={() => null}
+        onAccept={() => null}
+        buttonText="This button will do nothing"
+        open={loading}
+      />
+
+      <Grid container alignItems="center" direction="column">
+        <Typography variant="h3">List an Item</Typography>
+        <Paper className={classes.paper}>
+          <Form fields={fields} setFields={setFields} />
+        </Paper>
+        <div className={classes.buttonGroup}>
+          <Button variant="contained" onClick={handleCancel}>
+            Back
+          </Button>
+          <Button variant="contained" onClick={handleSubmit}>
+            Submit
+          </Button>
+        </div>
+      </Grid>
+    </>
   );
 };
 
