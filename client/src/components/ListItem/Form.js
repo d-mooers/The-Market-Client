@@ -40,13 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Form = (props) => {
   const classes = useStyles();
-  const [fields, setFields] = useState({
-    title: "",
-    price: "",
-    description: "",
-    image: "",
-    condition: "",
-  });
+  const { fields, setFields } = props;
   const updateText = (field, e) => {
     setFields({ ...fields, [field]: e.target.value });
     console.log(e.target.value);
@@ -58,7 +52,7 @@ const Form = (props) => {
         <Radio
           key={`condition-${name}`}
           label={name}
-          checked={fields.condition == name}
+          checked={!!fields && fields.condition == name}
           onChange={(e) => updateText("condition", e)}
           value={name}
         />
@@ -71,7 +65,7 @@ const Form = (props) => {
       <div className={classes.container}>
         <TextField
           label="Title"
-          value={fields.title}
+          value={!!fields && fields.title}
           onChange={(e) => updateText("title", e)}
           className={classes.title}
         />
@@ -79,7 +73,7 @@ const Form = (props) => {
           <InputLabel htmlFor="outlined-adornment-amount">Price</InputLabel>
           <Input
             label="Price"
-            value={fields.price}
+            value={!!fields && fields.price}
             onChange={(e) => updateText("price", e)}
             startAdornment={<InputAdornment position="start">$</InputAdornment>}
             inputProps={{
@@ -90,7 +84,7 @@ const Form = (props) => {
       </div>
       <TextField
         label="Description"
-        value={fields.description}
+        value={!!fields && fields.description}
         onChange={(e) => updateText("description", e)}
         multiline
         rows={7}
