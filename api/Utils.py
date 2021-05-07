@@ -2,7 +2,7 @@ import random
 
 
 def verifyListingShape(listing: dict) -> list:
-    LISTING_FIELDS = ['title', 'price', 'desc', 'lngLat', 'imgUrl']
+    LISTING_FIELDS = ['title', 'price', 'description', 'lngLat', 'imgUrl']
     missingFields = []
     for field in LISTING_FIELDS:
         if not field in listing:

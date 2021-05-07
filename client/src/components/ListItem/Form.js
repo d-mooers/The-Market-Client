@@ -83,6 +83,12 @@ const Form = (props) => {
         </FormControl>
       </div>
       <TextField
+        label="Image URL"
+        value={!!fields && fields.imgUrl}
+        onChange={(e) => updateText("imgUrl", e)}
+        fullWidth
+      />
+      <TextField
         label="Description"
         value={!!fields && fields.description}
         onChange={(e) => updateText("description", e)}

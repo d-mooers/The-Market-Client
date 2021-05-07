@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Details = (props) => {
-  const { title, price, desc, soldBy, xs } = props;
+  const { title, price, description, soldBy, xs } = props;
   const classes = useStyles();
   console.log(props);
   return (
@@ -43,7 +43,7 @@ const Details = (props) => {
         className={classes.description}
       >
         <Grid item xs={9}>
-          <Typography variant="body1">{desc}</Typography>
+          <Typography variant="body1">{description}</Typography>
         </Grid>
         <Box className={classes.buttonGroup}>
           <Button

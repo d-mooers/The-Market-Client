@@ -7,7 +7,7 @@ def listing_shape():
     return ({
         'title': 'test',
         'price': 100.29,
-        'desc': 'lorem ipsum this is a test',
+        'description': 'lorem ipsum this is a test',
         'lngLat': [-120.45, 35.38],
         'imgUrl': 'testingtest.com'
     })

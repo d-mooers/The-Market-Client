@@ -38,3 +38,23 @@ export const getItem = async (id) => {
     };
   }
 };
+
+export const postItem = async (details) => {
+  const url = `${BASE_URL}${ITEMS}`;
+  try {
+    const resp = await axios.post(url, JSON.stringify(details), {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    return {
+      success: resp.status === 201,
+      id: resp.data.id,
+    };
+  } catch (e) {
+    return {
+      success: false,
+      data: e.data,
+    };
+  }
+};
