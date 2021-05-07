@@ -7,6 +7,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     width: "min(800px, 80%)",
+    minHeight: "30rem",
   },
   buttonGroup: {
     display: "flex",
