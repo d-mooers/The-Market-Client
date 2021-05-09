@@ -1,59 +1,117 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useState } from "react";
+import "./Login.css";
 import { Button, Grid, makeStyles } from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
+import Footer from "./Footer";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  h1: {
-    fontSize: "10.0rem",
-    margin: 0,
-  },
-  button: {
-    marginTop: "10rem",
+const styles = makeStyles((theme) => ({
+  textBox: {
+    margin: 10,
+    width: "80%",
   },
 }));
 
 const LoginPage = (props) => {
-  const classes = useStyles();
+  const [user, setUser] = useState({
+    username: "",
+    email: "",
+    password: "",
+    secondPass: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "username") {
+      setUser({
+        username: value,
+        email: user["email"],
+        password: user["password"],
+        secondPass: user["secondPass"],
+      });
+    } else if (name === "email") {
+      setUser({
+        username: user["username"],
+        email: value,
+        password: user["password"],
+        secondPass: user["secondPass"],
+      });
+    } else if (name === "password") {
+      setUser({
+        username: user["username"],
+        email: user["email"],
+        password: value,
+        secondPass: user["secondPass"],
+      });
+    }
+  };
+
+  function submitForm() {
+    // Place stuff in here to add person to database
+    console.log("Submitting");
+    if (validateUser() === 0) {
+      console.log("All good to add them to database and send them off");
+    }
+  }
+
+  function validateUser() {
+    console.log("User");
+    if (user.username.length === 0) {
+      alert("Please enter a Username");
+      return -1;
+    }
+    return 0;
+  }
+
+  const classes = styles();
+
   return (
     <div>
-      <Grid
-        container
-        direction="row"
-        justify="space-evenly"
-        alignItems="center"
-        className={classes.button}
-      >
-        <Button
-          variant="contained"
-          size="large"
-          color="primary"
-          className={classes.margin}
-          onClick={() => props.history.push("/browse")}
-        >
-          Login
-        </Button>
-        <Button
-          variant="contained"
-          size="large"
-          color="primary"
-          className={classes.margin}
-          onClick={() => console.log("Sell was clicked")}
-        >
-          Register
-        </Button>
-        <Button
-          variant="contained"
-          size="large"
-          color="primary"
-          className={classes.margin}
-          onClick={() => props.history.push("/profile")}
-        >
-          Cancel
-        </Button>
-      </Grid>
+      <h1 className="Title">Login</h1>
+      <div className="box">
+        <center>
+          <h1>The Market</h1>
+        </center>
+        <form>
+          <TextField
+            className={classes.textBox}
+            type="text"
+            variant="outlined"
+            size="small"
+            label="Username"
+            name="username"
+            onChange={handleChange}
+          />
+          <br />
+
+          <TextField
+            className={classes.textBox}
+            type="email"
+            variant="outlined"
+            size="small"
+            label="Email"
+            name="email"
+            onChange={handleChange}
+          />
+          <br />
+
+          <TextField
+            className={classes.textBox}
+            type="password"
+            variant="outlined"
+            size="small"
+            label="Password"
+            name="password"
+            onChange={handleChange}
+          />
+          <br />
+          <center>
+            <Button variant="outlined" onClick={submitForm}>
+              Submit
+            </Button>
+          </center>
+        </form>
+      </div>
+      <Footer> </Footer>
     </div>
   );
 };
