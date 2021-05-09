@@ -1,64 +1,73 @@
 import React, { useState } from "react";
-import "./Login.css";
-import { Button, Grid, makeStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import Footer from "./Footer";
+import "./Login.css";
 
-const styles = makeStyles((theme) => ({
+const styles = makeStyles({
   textBox: {
     margin: 10,
     width: "80%",
   },
-}));
+});
 
+// const [state name, function to update state]
+// body = default state
 const LoginPage = (props) => {
   const [user, setUser] = useState({
     username: "",
     email: "",
     password: "",
-    secondPass: "",
   });
 
+  // called when user types into fields
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name === "username") {
+    const { inputType, value } = e.target;
+    if (inputType === "username") {
       setUser({
         username: value,
         email: user["email"],
         password: user["password"],
-        secondPass: user["secondPass"],
       });
-    } else if (name === "email") {
+    } else if (inputType === "email") {
       setUser({
         username: user["username"],
         email: value,
         password: user["password"],
-        secondPass: user["secondPass"],
       });
-    } else if (name === "password") {
+    } else if (inputType === "password") {
       setUser({
         username: user["username"],
         email: user["email"],
         password: value,
-        secondPass: user["secondPass"],
       });
     }
   };
 
   function submitForm() {
-    // Place stuff in here to add person to database
+    // check database for user
+    // update user state code to search database
     console.log("Submitting");
     if (validateUser() === 0) {
       console.log("All good to add them to database and send them off");
+    } else {
+      alert("Invalid login");
     }
   }
 
   function validateUser() {
+    // change to allow user to input username OR email to login
+    // instead of both. Or just remove one
     console.log("User");
     if (user.username.length === 0) {
       alert("Please enter a Username");
       return -1;
-    }
+    } else if (user.email.length === 0) {
+      alert("Please enter an Email");
+      return -1;
+    } else if (user.password.length === 0) {
+      alert("Please enter a Password");
+    } // then if all fields are filled check if user exists
     return 0;
   }
 
@@ -78,7 +87,7 @@ const LoginPage = (props) => {
             variant="outlined"
             size="small"
             label="Username"
-            name="username"
+            inputType="username"
             onChange={handleChange}
           />
           <br />
@@ -89,7 +98,7 @@ const LoginPage = (props) => {
             variant="outlined"
             size="small"
             label="Email"
-            name="email"
+            inputType="email"
             onChange={handleChange}
           />
           <br />
@@ -100,7 +109,7 @@ const LoginPage = (props) => {
             variant="outlined"
             size="small"
             label="Password"
-            name="password"
+            inputType="password"
             onChange={handleChange}
           />
           <br />
