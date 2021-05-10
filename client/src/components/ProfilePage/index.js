@@ -110,8 +110,9 @@ const ProfilePage = (props) => {
         className={classes.button}
         variant="contained"
         color="secondary"
-        onClick={LandingPage.signedIn = false}
-        onClick={() => props.history.push("/")}
+        onClick={console.log("Log out was pushed")}
+        onClick={() => props.history.push("/login")}
+
       >
         LOG OUT
       </Button>

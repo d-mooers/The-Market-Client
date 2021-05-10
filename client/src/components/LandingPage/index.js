@@ -96,7 +96,7 @@ const LandingPage = (props) => {
             color="primary"
             className={classes.margin}
             onClick={signedIn = true}
-            onClick={() => props.history.push("/")}
+            onClick={() => props.history.push("/login")}
           >
             Log in
           </Button>
