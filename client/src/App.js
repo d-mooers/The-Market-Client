@@ -7,6 +7,8 @@ import Register from "./containers/RegisterContainer";
 import Questions from "./containers/QuestionsContainer";
 import ItemPage from "./containers/ItemPage";
 import ViewProfilePage from "./containers/ViewProfilePage";
+import ViewLoginPage from "./containers/ViewLoginPage";
+import ListItemPage from "./containers/ListItemPage";
 
 const RoutedHeader = withRouter(Header);
 
@@ -17,9 +19,9 @@ const App = () => (
       <Route path="/" exact component={HomePage} />
       <Route path="/browse" exact component={ViewItemsPage} />
       <Route path="/profile" exact component={ViewProfilePage} />
-      <Route path="/register" exact component={Register} />
-      <Route path="/questions" component={Questions} />
       <Route path="/item" component={ItemPage} />
+      <Route path="/login" exact component={ViewLoginPage} />
+      <Route path="/sell" exact component={ListItemPage} />
       {/*Add new routes here!*/}
     </Suspense>
   </>
