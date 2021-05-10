@@ -7,6 +7,7 @@ import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import LandingPage from "../LandingPage";
+import UserContext from "../../UserContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,6 +64,8 @@ const AccordionDetails = withStyles((theme) => ({
 
 const ProfilePage = (props) => {
   const [expanded, setExpanded] = React.useState("panel1");
+  const { user } = React.useContext(UserContext);
+  // console.log(user);
   const classes = useStyles();
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -112,7 +115,6 @@ const ProfilePage = (props) => {
         color="secondary"
         onClick={console.log("Log out was pushed")}
         onClick={() => props.history.push("/login")}
-
       >
         LOG OUT
       </Button>
@@ -120,11 +122,11 @@ const ProfilePage = (props) => {
   );
 };
 
-const user = {
-  username: "DummyBuyer",
-  email: "DummyBuyer101@aol.com",
-  password: "BadPassword",
-  _id: "asdbcs",
-};
+// const user = {
+//   username: "DummyBuyer",
+//   email: "DummyBuyer101@aol.com",
+//   password: "BadPassword",
+//   _id: "asdbcs",
+// };
 
 export default ProfilePage;
