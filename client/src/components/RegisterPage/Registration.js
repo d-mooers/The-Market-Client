@@ -59,6 +59,7 @@ const Register = (props) => {
       validatePassword() === 0
     ) {
       console.log("All good to add them to database and send them off");
+      window.location.href = "/browse";
     }
   }
 
@@ -158,7 +159,7 @@ const Register = (props) => {
         </form>
       </div>
       <p className="Log_in">
-        Already registered? <a href="">Log in</a>
+        Already registered? <a href="/login">Log in</a>
       </p>
     </div>
   );

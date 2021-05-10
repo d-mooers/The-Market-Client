@@ -71,6 +71,14 @@ const DEFAULT_ITEM = {
   id: "",
 };
 
+function submitForm() {
+  window.location.href="/profile";
+}
+
+function goBack() {
+  window.location.href="/item";
+}
+
 const Questions = (props) => {
   const classes = styles();
   const id = parseId(props.location.pathname);
@@ -122,7 +130,7 @@ const Questions = (props) => {
             <Grid item xs container direction="column" spacing={2}>
               <Grid item xs>
                 <Typography gutterBottom variant="h6">
-                  {item.title}
+                  Item Name goes HERE!!!
                 </Typography>
               </Grid>
               <Grid item>
@@ -154,13 +162,13 @@ const Questions = (props) => {
       </div>
       <Grid justify="space-between" container spacing={2}>
         <Grid item xs>
-          <Button raised variant="outlined" className={classes.button}>
+          <Button raised variant="outlined" className={classes.button} onClick={goBack} >
             Back
           </Button>
         </Grid>
 
         <Grid item xs>
-          <Button variant="outlined" className={classes.buttonR}>
+          <Button variant="outlined" className={classes.buttonR} onClick={submitForm} >
             Send
           </Button>
         </Grid>
