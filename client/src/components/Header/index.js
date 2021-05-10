@@ -20,6 +20,7 @@ const StyledText = styled.h1`
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    marginBottom: "1rem",
   },
   h1: {
     fontSize: "2.5rem",
@@ -31,8 +32,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Header = (props) => {
-  const classes = useStyles();
-  return (
+  const classes = useStyles({ buttonIsBlue: true });
+
+  return props.location.pathname == "/" ? null : (
     <div className={classes.root}>
       <Grid container justify="space-between" align-items="center" spacing={0}>
         <Grid item xs={3} alignItems="flex-end">
@@ -48,11 +50,9 @@ const Header = (props) => {
           className={classes.buttonGroup}
         >
           <ButtonGroup size="small" aria-label="website router">
-            <Button onClick={() => console.log("Buy was clicked")}>Buy</Button>
-            <Button onClick={() => console.log("Sell was clicked")}>
-              Sell
-            </Button>
-            <Button onClick={() => console.log("Profile was clicked")}>
+            <Button onClick={() => props.history.push("/browse")}>Buy</Button>
+            <Button onClick={() => props.history.push("/sell")}>Sell</Button>
+            <Button onClick={() => props.history.push("/profile")}>
               Profile
             </Button>
           </ButtonGroup>
