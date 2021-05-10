@@ -24,7 +24,7 @@ const useStyles = makeStyles({
 
 export default function Item(props) {
   const classes = useStyles();
-  const { title, price, desc, imgUrl, handleClick } = props;
+  const { title, price, description, imgUrl, handleClick } = props;
 
   return (
     <Card className={classes.root}>
@@ -35,7 +35,7 @@ export default function Item(props) {
             {title}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {shortenString(desc, 75)}
+            {shortenString(description, 75)}
           </Typography>
         </CardContent>
       </CardActionArea>
