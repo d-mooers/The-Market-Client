@@ -14,7 +14,7 @@ const styles = makeStyles({
 // const [state name, function to update state]
 // body = default state
 const LoginPage = (props) => {
-  const [user, setUser] = useState({
+  const [user, setTempUser] = useState({
     username: "",
     email: "",
     password: "",
@@ -22,21 +22,21 @@ const LoginPage = (props) => {
 
   // called when user types into fields
   const handleChange = (e) => {
-    const { inputType, value } = e.target;
-    if (inputType === "username") {
-      setUser({
+    const { name, value } = e.target;
+    if (name === "username") {
+      setTempUser({
         username: value,
         email: user["email"],
         password: user["password"],
       });
-    } else if (inputType === "email") {
-      setUser({
+    } else if (name === "email") {
+      setTempUser({
         username: user["username"],
         email: value,
         password: user["password"],
       });
-    } else if (inputType === "password") {
-      setUser({
+    } else if (name === "password") {
+      setTempUser({
         username: user["username"],
         email: user["email"],
         password: value,
@@ -45,30 +45,38 @@ const LoginPage = (props) => {
   };
 
   function submitForm() {
-    // check database for user
-    // update user state code to search database
     console.log("Submitting");
-    if (validateUser() === 0) {
-      console.log("All good to add them to database and send them off");
-    } else {
+    const resp = validateUser();
+
+    if (resp === 0) {
+      console.log("Successful Login credentials");
+      props.history.push("/browse");
+    } else if (resp === -1) {
       alert("Invalid login");
     }
   }
 
   function validateUser() {
-    // change to allow user to input username OR email to login
-    // instead of both. Or just remove one
-    console.log("User");
+    // potentially change to allow username OR email
+    // change to check database
+    if (
+      user.username === "DummyUser" &&
+      user.email === "Dummy@yahoo.com" &&
+      user.password == "Password123"
+    )
+      return 0;
+
     if (user.username.length === 0) {
       alert("Please enter a Username");
-      return -1;
+      return -2;
     } else if (user.email.length === 0) {
       alert("Please enter an Email");
-      return -1;
+      return -2;
     } else if (user.password.length === 0) {
       alert("Please enter a Password");
-    } // then if all fields are filled check if user exists
-    return 0;
+      return -2;
+    }
+    return -1;
   }
 
   const classes = styles();
@@ -87,7 +95,7 @@ const LoginPage = (props) => {
             variant="outlined"
             size="small"
             label="Username"
-            inputType="username"
+            name="username"
             onChange={handleChange}
           />
           <br />
@@ -98,7 +106,7 @@ const LoginPage = (props) => {
             variant="outlined"
             size="small"
             label="Email"
-            inputType="email"
+            name="email"
             onChange={handleChange}
           />
           <br />
@@ -109,7 +117,7 @@ const LoginPage = (props) => {
             variant="outlined"
             size="small"
             label="Password"
-            inputType="password"
+            name="password"
             onChange={handleChange}
           />
           <br />
