@@ -36,6 +36,14 @@ const styles = makeStyles((theme) => ({
   },
 }));
 
+function submitForm() {
+  window.location.href="/profile";
+}
+
+function goBack() {
+  window.location.href="/browse";
+}
+
 const Checkout = (props) => {
   const classes = styles();
 
@@ -76,13 +84,13 @@ const Checkout = (props) => {
       </div>
       <Grid justify="space-between" container spacing={2}>
         <Grid item xs>
-          <Button raised variant="outlined" className={classes.button}>
+          <Button raised variant="outlined" className={classes.button} onClick={goBack}>
             Back
           </Button>
         </Grid>
 
         <Grid item xs>
-          <Button variant="outlined" className={classes.buttonR}>
+          <Button variant="outlined" className={classes.buttonR} onClick={submitForm}>
             Submit
           </Button>
         </Grid>
