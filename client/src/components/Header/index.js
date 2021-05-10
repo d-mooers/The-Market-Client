@@ -33,7 +33,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = (props) => {
   const classes = useStyles({ buttonIsBlue: true });
-  return (
+  console.log(props);
+  return props.location.pathname == "/" ? null : (
     <div className={classes.root}>
       <Grid container justify="space-between" align-items="center" spacing={0}>
         <Grid item xs={3} alignItems="flex-end">
