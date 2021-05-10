@@ -22,6 +22,8 @@ const App = () => (
       <Route path="/item" component={ItemPage} />
       <Route path="/login" exact component={ViewLoginPage} />
       <Route path="/sell" exact component={ListItemPage} />
+      <Route path="/questions" component={Questions} />
+      <Route path="/register" exact component={Register} />
       {/*Add new routes here!*/}
     </Suspense>
   </>
