@@ -24,8 +24,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+var signedIn = false;
+
 const LandingPage = (props) => {
   const classes = useStyles();
+  if(signedIn == true)
+  {
   return (
     <div className={classes.root}>
       <Grid xs={12} container justify="center">
@@ -53,7 +57,7 @@ const LandingPage = (props) => {
           size="large"
           color="primary"
           className={classes.margin}
-          onClick={() => console.log("Sell was clicked")}
+          onClick={() => props.history.push("/sell")}
         >
           Sell
         </Button>
@@ -69,6 +73,36 @@ const LandingPage = (props) => {
       </Grid>
     </div>
   );
+}
+  
+  else
+  {
+    return (
+      <div className={classes.root}>
+        <Grid xs={12} container justify="center">
+          <StyledText>The Market</StyledText>
+        </Grid>
+  
+        <Grid
+          container
+          direction="row"
+          justify="space-evenly"
+          alignItems="center"
+          className={classes.button}
+        >
+          <Button
+            variant="contained"
+            size="large"
+            color="primary"
+            className={classes.margin}
+            onClick={signedIn = true}
+            onClick={() => props.history.push("/")}
+          >
+            Log in
+          </Button>
+        </Grid>
+      </div>
+    );}
 };
 
 export default LandingPage;
