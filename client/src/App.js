@@ -6,6 +6,7 @@ import ViewItemsPage from "./containers/ViewItemsPage";
 import ItemPage from "./containers/ItemPage";
 import ViewProfilePage from "./containers/ViewProfilePage";
 import ViewLoginPage from "./containers/ViewLoginPage";
+import ListItemPage from "./containers/ListItemPage";
 
 const RoutedHeader = withRouter(Header);
 
@@ -19,6 +20,7 @@ const App = () => (
 
       <Route path="/item" component={ItemPage} />
       <Route path="/login" component={ViewLoginPage} />
+      <Route path="/sell" exact component={ListItemPage} />
       {/*Add new routes here!*/}
     </Suspense>
   </>
