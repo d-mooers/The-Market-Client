@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import { Route, withRouter } from "react-router-dom";
 import HomePage from "./containers/HomePage";
 import Header from "./components/Header";
@@ -10,11 +10,14 @@ import ViewProfilePage from "./containers/ViewProfilePage";
 import ViewLoginPage from "./containers/ViewLoginPage";
 import ListItemPage from "./containers/ListItemPage";
 import Checkout from "./containers/CheckoutContainer";
+import { UserProvider } from "./UserContext";
 
 const RoutedHeader = withRouter(Header);
 
+const [user, setUser] = useState({});
+
 const App = () => (
-  <>
+  <UserProivder value={{ user, setUser }}>
     <RoutedHeader />
     <Suspense fallback={HomePage}>
       <Route path="/" exact component={HomePage} />
@@ -28,7 +31,7 @@ const App = () => (
       <Route path="/checkout" component={Checkout} />
       {/*Add new routes here!*/}
     </Suspense>
-  </>
+  </UserProivder>
 );
 
 export default App;
