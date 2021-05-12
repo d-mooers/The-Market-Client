@@ -16,7 +16,7 @@ const styles = makeStyles({
 // const [state name, function to update state]
 // body = default state
 const LoginPage = (props) => {
-  const { user } = React.useContext(UserContext);
+  const { user, setUser } = React.useContext(UserContext);
   const [temp, setTempUser] = useState({
     username: "",
     email: "",
@@ -27,23 +27,11 @@ const LoginPage = (props) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "username") {
-      setTempUser({
-        username: value,
-        email: temp["email"],
-        password: temp["password"],
-      });
+      setTempUser({ ...user, username: value });
     } else if (name === "email") {
-      setTempUser({
-        username: temp["username"],
-        email: value,
-        password: temp["password"],
-      });
+      setTempUser({ ...user, email: value });
     } else if (name === "password") {
-      setTempUser({
-        username: temp["username"],
-        email: temp["email"],
-        password: value,
-      });
+      setTempUser({ ...user, password: value });
     }
   };
 
@@ -54,7 +42,8 @@ const LoginPage = (props) => {
     if (resp === 0) {
       console.log("Successful Login credentials");
       props.history.push("/browse");
-      user.username = temp.username;
+      // user.username = temp.username;
+      setUser(temp);
     } else if (resp === -1) {
       alert("Invalid login");
     }
