@@ -3,6 +3,7 @@ import { Button, makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import UserContext from "../../UserContext";
 import Footer from "./Footer";
+import InputField from "./InputField";
 import "./Login.css";
 
 const styles = makeStyles({
@@ -16,7 +17,7 @@ const styles = makeStyles({
 // body = default state
 const LoginPage = (props) => {
   const { user } = React.useContext(UserContext);
-  const [user, setTempUser] = useState({
+  const [temp, setTempUser] = useState({
     username: "",
     email: "",
     password: "",
@@ -28,19 +29,19 @@ const LoginPage = (props) => {
     if (name === "username") {
       setTempUser({
         username: value,
-        email: user["email"],
-        password: user["password"],
+        email: temp["email"],
+        password: temp["password"],
       });
     } else if (name === "email") {
       setTempUser({
-        username: user["username"],
+        username: temp["username"],
         email: value,
-        password: user["password"],
+        password: temp["password"],
       });
     } else if (name === "password") {
       setTempUser({
-        username: user["username"],
-        email: user["email"],
+        username: temp["username"],
+        email: temp["email"],
         password: value,
       });
     }
@@ -53,6 +54,7 @@ const LoginPage = (props) => {
     if (resp === 0) {
       console.log("Successful Login credentials");
       props.history.push("/browse");
+      user.username = temp.username;
     } else if (resp === -1) {
       alert("Invalid login");
     }
@@ -62,19 +64,19 @@ const LoginPage = (props) => {
     // potentially change to allow username OR email
     // change to check database
     if (
-      user.username === "DummyUser" &&
-      user.email === "Dummy@yahoo.com" &&
-      user.password == "Password123"
+      temp.username === "DummyUser" &&
+      temp.email === "Dummy@yahoo.com" &&
+      temp.password === "Password123"
     )
       return 0;
 
-    if (user.username.length === 0) {
+    if (temp.username.length === 0) {
       alert("Please enter a Username");
       return -2;
-    } else if (user.email.length === 0) {
+    } else if (temp.email.length === 0) {
       alert("Please enter an Email");
       return -2;
-    } else if (user.password.length === 0) {
+    } else if (temp.password.length === 0) {
       alert("Please enter a Password");
       return -2;
     }
@@ -101,7 +103,8 @@ const LoginPage = (props) => {
             onChange={handleChange}
           />
           <br />
-
+          <InputField handleChange={handleChange} />
+          <br />
           <TextField
             className={classes.textBox}
             type="email"
