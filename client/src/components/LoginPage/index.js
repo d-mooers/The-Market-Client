@@ -18,7 +18,7 @@ const LoginPage = (props) => {
   // called when user types into fields
   const handleChange = (e, temp) => {
     const { name, value } = e.target;
-    console.log(name + " " + value);
+    // console.log(name + " " + value);
     if (name === "username") {
       setTempUser({ ...temp, username: value });
     } else if (name === "email") {
@@ -82,18 +82,21 @@ const LoginPage = (props) => {
             label={"Username"}
             name={"username"}
             temp={temp}
+            errorFlag={true}
           />
           <InputField
             handleChange={handleChange}
             label={"Email"}
             name={"email"}
             temp={temp}
+            errorFlag={false}
           />
           <InputField
             handleChange={handleChange}
             label={"Password"}
             name={"password"}
             temp={temp}
+            errorFlag={true}
           />
           <center>
             <Button variant="outlined" onClick={submitForm}>

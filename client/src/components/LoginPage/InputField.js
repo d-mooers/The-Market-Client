@@ -9,11 +9,13 @@ const styles = makeStyles({
   },
 });
 
-const InputField = ({ handleChange, label, name, temp }) => {
+const InputField = ({ handleChange, label, name, temp, errorFlag }) => {
   const classes = styles();
   return (
     <div>
       <TextField
+        error={errorFlag}
+        helperText={errorFlag ? "Invalid" : ""}
         className={classes.textBox}
         type="text"
         variant="outlined"
