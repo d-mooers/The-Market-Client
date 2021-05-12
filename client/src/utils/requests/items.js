@@ -49,7 +49,7 @@ export const postItem = async (details) => {
     });
     return {
       success: resp.status === 201,
-      id: resp.data.id,
+      id: resp.data._id,
     };
   } catch (e) {
     return {

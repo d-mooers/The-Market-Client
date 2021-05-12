@@ -10,7 +10,7 @@ const ItemList = (props) => {
           <Item
             {...itm}
             key={`itm-${i}`}
-            handleClick={() => props.goToItem(itm.id)}
+            handleClick={() => props.goToItem(itm._id)}
           />
         </Grid>
       ))}
