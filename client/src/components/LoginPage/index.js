@@ -20,11 +20,11 @@ const LoginPage = (props) => {
     const { name, value } = e.target;
     console.log(name + " " + value);
     if (name === "username") {
-      setTempUser({ ...user, username: value });
+      setTempUser({ ...temp, username: value });
     } else if (name === "email") {
-      setTempUser({ ...user, email: value });
+      setTempUser({ ...temp, email: value });
     } else if (name === "password") {
-      setTempUser({ ...user, password: value });
+      setTempUser({ ...temp, password: value });
     }
     console.log(temp);
   };
