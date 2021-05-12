@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
+import UserContext from "../../UserContext";
 import Footer from "./Footer";
 import "./Login.css";
 
@@ -14,6 +15,7 @@ const styles = makeStyles({
 // const [state name, function to update state]
 // body = default state
 const LoginPage = (props) => {
+  const { user } = React.useContext(UserContext);
   const [user, setTempUser] = useState({
     username: "",
     email: "",
