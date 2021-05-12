@@ -13,11 +13,6 @@ class Model(dict):
     __delattr__ = dict.__delitem__
     __setattr__ = dict.__setitem__
 
-    load_dotenv()  # take environment variables from .env.
-    MONGODB_URI = os.environ['MONGODB_URI']
-    db_client = pymongo.MongoClient(MONGODB_URI)
-    db = db_client['users']
-
     def save(self):
         if not self._id:
             self.collection.insert(self)
@@ -43,7 +38,12 @@ class Model(dict):
 
 
 class Listings(Model):
-    collection = super.db.db_client['listings']
+    load_dotenv()
+    MONGODB_URI = os.environ['MONGODB_URI']
+    db_client = pymongo.MongoClient(MONGODB_URI)
+    db = db_client['users']
+
+    collection = db.db_client['listings']
 
     def find_all(self):
         listings = list(self.collection.find())

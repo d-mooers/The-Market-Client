@@ -41,7 +41,7 @@ def get_items():
             return jsonify({"message": "Bad request, missing fields",
                             "details": issues}), 400
         listing = Listings(listing)
-        Listings.save()
+        listing.save()
         return jsonify(listing), 201
 
 
