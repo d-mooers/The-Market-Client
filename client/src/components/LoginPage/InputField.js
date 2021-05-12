@@ -9,9 +9,8 @@ const styles = makeStyles({
   },
 });
 
-const classes = styles();
-
 const InputField = ({ handleChange }) => {
+  const classes = styles();
   return (
     <div>
       <TextField
