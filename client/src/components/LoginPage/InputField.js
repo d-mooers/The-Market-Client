@@ -9,7 +9,7 @@ const styles = makeStyles({
   },
 });
 
-const InputField = ({ handleChange }) => {
+const InputField = ({ handleChange, label, name, temp }) => {
   const classes = styles();
   return (
     <div>
@@ -18,9 +18,9 @@ const InputField = ({ handleChange }) => {
         type="text"
         variant="outlined"
         size="small"
-        label="Username"
-        name="username"
-        onChange={handleChange}
+        label={label}
+        name={name}
+        onChange={(e) => handleChange(e, temp)}
       />
     </div>
   );

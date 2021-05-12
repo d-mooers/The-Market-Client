@@ -1,17 +1,9 @@
 import React, { useState } from "react";
-import { Button, makeStyles } from "@material-ui/core";
-import TextField from "@material-ui/core/TextField";
+import { Button } from "@material-ui/core";
 import UserContext from "../../UserContext";
 import Footer from "./Footer";
 import InputField from "./InputField";
 import "./Login.css";
-
-const styles = makeStyles({
-  textBox: {
-    margin: 10,
-    width: "80%",
-  },
-});
 
 // const [state name, function to update state]
 // body = default state
@@ -24,8 +16,9 @@ const LoginPage = (props) => {
   });
 
   // called when user types into fields
-  const handleChange = (e) => {
+  const handleChange = (e, temp) => {
     const { name, value } = e.target;
+    console.log(name + " " + value);
     if (name === "username") {
       setTempUser({ ...user, username: value });
     } else if (name === "email") {
@@ -33,6 +26,7 @@ const LoginPage = (props) => {
     } else if (name === "password") {
       setTempUser({ ...user, password: value });
     }
+    console.log(temp);
   };
 
   function submitForm() {
@@ -55,24 +49,25 @@ const LoginPage = (props) => {
     if (
       temp.username === "DummyUser" &&
       temp.email === "Dummy@yahoo.com" &&
-      temp.password === "Password123"
+      temp.password === "123"
     )
       return 0;
 
     if (temp.username.length === 0) {
       alert("Please enter a Username");
+      console.log("Invalid Username");
       return -2;
     } else if (temp.email.length === 0) {
       alert("Please enter an Email");
+      console.log("Invalid Email");
       return -2;
     } else if (temp.password.length === 0) {
       alert("Please enter a Password");
+      console.log("Invalid Password");
       return -2;
     }
     return -1;
   }
-
-  const classes = styles();
 
   return (
     <div>
@@ -82,39 +77,24 @@ const LoginPage = (props) => {
           <h1>The Market</h1>
         </center>
         <form>
-          <TextField
-            className={classes.textBox}
-            type="text"
-            variant="outlined"
-            size="small"
-            label="Username"
-            name="username"
-            onChange={handleChange}
+          <InputField
+            handleChange={handleChange}
+            label={"Username"}
+            name={"username"}
+            temp={temp}
           />
-          <br />
-          <InputField handleChange={handleChange} />
-          <br />
-          <TextField
-            className={classes.textBox}
-            type="email"
-            variant="outlined"
-            size="small"
-            label="Email"
-            name="email"
-            onChange={handleChange}
+          <InputField
+            handleChange={handleChange}
+            label={"Email"}
+            name={"email"}
+            temp={temp}
           />
-          <br />
-
-          <TextField
-            className={classes.textBox}
-            type="password"
-            variant="outlined"
-            size="small"
-            label="Password"
-            name="password"
-            onChange={handleChange}
+          <InputField
+            handleChange={handleChange}
+            label={"Password"}
+            name={"password"}
+            temp={temp}
           />
-          <br />
           <center>
             <Button variant="outlined" onClick={submitForm}>
               Submit
