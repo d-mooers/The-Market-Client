@@ -12,7 +12,7 @@ def findMissingFields(obj: dict, fields: list) -> list:
 
 def verifyListingShape(listing: dict) -> list:
     LISTING_FIELDS = ['title', 'price',
-                      'description', 'lngLat', 'imgUrl', 'owner']
+                      'description', 'lngLat', 'imgUrl']
     return findMissingFields(listing, LISTING_FIELDS)
 
 

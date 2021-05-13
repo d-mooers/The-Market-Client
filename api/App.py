@@ -11,11 +11,15 @@ def get_items():
     if request.method == 'GET':
         return jsonify({"listings": Listings().find_all()}), 200
     if request.method == 'POST':
+        auth = request.headers.get('auth')
         listing = request.get_json()
         issues = verifyListingShape(listing)
         if len(issues) > 0:
             return jsonify({"message": "Bad request, missing fields",
                             "details": issues}), 400
+        if not verifyUser(auth['authId'], auth['_id']):
+            return jsonify({'erorr': 'Unauthorized'}), 401
+        listing['owner'] = auth['_id']
         listing = Listings(listing)
         listing.save()
         return jsonify(listing), 201
@@ -29,8 +33,9 @@ def get_item(id):
             return jsonify(item), 200
         if item == None:
             return jsonify({"error": "Item not found"}), 404
+
     if request.method == 'GET' and id:
-        auth = request.get_json()
+        auth = request.headers.get('auth')
         item = Listings({'_id': id})
 
         missingFields = verifyAuthShape(auth)
@@ -51,7 +56,7 @@ def get_item(id):
 @app.route('/users', methods=['GET', 'POST'])
 def register_user():
     if request.method == 'GET':
-        auth = request.get_json()
+        auth = request.headers.get('auth')
         missingFields = verifyLoginShape(auth)
         if len(missingFields) > 0:
             return jsonify({"message": "Bad request, missing fields",
