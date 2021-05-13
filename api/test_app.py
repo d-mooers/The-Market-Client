@@ -1,6 +1,6 @@
 import pytest
 import App
-from Models import Listings
+from Models import Listings, User
 
 
 def test_find_all_listings():
@@ -22,3 +22,9 @@ def test_find_listing_by_Id():
     actual = Listings({'_id': "609b670702bdf47a0a1692fa"})
     assert actual.reload()
     assert actual == expected
+
+
+def test_login():
+    expectedUserName = 'Test Test'
+    user = User().getUserByEmailPass("test@test.com", "1234")
+    assert user['username'] == expectedUserName
