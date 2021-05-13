@@ -1,4 +1,5 @@
 import random
+from Models import User
 
 
 def verifyListingShape(listing: dict) -> list:
@@ -8,6 +9,13 @@ def verifyListingShape(listing: dict) -> list:
         if not field in listing:
             missingFields.append(field)
     return missingFields
+
+
+def verifyUser(authId, userId) -> bool:
+    user = User({'_id': userId})
+    if not user.reload():
+        return False
+    return user['authId'] == authId
 
 
 def makeId() -> str:
