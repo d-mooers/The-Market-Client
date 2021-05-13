@@ -53,7 +53,7 @@ class Listings(Model):
         return listings
 
 
-class User(dict):
+class User(Model):
     load_dotenv()
     MONGODB_URI = os.environ['MONGODB_URI']
     db_client = pymongo.MongoClient(MONGODB_URI)
