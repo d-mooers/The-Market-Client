@@ -11,7 +11,8 @@ def findMissingFields(obj: dict, fields: list) -> list:
 
 
 def verifyListingShape(listing: dict) -> list:
-    LISTING_FIELDS = ['title', 'price', 'description', 'lngLat', 'imgUrl']
+    LISTING_FIELDS = ['title', 'price',
+                      'description', 'lngLat', 'imgUrl', 'owner']
     return findMissingFields(listing, LISTING_FIELDS)
 
 
@@ -23,6 +24,11 @@ def verifyUserShape(user: dict) -> list:
 def verifyLoginShape(login: dict) -> list:
     LOGIN_FIELDS = ['email', 'password']
     return findMissingFields(login, LOGIN_FIELDS)
+
+
+def verifyAuthShape(auth: dict) -> list:
+    AUTH_FIELDS = ['authId', '_id']
+    return findMissingFields(auth, AUTH_FIELDS)
 
 
 def verifyUser(authId, userId) -> bool:
