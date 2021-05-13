@@ -62,21 +62,19 @@ const LoginPage = (props) => {
       return 0;
 
     if (temp.username.length === 0) {
-      alert("Please enter a Username");
       console.log("Invalid Username");
-
+      setError(true);
       setUsernameError(true);
       resp = -2;
     }
     if (temp.email.length === 0) {
-      if (resp !== -2) alert("Please enter an Email");
+      if (resp !== -2) setError(true);
       console.log("Invalid Email");
-
       setEmailError(true);
       resp = -2;
     }
     if (temp.password.length === 0) {
-      if (resp !== -2) alert("Please enter a Password");
+      if (resp !== -2) setError(true);
       console.log("Invalid Password");
 
       setPasswordError(true);
@@ -84,6 +82,8 @@ const LoginPage = (props) => {
     }
     return resp;
   }
+
+  const [error, setError] = useState(false);
 
   return (
     <div>
@@ -116,6 +116,13 @@ const LoginPage = (props) => {
             temp={temp}
             errorFlag={passwordError}
             helperText={"Invalid Password"}
+          />
+          <Dialog
+            title="An error has occured"
+            description={`Invalid Login`}
+            onClose={() => setError(false)}
+            onAccept={() => null}
+            open={error}
           />
           <center>
             <Button variant="outlined" onClick={submitForm}>
