@@ -4,11 +4,15 @@ import UserContext from "../../UserContext";
 import Footer from "./Footer";
 import InputField from "./InputField";
 import "./Login.css";
+import Dialog from "../shared/Dialog";
 
 // const [state name, function to update state]
 // body = default state
 const LoginPage = (props) => {
   const { user, setUser } = React.useContext(UserContext);
+  const [usernameError, setUsernameError] = useState(false);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
   const [temp, setTempUser] = useState({
     username: "",
     email: "",
@@ -18,13 +22,15 @@ const LoginPage = (props) => {
   // called when user types into fields
   const handleChange = (e, temp) => {
     const { name, value } = e.target;
-    // console.log(name + " " + value);
     if (name === "username") {
       setTempUser({ ...temp, username: value });
+      setUsernameError(false);
     } else if (name === "email") {
       setTempUser({ ...temp, email: value });
+      setEmailError(false);
     } else if (name === "password") {
       setTempUser({ ...temp, password: value });
+      setPasswordError(false);
     }
     console.log(temp);
   };
@@ -46,6 +52,8 @@ const LoginPage = (props) => {
   function validateUser() {
     // potentially change to allow username OR email
     // change to check database
+
+    var resp = -1;
     if (
       temp.username === "DummyUser" &&
       temp.email === "Dummy@yahoo.com" &&
@@ -56,17 +64,25 @@ const LoginPage = (props) => {
     if (temp.username.length === 0) {
       alert("Please enter a Username");
       console.log("Invalid Username");
-      return -2;
-    } else if (temp.email.length === 0) {
-      alert("Please enter an Email");
-      console.log("Invalid Email");
-      return -2;
-    } else if (temp.password.length === 0) {
-      alert("Please enter a Password");
-      console.log("Invalid Password");
-      return -2;
+
+      setUsernameError(true);
+      resp = -2;
     }
-    return -1;
+    if (temp.email.length === 0) {
+      if (resp !== -2) alert("Please enter an Email");
+      console.log("Invalid Email");
+
+      setEmailError(true);
+      resp = -2;
+    }
+    if (temp.password.length === 0) {
+      if (resp !== -2) alert("Please enter a Password");
+      console.log("Invalid Password");
+
+      setPasswordError(true);
+      resp = -2;
+    }
+    return resp;
   }
 
   return (
@@ -82,21 +98,24 @@ const LoginPage = (props) => {
             label={"Username"}
             name={"username"}
             temp={temp}
-            errorFlag={true}
+            errorFlag={usernameError}
+            helperText={"Invalid Username"}
           />
           <InputField
             handleChange={handleChange}
             label={"Email"}
             name={"email"}
             temp={temp}
-            errorFlag={false}
+            errorFlag={emailError}
+            helperText={"Invalid Email"}
           />
           <InputField
             handleChange={handleChange}
             label={"Password"}
             name={"password"}
             temp={temp}
-            errorFlag={true}
+            errorFlag={passwordError}
+            helperText={"Invalid Password"}
           />
           <center>
             <Button variant="outlined" onClick={submitForm}>
