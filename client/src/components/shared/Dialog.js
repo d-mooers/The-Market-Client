@@ -9,7 +9,15 @@ import {
 } from "@material-ui/core";
 
 const MyDialog = (props) => {
-  const { title, onClose, onAccept, content, buttonText, open } = props;
+  const {
+    title,
+    onClose,
+    onAccept,
+    content,
+    buttonText,
+    closeButtonText = "Cancel",
+    open,
+  } = props;
 
   return (
     <Dialog onClose={onClose} aria-labelledby="dialog" open={open}>
@@ -20,7 +28,7 @@ const MyDialog = (props) => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
+        <Button onClick={onClose}>{closeButtonText}</Button>
         <Button onClick={onAccept} autoFocus>
           {buttonText}
         </Button>
