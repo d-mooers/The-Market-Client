@@ -2,13 +2,22 @@ import random
 from Models import User
 
 
-def verifyListingShape(listing: dict) -> list:
-    LISTING_FIELDS = ['title', 'price', 'description', 'lngLat', 'imgUrl']
+def findMissingFields(obj: dict, fields: list) -> list:
     missingFields = []
-    for field in LISTING_FIELDS:
-        if not field in listing:
+    for field in fields:
+        if not field in obj:
             missingFields.append(field)
     return missingFields
+
+
+def verifyListingShape(listing: dict) -> list:
+    LISTING_FIELDS = ['title', 'price', 'description', 'lngLat', 'imgUrl']
+    return findMissingFields(listing, LISTING_FIELDS)
+
+
+def verifyUserShape(user: dict) -> list:
+    USER_FIELDS = ['username', 'email', 'password']
+    return findMissingFields(user, USER_FIELDS)
 
 
 def verifyUser(authId, userId) -> bool:
