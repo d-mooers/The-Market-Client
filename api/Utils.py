@@ -35,7 +35,7 @@ def verifyUser(authId, userId) -> bool:
     user = User({'_id': userId})
     if not user.reload():
         return False
-    return user['authId'] == authId
+    return str(user['authId']) == authId
 
 
 def makeId() -> str:

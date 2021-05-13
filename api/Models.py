@@ -73,11 +73,13 @@ class User(Model):
     def getUserByEmailPass(self, email, password):
         user = self.collection.find_one({"email": email, "password": password})
         if user:
-            user['_id'] = str(user['_id'])
             user['authId'] = uuid.uuid4()
+            user['_id'] = str(user['_id'])
+            self.collection.update_one(
+                {"_id": ObjectId(user['_id'])}, {'$set': {'authId': user['authId']}})
             return user
         return None
 
     def addUser(self):
-        self.save()
         self['authId'] = uuid.uuid4()
+        self.save()

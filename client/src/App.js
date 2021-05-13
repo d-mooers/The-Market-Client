@@ -19,7 +19,8 @@ const App = () => {
     username: "",
     email: "",
     password: "",
-    _id: "",
+    _id: "609cb2b88951a63fccdcf790",
+    authId: "db3edf52-df87-45b9-9ea5-cd3a38cc2807",
     loggedIn: false,
   });
   //const user = "hello";

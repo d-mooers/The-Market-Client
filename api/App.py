@@ -11,15 +11,16 @@ def get_items():
     if request.method == 'GET':
         return jsonify({"listings": Listings().find_all()}), 200
     if request.method == 'POST':
-        auth = request.headers.get('auth')
+        auth = request.headers
+        print(auth)
         listing = request.get_json()
         issues = verifyListingShape(listing)
         if len(issues) > 0:
             return jsonify({"message": "Bad request, missing fields",
                             "details": issues}), 400
-        if not verifyUser(auth['authId'], auth['_id']):
+        if not verifyUser(auth['Auth'], auth['User']):
             return jsonify({'erorr': 'Unauthorized'}), 401
-        listing['owner'] = auth['_id']
+        listing['owner'] = auth['User']
         listing = Listings(listing)
         listing.save()
         return jsonify(listing), 201
@@ -34,17 +35,13 @@ def get_item(id):
         if item == None:
             return jsonify({"error": "Item not found"}), 404
 
-    if request.method == 'GET' and id:
-        auth = request.headers.get('auth')
+    if request.method == 'DELETE' and id:
+        auth = request.headers
         item = Listings({'_id': id})
 
-        missingFields = verifyAuthShape(auth)
-        if len(missingFields) > 0:
-            return jsonify({"message": "Bad request, missing fields",
-                            "details": missingFields}), 400
         if not item.reload():
             return jsonify({"error": "Item not found"}), 404
-        if not verifyUser(auth['authId'], auth['_id']) or auth['_id'] != item['owner']:
+        if not verifyUser(auth['Auth'], auth['User']) or auth['_id'] != item['owner']:
             return jsonify({'erorr': 'Unauthorized'}), 401
 
         resp = item.remove()
@@ -56,7 +53,7 @@ def get_item(id):
 @app.route('/users', methods=['GET', 'POST'])
 def register_user():
     if request.method == 'GET':
-        auth = request.headers.get('auth')
+        auth = request.get_json()
         missingFields = verifyLoginShape(auth)
         if len(missingFields) > 0:
             return jsonify({"message": "Bad request, missing fields",

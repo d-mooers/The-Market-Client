@@ -39,12 +39,13 @@ export const getItem = async (id) => {
   }
 };
 
-export const postItem = async (details) => {
+export const postItem = async (details, auth) => {
   const url = `${BASE_URL}${ITEMS}`;
   try {
     const resp = await axios.post(url, JSON.stringify(details), {
       headers: {
         "Content-Type": "application/json",
+        ...auth,
       },
     });
     return {
