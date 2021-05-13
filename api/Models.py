@@ -2,6 +2,7 @@ import pymongo
 from bson import ObjectId
 import dns
 import os
+import uuid
 from dotenv import load_dotenv
 
 
@@ -50,3 +51,33 @@ class Listings(Model):
         for listing in listings:
             listing["_id"] = str(listing['_id'])
         return listings
+
+
+class Auth(dict):
+    load_dotenv()
+    MONGODB_URI = os.environ['MONGODB_URI']
+    db_client = pymongo.MongoClient(MONGODB_URI)
+    db = db_client['users']
+    collection = db.db_client['auth']
+
+    def verifyUser(self, authId):
+        if self._id:
+            user = self.collection.find_one({"_id": ObjectId(self._id)})
+            if user['authId'] == authId:
+                return user
+        return {
+            'message': 'unauthorized',
+            'auth': False
+        }
+
+    def getUserByEmailPass(self, email, password):
+        user = self.collection.find_one({"email": email, "password": password})
+        if user:
+            user['_id'] = str(user['_id'])
+            user['authId'] = uuid.uuid4()
+            return user
+        return {}
+
+    def addUser(self):
+        self.save()
+        self['authId'] = uuid.uuid4()
