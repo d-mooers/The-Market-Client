@@ -13,6 +13,7 @@ const LoginPage = (props) => {
   const [usernameError, setUsernameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [error, setError] = useState(false);
   const [temp, setTempUser] = useState({
     username: "",
     email: "",
@@ -32,7 +33,6 @@ const LoginPage = (props) => {
       setTempUser({ ...temp, password: value });
       setPasswordError(false);
     }
-    console.log(temp);
   };
 
   function submitForm() {
@@ -42,7 +42,6 @@ const LoginPage = (props) => {
     if (resp === 0) {
       console.log("Successful Login credentials");
       props.history.push("/browse");
-      // user.username = temp.username;
       setUser(temp);
     } else if (resp === -1) {
       alert("Invalid login");
@@ -62,28 +61,28 @@ const LoginPage = (props) => {
       return 0;
 
     if (temp.username.length === 0) {
-      console.log("Invalid Username");
       setError(true);
       setUsernameError(true);
+
+      console.log("Invalid Username");
       resp = -2;
     }
     if (temp.email.length === 0) {
       if (resp !== -2) setError(true);
-      console.log("Invalid Email");
       setEmailError(true);
+
+      console.log("Invalid Email");
       resp = -2;
     }
     if (temp.password.length === 0) {
       if (resp !== -2) setError(true);
-      console.log("Invalid Password");
-
       setPasswordError(true);
+
+      console.log("Invalid Password");
       resp = -2;
     }
     return resp;
   }
-
-  const [error, setError] = useState(false);
 
   return (
     <div>
