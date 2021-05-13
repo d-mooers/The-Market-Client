@@ -53,7 +53,7 @@ class Listings(Model):
         return listings
 
 
-class Auth(dict):
+class User(dict):
     load_dotenv()
     MONGODB_URI = os.environ['MONGODB_URI']
     db_client = pymongo.MongoClient(MONGODB_URI)
@@ -76,7 +76,7 @@ class Auth(dict):
             user['_id'] = str(user['_id'])
             user['authId'] = uuid.uuid4()
             return user
-        return {}
+        return None
 
     def addUser(self):
         self.save()

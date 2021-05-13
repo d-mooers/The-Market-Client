@@ -20,6 +20,11 @@ def verifyUserShape(user: dict) -> list:
     return findMissingFields(user, USER_FIELDS)
 
 
+def verifyLoginShape(login: dict) -> list:
+    LOGIN_FIELDS = ['email', 'password']
+    return findMissingFields(login, LOGIN_FIELDS)
+
+
 def verifyUser(authId, userId) -> bool:
     user = User({'_id': userId})
     if not user.reload():
