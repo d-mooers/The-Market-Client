@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Details = (props) => {
-  const { title, price, description, soldBy, xs } = props;
+  const { title, price, description, owner, xs, isOwner, handleDelete } = props;
   const classes = useStyles();
   console.log(props);
   return (
@@ -34,7 +34,7 @@ const Details = (props) => {
       </Grid>
       <Divider />
       <Grid item>
-        <Typography variant="subtitle2">Sold by: {soldBy}</Typography>
+        <Typography variant="subtitle2">Sold by: {owner}</Typography>
       </Grid>
       <Grid
         item
@@ -45,22 +45,28 @@ const Details = (props) => {
         <Grid item xs={9}>
           <Typography variant="body1">{description}</Typography>
         </Grid>
-        <Box className={classes.buttonGroup}>
-          <Button
-            variant="contained"
-            className={classes.buttton}
-            onClick={() => console.log("User wants to purchase")}
-          >
-            Purchase
+        {isOwner ? (
+          <Button variant="outlined" color="secondary" onClick={handleDelete}>
+            Delete Item
           </Button>
-          <Button
-            variant="contained"
-            onClick={() => console.log("User wants to ask a question")}
-            className={classes.button}
-          >
-            Ask A Question
-          </Button>
-        </Box>
+        ) : (
+          <Box className={classes.buttonGroup}>
+            <Button
+              variant="contained"
+              className={classes.buttton}
+              onClick={() => console.log("User wants to purchase")}
+            >
+              Purchase
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => console.log("User wants to ask a question")}
+              className={classes.button}
+            >
+              Ask A Question
+            </Button>
+          </Box>
+        )}
       </Grid>
       <Grid item className={classes.button}></Grid>
     </Grid>

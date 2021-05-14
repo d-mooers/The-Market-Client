@@ -41,13 +41,11 @@ def get_item(id):
 
         if not item.reload():
             return jsonify({"error": "Item not found"}), 404
-        if not verifyUser(auth['Auth'], auth['User']) or auth['_id'] != item['owner']:
+        if (not verifyUser(auth['Auth'], auth['User'])) or auth['User'] != item['owner']:
             return jsonify({'erorr': 'Unauthorized'}), 401
 
         resp = item.remove()
-        if resp.deleted_count == 1:
-            return jsonify({}), 204
-        return jsonify({"error": "Item not found"}), 404
+        return jsonify({}), 204
 
 
 @app.route('/users', methods=['GET', 'POST'])

@@ -59,3 +59,24 @@ export const postItem = async (details, auth) => {
     };
   }
 };
+
+export const deleteItem = async (itemId, auth) => {
+  const url = `${BASE_URL}${ITEMS}/${itemId}`;
+  console.log(auth);
+  try {
+    const resp = await axios.delete(url, {
+      headers: {
+        ...auth,
+      },
+    });
+    console.log(resp);
+    return {
+      success: resp.status === 204,
+    };
+  } catch (e) {
+    return {
+      success: false,
+      data: e.data,
+    };
+  }
+};
