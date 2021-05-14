@@ -11,7 +11,8 @@ def findMissingFields(obj: dict, fields: list) -> list:
 
 
 def verifyListingShape(listing: dict) -> list:
-    LISTING_FIELDS = ['title', 'price', 'description', 'lngLat', 'imgUrl']
+    LISTING_FIELDS = ['title', 'price',
+                      'description', 'lngLat', 'imgUrl']
     return findMissingFields(listing, LISTING_FIELDS)
 
 
@@ -25,11 +26,16 @@ def verifyLoginShape(login: dict) -> list:
     return findMissingFields(login, LOGIN_FIELDS)
 
 
+def verifyAuthShape(auth: dict) -> list:
+    AUTH_FIELDS = ['authId', '_id']
+    return findMissingFields(auth, AUTH_FIELDS)
+
+
 def verifyUser(authId, userId) -> bool:
     user = User({'_id': userId})
     if not user.reload():
         return False
-    return user['authId'] == authId
+    return str(user['authId']) == authId
 
 
 def makeId() -> str:

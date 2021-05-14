@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from Utils import verifyListingShape, verifyUserShape, verifyUser, verifyLoginShape
+from Utils import verifyListingShape, verifyUserShape, verifyUser, verifyLoginShape, verifyAuthShape
 from Models import Listings, User
 app = Flask(__name__)
 CORS(app)
@@ -11,17 +11,22 @@ def get_items():
     if request.method == 'GET':
         return jsonify({"listings": Listings().find_all()}), 200
     if request.method == 'POST':
+        auth = request.headers
+        print(auth)
         listing = request.get_json()
         issues = verifyListingShape(listing)
         if len(issues) > 0:
             return jsonify({"message": "Bad request, missing fields",
                             "details": issues}), 400
+        if not verifyUser(auth['Auth'], auth['User']):
+            return jsonify({'erorr': 'Unauthorized'}), 401
+        listing['owner'] = auth['User']
         listing = Listings(listing)
         listing.save()
         return jsonify(listing), 201
 
 
-@app.route('/items/<id>')
+@app.route('/items/<id>', methods=['GET', 'DELETE'])
 def get_item(id):
     if request.method == 'GET' and id:
         item = Listings({'_id': id})
@@ -29,6 +34,18 @@ def get_item(id):
             return jsonify(item), 200
         if item == None:
             return jsonify({"error": "Item not found"}), 404
+
+    if request.method == 'DELETE' and id:
+        auth = request.headers
+        item = Listings({'_id': id})
+
+        if not item.reload():
+            return jsonify({"error": "Item not found"}), 404
+        if (not verifyUser(auth['Auth'], auth['User'])) or auth['User'] != item['owner']:
+            return jsonify({'erorr': 'Unauthorized'}), 401
+
+        resp = item.remove()
+        return jsonify({}), 204
 
 
 @app.route('/users', methods=['GET', 'POST'])
