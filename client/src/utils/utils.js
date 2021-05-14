@@ -16,3 +16,8 @@ export const formatNewLine = (str) => {
     </>
   ));
 };
+
+export const formatAuth = (userId, authId) => ({
+  Auth: authId,
+  User: userId,
+});

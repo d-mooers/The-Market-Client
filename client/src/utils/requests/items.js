@@ -39,17 +39,39 @@ export const getItem = async (id) => {
   }
 };
 
-export const postItem = async (details) => {
+export const postItem = async (details, auth) => {
   const url = `${BASE_URL}${ITEMS}`;
   try {
     const resp = await axios.post(url, JSON.stringify(details), {
       headers: {
         "Content-Type": "application/json",
+        ...auth,
       },
     });
     return {
       success: resp.status === 201,
-      id: resp.data.id,
+      id: resp.data._id,
+    };
+  } catch (e) {
+    return {
+      success: false,
+      data: e.data,
+    };
+  }
+};
+
+export const deleteItem = async (itemId, auth) => {
+  const url = `${BASE_URL}${ITEMS}/${itemId}`;
+  console.log(auth);
+  try {
+    const resp = await axios.delete(url, {
+      headers: {
+        ...auth,
+      },
+    });
+    console.log(resp);
+    return {
+      success: resp.status === 204,
     };
   } catch (e) {
     return {

@@ -3,6 +3,8 @@ import { Grid, Paper, makeStyles, Typography, Button } from "@material-ui/core";
 import Form from "./Form";
 import { postItem } from "../../utils/requests/items";
 import Dialog from "../shared/Dialog";
+import { formatAuth } from "../../utils/utils";
+import UserContext from "../../UserContext";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -31,6 +33,7 @@ const ListItem = (props) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [itemId, setItemId] = useState("");
+  const { user } = React.useContext(UserContext);
 
   const getCoords = () =>
     new Promise((resolve, reject) => {
@@ -52,10 +55,9 @@ const ListItem = (props) => {
 
   const handleSubmit = async () => {
     const listing = { ...fields, lngLat: await getPosition() };
-    console.log(listing);
     setLoading(true);
     setError(false);
-    const resp = await postItem(listing);
+    const resp = await postItem(listing, formatAuth(user._id, user.authId));
     if (resp.success) {
       setItemId(resp.id);
       setError(false);
