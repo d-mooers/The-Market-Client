@@ -120,6 +120,7 @@ const LoginPage = (props) => {
           <Dialog
             title="Username or Password Invalid"
             description={`Invalid Login`}
+            closeButtonText="Got It"
             onClose={() => setError(false)}
             onAccept={() => null}
             open={error}
