@@ -44,7 +44,8 @@ const LoginPage = (props) => {
       props.history.push("/browse");
       setUser(temp);
     } else if (resp === -1) {
-      alert("Invalid login");
+      console.log("Invalid Credentials");
+      setError(true);
     }
   }
 
@@ -117,7 +118,7 @@ const LoginPage = (props) => {
             helperText={"Invalid Password"}
           />
           <Dialog
-            title="An error has occured"
+            title="Username or Password Invalid"
             description={`Invalid Login`}
             onClose={() => setError(false)}
             onAccept={() => null}
