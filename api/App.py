@@ -1,33 +1,9 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from Utils import verifyListingShape, makeId
-from Models import Listings
+from Utils import verifyListingShape, verifyUserShape, verifyUser, verifyLoginShape, verifyAuthShape
+from Models import Listings, User
 app = Flask(__name__)
 CORS(app)
-
-# listings = [
-#     {
-#         "title": "Bicycle",
-#         "price": 100.29,
-#         "description":
-#         "Newly worked-on, mint bike!!!11!!11! Super awesome deal right here omg",
-#         "lngLat": [-120.45, 35.38],
-#         "imgUrl":
-#         "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
-#         "id": "asdbcs",
-#     },
-#     {
-#         "title": "Never Opened Before PS5",
-#         "price": 849.99,
-#         "description":
-#         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-#         "lngLat": [-121.4, 45.38],
-#         "imgUrl":
-#         "https://gmedia.playstation.com/is/image/SIEPDC/playstation-5-with-dualsense-front-product-shot-01-ps5-en-30jul20?$1600px--t$",
-#         "id": "asdkj12esa",
-#     },
-
-# ]
 
 
 @app.route('/items', methods=['GET', 'POST'])
@@ -35,17 +11,22 @@ def get_items():
     if request.method == 'GET':
         return jsonify({"listings": Listings().find_all()}), 200
     if request.method == 'POST':
+        auth = request.headers
+        print(auth)
         listing = request.get_json()
         issues = verifyListingShape(listing)
         if len(issues) > 0:
             return jsonify({"message": "Bad request, missing fields",
                             "details": issues}), 400
+        if not verifyUser(auth['Auth'], auth['User']):
+            return jsonify({'erorr': 'Unauthorized'}), 401
+        listing['owner'] = auth['User']
         listing = Listings(listing)
         listing.save()
         return jsonify(listing), 201
 
 
-@app.route('/items/<id>')
+@app.route('/items/<id>', methods=['GET', 'DELETE'])
 def get_item(id):
     if request.method == 'GET' and id:
         item = Listings({'_id': id})
@@ -54,5 +35,37 @@ def get_item(id):
         if item == None:
             return jsonify({"error": "Item not found"}), 404
 
-# if __name__ == "__main__":
-#     app.run()
+    if request.method == 'DELETE' and id:
+        auth = request.headers
+        item = Listings({'_id': id})
+
+        if not item.reload():
+            return jsonify({"error": "Item not found"}), 404
+        if (not verifyUser(auth['Auth'], auth['User'])) or auth['User'] != item['owner']:
+            return jsonify({'erorr': 'Unauthorized'}), 401
+
+        resp = item.remove()
+        return jsonify({}), 204
+
+
+@app.route('/users', methods=['GET', 'POST'])
+def register_user():
+    if request.method == 'GET':
+        auth = request.get_json()
+        missingFields = verifyLoginShape(auth)
+        if len(missingFields) > 0:
+            return jsonify({"message": "Bad request, missing fields",
+                            "details": missingFields}), 400
+        user = User().getUserByEmailPass(auth['email'], auth['password'])
+        if user:
+            return jsonify(user), 200
+        return jsonify({"message": "Incorrect email and password combination"}), 401
+    if request.method == 'POST':
+        newUser = request.get_json()
+        missingFields = verifyUserShape(newUser)
+        if len(missingFields) > 0:
+            return jsonify({"message": "Bad request, missing fields",
+                            "details": missingFields}), 400
+        user = User(newUser)
+        user.addUser()
+        return jsonify(user), 201
