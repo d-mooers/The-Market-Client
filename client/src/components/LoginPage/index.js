@@ -38,10 +38,20 @@ const LoginPage = (props) => {
   };
 
   async function getUser(emailID, passwordID) {
-    return await axios.get("http://127.0.0.1:5000/users", {
-      email: emailID,
-      password: passwordID,
-    });
+    try {
+      const resp = await axios.get("http://127.0.0.1:5000/users", {
+        auth: {
+          username: emailID,
+          password: passwordID,
+        },
+      });
+
+      // Query went through successfully
+      return resp;
+    } catch (e) {
+      console.log("Task failed :(");
+      return e;
+    }
   }
 
   function submitForm() {
@@ -61,7 +71,7 @@ const LoginPage = (props) => {
   // checks InputFields and raises errors if incorrect or empty
   // if empty -> Dialog
   async function validateUser() {
-    const resp = -1;
+    //const resp = -1;
     // if (
     //   temp.username === "DummyUser" &&
     //   temp.email === "Dummy@yahoo.com" &&
@@ -70,7 +80,7 @@ const LoginPage = (props) => {
     //   return 0;
 
     console.log(temp);
-    resp = await getUser(temp.email, temp.password);
+    let resp = await getUser(temp.email, temp.password);
     console.log(resp);
 
     if (temp.username.length === 0) {

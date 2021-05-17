@@ -32,6 +32,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const filterListings = (listings, categories) => {
+  if (categories.length === 0) return listings;
+  return listings.filter((l) => categories.contains(l.category));
+};
+
 const ViewItems = (props) => {
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
