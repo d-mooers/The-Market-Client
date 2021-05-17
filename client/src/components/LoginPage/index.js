@@ -5,6 +5,7 @@ import Footer from "./Footer";
 import InputField from "./InputField";
 import "./Login.css";
 import Dialog from "../shared/Dialog";
+import axios from "axios";
 
 // const [state name, function to update state]
 // body = default state
@@ -30,16 +31,24 @@ const LoginPage = (props) => {
       setTempUser({ ...temp, email: value });
       setEmailError(false);
     } else if (name === "password") {
+      // const passSave = value.hash();
       setTempUser({ ...temp, password: value });
       setPasswordError(false);
     }
   };
 
+  async function getUser(emailID, passwordID) {
+    return await axios.get("http://127.0.0.1:5000/users", {
+      email: emailID,
+      password: passwordID,
+    });
+  }
+
   function submitForm() {
     console.log("Submitting");
     const resp = validateUser();
 
-    if (resp === 0) {
+    if (resp === 200) {
       console.log("Successful Login credentials");
       props.history.push("/browse");
       setUser(temp);
@@ -49,17 +58,20 @@ const LoginPage = (props) => {
     }
   }
 
-  function validateUser() {
-    // potentially change to allow username OR email
-    // change to check database
+  // checks InputFields and raises errors if incorrect or empty
+  // if empty -> Dialog
+  async function validateUser() {
+    const resp = -1;
+    // if (
+    //   temp.username === "DummyUser" &&
+    //   temp.email === "Dummy@yahoo.com" &&
+    //   temp.password === "123"
+    // )
+    //   return 0;
 
-    var resp = -1;
-    if (
-      temp.username === "DummyUser" &&
-      temp.email === "Dummy@yahoo.com" &&
-      temp.password === "123"
-    )
-      return 0;
+    console.log(temp);
+    resp = await getUser(temp.email, temp.password);
+    console.log(resp);
 
     if (temp.username.length === 0) {
       setError(true);
@@ -118,7 +130,7 @@ const LoginPage = (props) => {
             helperText={"Invalid Password"}
           />
           <Dialog
-            title="Username or Password Invalid"
+            title="Invalid Username or Password"
             description={`Invalid Login`}
             closeButtonText="Got It"
             onClose={() => setError(false)}
