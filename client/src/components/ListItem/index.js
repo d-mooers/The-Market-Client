@@ -29,6 +29,7 @@ const ListItem = (props) => {
     description: "",
     imgUrl: "",
     condition: "",
+    category: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
