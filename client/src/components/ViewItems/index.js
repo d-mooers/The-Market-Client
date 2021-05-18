@@ -32,8 +32,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const filteredListings = (listings, categories) => {
+  const selected = Object.keys(categories).reduce(
+    (accum, c) => accum + (categories[c] ? 1 : 0),
+    0
+  );
+  console.log(categories);
+  console.log(selected);
+  // if no filters have been selected, do not filter!
+  if (selected === 0) return listings;
+
+  // else, only return items the user wants to see
+  return listings.filter((listing) => !!categories[listing.category]);
+};
+
 const ViewItems = (props) => {
   const [listings, setListings] = useState([]);
+  const [categories, setCategories] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   //const theme = useTheme();
@@ -57,7 +72,9 @@ const ViewItems = (props) => {
 
   const map = (
     <Grid item className={classes.mapContainer}>
-      <Map markers={listings.map((l) => l.lngLat)} />
+      <Map
+        markers={filteredListings(listings, categories).map((l) => l.lngLat)}
+      />
     </Grid>
   );
   return (
@@ -82,7 +99,7 @@ const ViewItems = (props) => {
         <Grid item xl={2} lg={3} md={3} sm={3}>
           <Grid container direction="column" className={classes.sideBar}>
             <Grid item>
-              <Filters />
+              <Filters {...{ categories, setCategories }} />
             </Grid>
             <Divider />
             <Grid item>
@@ -97,7 +114,10 @@ const ViewItems = (props) => {
             {loading ? (
               <Loading />
             ) : (
-              <ItemList items={listings} goToItem={goToItem} />
+              <ItemList
+                items={filteredListings(listings, categories)}
+                goToItem={goToItem}
+              />
             )}
           </Grid>
         </Grid>
