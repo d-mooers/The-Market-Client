@@ -25,10 +25,11 @@ const useStyles = makeStyles({
     //maxWidth: "100%",
     width: "100%",
     borderRadius: "8%",
-    transition: "all 1s ease-in-out",
+    transition: "all 1s cubic-bezier(0, 0.18, 0.12, 2.29)",
 
     "&:hover": {
-      boxShadow: "7px 6px 5px gray",
+      boxShadow: "10px 8px 10px 5px gray",
+      transition: "all 0.5s cubic-bezier(0, 0.18, 0.12, 2.29)",
     },
   },
   contentContainer: {
