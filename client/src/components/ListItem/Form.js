@@ -110,6 +110,13 @@ const Form = (props) => {
         fullWidth
       />
       <TextField
+        label="Tags (separate with a comma)"
+        value={!!fields && fields.tags}
+        onChange={(e) => updateText("tags", e)}
+        fullWidth
+      />
+
+      <TextField
         label="Description"
         value={!!fields && fields.description}
         onChange={(e) => updateText("description", e)}

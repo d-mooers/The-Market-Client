@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Grid, Divider, makeStyles } from "@material-ui/core";
+import { Grid, Divider, makeStyles, Typography } from "@material-ui/core";
 import Map from "../shared/Map";
 import Loading from "../shared/Loading";
 import Dialog from "../shared/Dialog";
 import SearchBar from "./SearchBar";
 import { Filters, PriceSlider } from "./Filters";
 import ItemList from "./ItemList";
-import { useTheme } from "@material-ui/core/styles";
 import { getItems } from "../../utils/requests/items";
+import { intersection } from "../../utils/utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,30 +32,37 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const filteredListings = (listings, categories) => {
+const filteredListings = (listings, categories, tags) => {
   const selected = Object.keys(categories).reduce(
     (accum, c) => accum + (categories[c] ? 1 : 0),
     0
   );
-  console.log(categories);
-  console.log(selected);
   // if no filters have been selected, do not filter!
-  if (selected === 0) return listings;
-
-  // else, only return items the user wants to see
-  return listings.filter((listing) => !!categories[listing.category]);
+  let filtered = listings;
+  if (selected > 0)
+    filtered = listings.filter((listing) => !!categories[listing.category]);
+  console.log(filtered);
+  if (tags.size > 0)
+    filtered = filtered.filter((l) =>
+      l.tags.reduce((accum, tag) => accum || tags.has(tag), false)
+    );
+  return filtered;
 };
 
 const ViewItems = (props) => {
   const [listings, setListings] = useState([]);
   const [categories, setCategories] = useState({});
+  const [tags, setTags] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  //const theme = useTheme();
-  //const largeScreen = useMediaQuery(theme.breakpoints.up("lg"));
+
   const classes = useStyles();
+
   const fetchItems = async () => {
     setLoading(true);
+    // Grab items from backend.  If no error, then display the data
+    // If error, then set error
+    // Either way, set loading to false
     const itms = await getItems();
     if (itms.success) {
       setListings(itms.listings);
@@ -68,12 +75,22 @@ const ViewItems = (props) => {
     fetchItems();
   }, []);
 
+  // On submit of searchbar
+  const onSubmit = (e) => {
+    const tags = e.split(",").map((s) => s.trim().toLowerCase());
+    console.log(tags);
+    setTags(new Set(tags));
+  };
+
+  // Takes user to the page of the specified item
   const goToItem = (id) => props.history.push(`/item/${id}`);
 
   const map = (
     <Grid item className={classes.mapContainer}>
       <Map
-        markers={filteredListings(listings, categories).map((l) => l.lngLat)}
+        markers={filteredListings(listings, categories, tags).map(
+          (l) => l.lngLat
+        )}
       />
     </Grid>
   );
@@ -88,8 +105,13 @@ const ViewItems = (props) => {
         content="Unable to retrieve items at this time"
       />
       <Grid xs={12} container justify="center">
-        <SearchBar />
+        <SearchBar
+          onSubmit={onSubmit}
+          clearSearch={() => setTags(new Set())}
+          showClear={tags.size > 0}
+        />
       </Grid>
+
       <Grid
         container
         className={classes.container2}
@@ -115,7 +137,7 @@ const ViewItems = (props) => {
               <Loading />
             ) : (
               <ItemList
-                items={filteredListings(listings, categories)}
+                items={filteredListings(listings, categories, tags)}
                 goToItem={goToItem}
               />
             )}

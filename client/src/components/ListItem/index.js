@@ -30,6 +30,7 @@ const ListItem = (props) => {
     imgUrl: "",
     condition: "",
     category: "",
+    tags: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -55,7 +56,15 @@ const ListItem = (props) => {
   };
 
   const handleSubmit = async () => {
-    const listing = { ...fields, lngLat: await getPosition() };
+    // First format tags as a set
+    const tagsAsSet = fields.tags.split(",").map((s) => s.trim());
+    // Create a listing object with the tags and user position
+    const listing = {
+      ...fields,
+      tags: tagsAsSet,
+      lngLat: await getPosition(),
+    };
+    console.log(listing);
     setLoading(true);
     setError(false);
     const resp = await postItem(listing, formatAuth(user._id, user.authId));
