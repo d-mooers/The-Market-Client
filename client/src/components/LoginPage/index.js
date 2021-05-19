@@ -46,22 +46,20 @@ const LoginPage = (props) => {
       // Query went through successfully
       return resp;
     } catch (e) {
-      console.log("Task failed :(");
+      console.log("Log in failed :(");
       return e;
     }
   }
 
   // when user submits to login
-  function submitForm() {
+  async function submitForm() {
     console.log("Submitting...");
-    const resp = validateUser();
-
+    var resp = await validateUser();
     // successful GET /users from backend
     // set user and set route to main listing page
     if (resp === 200) {
       console.log("Successful Login credentials");
       props.history.push("/browse");
-      temp.username = resp.data.username;
       setUser(temp);
     }
     // failed GET /users from backend
@@ -72,7 +70,7 @@ const LoginPage = (props) => {
     }
     // a field was left empty
     else if (resp === -1) {
-      console.log("Empty Fields");
+      console.log("Empty Field(s)");
       setError(true);
     }
   }
@@ -81,21 +79,31 @@ const LoginPage = (props) => {
   // resp = 200 if successful, 401 if incorrect, and -1 if any are empty
   // any empty fields turn red
   async function validateUser() {
-    let resp = await getUser(temp.email, temp.password);
-
+    let res = 0;
     if (temp.email.length === 0) {
-      console.log("Invalid Email");
-      setError(true);
       setEmailError(true);
-      resp = -1;
+      res = -1;
     }
     if (temp.password.length === 0) {
-      if (resp !== -1) console.log("Invalid Password");
-      setError(true);
       setPasswordError(true);
-      resp = -1;
+      res = -1;
     }
-    return resp;
+    if (res === -1) {
+      setError(true);
+      return -1;
+    }
+    // if both fields have something then check backend
+    // if resp.status === 200 then success
+    // if resp.status === 'undefined', then it's an error and return resp.response.status (401)
+    else {
+      let resp = await getUser(temp.email, temp.password);
+      if (resp.status === 200) {
+        temp.username = resp.data.username;
+        return resp.status;
+      } else {
+        return resp.response.status;
+      }
+    }
   }
 
   return (
