@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Button, makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
+import styled from "styled-components";
 import Footer from "./Footer";
 import "./Login.css";
 
@@ -9,7 +10,25 @@ const styles = makeStyles({
     margin: 10,
     width: "80%",
   },
+  button: {
+    background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+    borderRadius: 3,
+    border: 0,
+    color: 'white',
+    height: 40,
+    padding: '0 30px',
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+  },
 });
+
+const StyledText = styled.h1`
+  background-image: linear-gradient(#2196F3,#21CBF3);
+  font-size: 2.5rem;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  margin-left: 1rem;
+`;
 
 // const [state name, function to update state]
 // body = default state
@@ -83,10 +102,14 @@ const LoginPage = (props) => {
 
   return (
     <div>
-      <h1 className="Title">Login</h1>
+      <h1 className="Title">
+        <StyledText>Login</StyledText>
+      </h1>
       <div className="box">
         <center>
-          <h1>The Market</h1>
+          <h1>        
+            <StyledText>The Market</StyledText>
+          </h1>
         </center>
         <form>
           <TextField
@@ -122,7 +145,7 @@ const LoginPage = (props) => {
           />
           <br />
           <center>
-            <Button variant="outlined" onClick={submitForm}>
+            <Button variant="outlined" onClick={submitForm} className={classes.button}>
               Submit
             </Button>
           </center>

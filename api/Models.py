@@ -52,7 +52,6 @@ class Listings(Model):
             listing["_id"] = str(listing['_id'])
         return listings
 
-
 class User(Model):
     load_dotenv()
     MONGODB_URI = os.environ['MONGODB_URI']

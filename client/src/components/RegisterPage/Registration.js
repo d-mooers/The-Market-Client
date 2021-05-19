@@ -1,11 +1,21 @@
 import React, { useState } from "react";
 import "./Register.css";
 import { Button, makeStyles, TextField } from "@material-ui/core";
+import styled from "styled-components";
 
 const styles = makeStyles((theme) => ({
   textBox: {
     margin: 10,
     width: "80%",
+  },
+  button: {
+    background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+    borderRadius: 3,
+    border: 0,
+    color: 'white',
+    height: 40,
+    padding: '0 30px',
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
   },
 }));
 
@@ -16,6 +26,15 @@ const Register = (props) => {
     password: "",
     secondPass: "",
   });
+
+  const StyledText = styled.h1`
+  background-image: linear-gradient(#2196F3,#21CBF3);
+  font-size: 2.5rem;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  margin-left: 1rem;
+`;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -100,10 +119,14 @@ const Register = (props) => {
   // Make sure to place proper link going into the login page in the href
   return (
     <div>
-      <h1 className="Title">Register</h1>
+      <h1 className="Title">
+        <StyledText>Register</StyledText>
+      </h1>
       <div className="box">
         <center>
-          <h1>The Market</h1>
+          <h1>
+            <StyledText>The Market</StyledText>
+          </h1>
         </center>
         <form>
           <TextField
@@ -152,7 +175,7 @@ const Register = (props) => {
           <br />
 
           <center>
-            <Button variant="outlined" onClick={submitForm}>
+            <Button className={classes.button} onClick={submitForm}>
               Submit
             </Button>
           </center>

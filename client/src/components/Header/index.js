@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 
 const StyledText = styled.h1`
-  background-image: linear-gradient(white, black);
+  background-image: linear-gradient(#2196F3,#21CBF3);
   font-size: 2.5rem;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -28,6 +28,15 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonGroup: {
     maxHeight: "5rem",
+    marginRight: "3.25rem",
+  },
+  button: {
+    background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+    borderRadius: 3,
+    border: 0,
+    color: 'white',
+    height: 40,
+    padding: '0 30px',
   },
 }));
 
@@ -50,11 +59,9 @@ const Header = (props) => {
           className={classes.buttonGroup}
         >
           <ButtonGroup size="small" aria-label="website router">
-            <Button onClick={() => props.history.push("/browse")}>Buy</Button>
-            <Button onClick={() => props.history.push("/sell")}>Sell</Button>
-            <Button onClick={() => props.history.push("/profile")}>
-              Profile
-            </Button>
+            <Button onClick={() => props.history.push("/browse")} className={classes.button}>Buy</Button>
+            <Button onClick={() => props.history.push("/sell")} className={classes.button}>Sell</Button>
+            <Button onClick={() => props.history.push("/profile")} className={classes.button}>Profile</Button>
           </ButtonGroup>
         </Grid>
       </Grid>

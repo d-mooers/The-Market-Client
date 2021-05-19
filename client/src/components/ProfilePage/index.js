@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { withStyles } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import MuiAccordion from "@material-ui/core/Accordion";
@@ -6,8 +6,10 @@ import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
 import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
-import LandingPage from "../LandingPage";
 import UserContext from "../../UserContext";
+import { getItems } from "../../utils/requests/items";
+import ItemList from "C:/Users/slate/The-Market-Client/client/src/components/ViewItems";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,10 +67,31 @@ const AccordionDetails = withStyles((theme) => ({
 const ProfilePage = (props) => {
   const [expanded, setExpanded] = React.useState("panel1");
   const { user } = React.useContext(UserContext);
-  // console.log(user);
   const classes = useStyles();
+  
+  const [listings, setListings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  const fetchItems = async () => {
+    setLoading(true);
+    const itms = await getItems();
+    if (itms.success) {
+      setListings(itms.listings);
+      setError(false);
+    } else setError(true);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
+
+  const goToItem = (id) => props.history.push(`/item/${id}`);
+  
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
+
   };
   return (
     <div>
@@ -109,11 +132,20 @@ const ProfilePage = (props) => {
         </AccordionDetails>
       </Accordion>
 
+
+      <ItemList items={listings} goToItem={goToItem} />
+
+
       <Button
         className={classes.button}
         variant="contained"
         color="secondary"
-        onClick={console.log("Log out was pushed")}
+        onClick={user.username = ""}
+        onClick={user.email = ""}
+        onClick={user.password = ""}
+        onClick={user._id = ""}
+        onClick={user.authId = ""}
+        onClick={user.loggedIn = false}
         onClick={() => props.history.push("/login")}
       >
         LOG OUT
