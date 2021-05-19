@@ -27,7 +27,6 @@ const LoginPage = (props) => {
       setTempUser({ ...temp, email: value });
       setEmailError(false);
     } else if (name === "password") {
-      // const passSave = value.hash();
       setTempUser({ ...temp, password: value });
       setPasswordError(false);
     }
@@ -46,7 +45,7 @@ const LoginPage = (props) => {
       // Query went through successfully
       return resp;
     } catch (e) {
-      console.log("Log in failed :(");
+      console.log("Log in failed");
       return e;
     }
   }
