@@ -16,6 +16,7 @@ const InputField = ({
   temp,
   errorFlag,
   helperText,
+  type,
 }) => {
   const classes = styles();
   return (
@@ -24,7 +25,7 @@ const InputField = ({
         error={errorFlag}
         helperText={errorFlag ? helperText : ""}
         className={classes.textBox}
-        type="text"
+        type={type}
         variant="outlined"
         size="small"
         label={label}

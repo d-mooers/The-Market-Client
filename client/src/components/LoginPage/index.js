@@ -7,11 +7,8 @@ import "./Login.css";
 import Dialog from "../shared/Dialog";
 import axios from "axios";
 
-// const [state name, function to update state]
-// body = default state
 const LoginPage = (props) => {
   const { user, setUser } = React.useContext(UserContext);
-  const [usernameError, setUsernameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [error, setError] = useState(false);
@@ -22,12 +19,11 @@ const LoginPage = (props) => {
   });
 
   // called when user types into fields
+  // if any fields are red (error), remove them at this time
+  // update temp user fields based on which field was typed into
   const handleChange = (e, temp) => {
     const { name, value } = e.target;
-    if (name === "username") {
-      setTempUser({ ...temp, username: value });
-      setUsernameError(false);
-    } else if (name === "email") {
+    if (name === "email") {
       setTempUser({ ...temp, email: value });
       setEmailError(false);
     } else if (name === "password") {
@@ -37,6 +33,7 @@ const LoginPage = (props) => {
     }
   };
 
+  // does a GET /users call with temp's saved credentials
   async function getUser(emailID, passwordID) {
     try {
       const resp = await axios.get("http://127.0.0.1:5000/users", {
@@ -54,55 +51,49 @@ const LoginPage = (props) => {
     }
   }
 
+  // when user submits to login
   function submitForm() {
-    console.log("Submitting");
+    console.log("Submitting...");
     const resp = validateUser();
 
+    // successful GET /users from backend
+    // set user and set route to main listing page
     if (resp === 200) {
       console.log("Successful Login credentials");
       props.history.push("/browse");
+      temp.username = resp.data.username;
       setUser(temp);
-    } else if (resp === -1) {
+    }
+    // failed GET /users from backend
+    // means incorrect credentials - Try again
+    else if (resp === 401) {
       console.log("Invalid Credentials");
+      setError(true);
+    }
+    // a field was left empty
+    else if (resp === -1) {
+      console.log("Empty Fields");
       setError(true);
     }
   }
 
-  // checks InputFields and raises errors if incorrect or empty
-  // if empty -> Dialog
+  // references credentials with backend.
+  // resp = 200 if successful, 401 if incorrect, and -1 if any are empty
+  // any empty fields turn red
   async function validateUser() {
-    //const resp = -1;
-    // if (
-    //   temp.username === "DummyUser" &&
-    //   temp.email === "Dummy@yahoo.com" &&
-    //   temp.password === "123"
-    // )
-    //   return 0;
-
-    console.log(temp);
     let resp = await getUser(temp.email, temp.password);
-    console.log(resp);
 
-    if (temp.username.length === 0) {
-      setError(true);
-      setUsernameError(true);
-
-      console.log("Invalid Username");
-      resp = -2;
-    }
     if (temp.email.length === 0) {
-      if (resp !== -2) setError(true);
-      setEmailError(true);
-
       console.log("Invalid Email");
-      resp = -2;
+      setError(true);
+      setEmailError(true);
+      resp = -1;
     }
     if (temp.password.length === 0) {
-      if (resp !== -2) setError(true);
+      if (resp !== -1) console.log("Invalid Password");
+      setError(true);
       setPasswordError(true);
-
-      console.log("Invalid Password");
-      resp = -2;
+      resp = -1;
     }
     return resp;
   }
@@ -117,19 +108,12 @@ const LoginPage = (props) => {
         <form>
           <InputField
             handleChange={handleChange}
-            label={"Username"}
-            name={"username"}
-            temp={temp}
-            errorFlag={usernameError}
-            helperText={"Invalid Username"}
-          />
-          <InputField
-            handleChange={handleChange}
             label={"Email"}
             name={"email"}
             temp={temp}
             errorFlag={emailError}
             helperText={"Invalid Email"}
+            type={"email"}
           />
           <InputField
             handleChange={handleChange}
@@ -138,9 +122,10 @@ const LoginPage = (props) => {
             temp={temp}
             errorFlag={passwordError}
             helperText={"Invalid Password"}
+            type={"password"}
           />
           <Dialog
-            title="Invalid Username or Password"
+            title="Invalid Email or Password"
             description={`Invalid Login`}
             closeButtonText="Got It"
             onClose={() => setError(false)}
@@ -149,7 +134,7 @@ const LoginPage = (props) => {
           />
           <center>
             <Button variant="outlined" onClick={submitForm}>
-              Submit
+              Log In
             </Button>
           </center>
         </form>
