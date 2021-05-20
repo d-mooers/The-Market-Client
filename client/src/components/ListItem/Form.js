@@ -11,6 +11,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { CATEGORIES } from "../../utils/constants";
+import ImageUploader from "react-images-upload";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Form = (props) => {
   const classes = useStyles();
-  const { fields, setFields } = props;
+  const { fields, setFields, image, getImage } = props;
   const updateText = (field, e) => {
     setFields({ ...fields, [field]: e.target.value });
     console.log(e.target.value);
@@ -67,6 +68,8 @@ const Form = (props) => {
         {name}
       </div>
     ));
+
+  const imgSrc = null; //URL.createObjectURL(image);
 
   const CategoryRadios = (props) =>
     props.categories.map((name) => (
@@ -109,6 +112,17 @@ const Form = (props) => {
         onChange={(e) => updateText("imgUrl", e)}
         fullWidth
       />
+      <div>
+        <img src={image} alt="Upload an image" />
+        <ImageUploader
+          withIcon={true}
+          buttonText="Choose images"
+          onChange={getImage}
+          imgExtension={[".jpg", ".gif", ".png", ".gif"]}
+          maxFileSize={5242880}
+          singleImage
+        />
+      </div>
       <TextField
         label="Description"
         value={!!fields && fields.description}
