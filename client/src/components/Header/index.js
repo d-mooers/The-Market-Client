@@ -28,7 +28,21 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonGroup: {
     maxHeight: "5rem",
-    marginLeft: "3.75rem",
+    marginRight: "3.25rem",
+  },
+  button: {
+    transition: "all 0.5s ease-in",
+
+    "&:hover": {
+      background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+      transition: "all 0.5s ease-in",
+    },
+
+    // borderRadius: 3,
+    // border: 0,
+    // color: 'white',
+    // height: 40,
+    // padding: '0 30px',
   },
 }));
 
@@ -50,14 +64,23 @@ const Header = (props) => {
           alignItems="center"
           className={classes.buttonGroup}
         >
-          <ButtonGroup
-            size="small"
-            aria-label="website router"
-            className={classes.buttonGroup}
-          >
-            <Button onClick={() => props.history.push("/browse")}>Buy</Button>
-            <Button onClick={() => props.history.push("/sell")}>Sell</Button>
-            <Button onClick={() => props.history.push("/profile")}>
+          <ButtonGroup size="small" aria-label="website router">
+            <Button
+              onClick={() => props.history.push("/browse")}
+              className={classes.button}
+            >
+              Buy
+            </Button>
+            <Button
+              onClick={() => props.history.push("/sell")}
+              className={classes.button}
+            >
+              Sell
+            </Button>
+            <Button
+              onClick={() => props.history.push("/profile")}
+              className={classes.button}
+            >
               Profile
             </Button>
           </ButtonGroup>
