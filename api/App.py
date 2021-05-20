@@ -10,7 +10,6 @@ CORS(app)
 def get_items():
     if request.method == 'GET':
         ownerId = request.args.get('owner')
-        print(ownerId)
         if ownerId:
             return jsonify({"listings": Listings().find_user_listings(ownerId)}), 200
         else:

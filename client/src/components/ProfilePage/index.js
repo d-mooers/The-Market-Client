@@ -7,7 +7,6 @@ import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import UserContext from "../../UserContext";
-import { getItems } from "../../utils/requests/items";
 import { getUserItems } from "../../utils/requests/items";
 import ItemList from "../ViewItems/ItemList";
 import Loading from "../shared/Loading";
@@ -77,13 +76,9 @@ const ProfilePage = (props) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  console.log(user._id)
-  const ownId = user._id;
-
-
   const fetchItems = async () => {
     setLoading(true);
-    const itms = await getUserItems(ownId);
+    const itms = await getUserItems(user._id);
     if (itms.success) {
       setListings(itms.listings);
       setError(false);
@@ -104,13 +99,78 @@ const ProfilePage = (props) => {
   margin-left: 1rem;
 `;
 
- 
   const goToItem = (id) => props.history.push(`/item/${id}`);
   
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
-
   };
+
+  //if user has no listings
+  if(listings.length == 0)
+  {
+    return (
+      <div>
+        <Accordion
+          square
+          expanded={expanded === "panel1"}
+          onChange={handleChange("panel1")}
+        >
+          <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+            <Typography>Username</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+          <Typography>{user.username}</Typography>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          square
+          expanded={expanded === "panel2"}
+          onChange={handleChange("panel2")}
+        >
+          <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+            <Typography>Email</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>{user.email}</Typography>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          square
+          expanded={expanded === "panel3"}
+          onChange={handleChange("panel3")}
+        >
+          <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+            <Typography>Password</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>{user.password}</Typography>
+          </AccordionDetails>
+        </Accordion>
+        
+        <h1 className="Title">
+          <StyledText>You have no items up for sale</StyledText>
+        </h1>
+  
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="secondary"
+          onClick={() => {user.username = ""
+                          user.email = ""
+                          user.password = ""
+                          user._id = ""
+                          user.authId = ""
+                          user.loggedIn = false
+                          props.history.push("/login")}}
+        >
+          LOG OUT
+        </Button>
+      </div>
+    );
+
+  }
+  //if user has at least 1 listing
+  else{
   return (
     <div>
       <Accordion
@@ -122,7 +182,7 @@ const ProfilePage = (props) => {
           <Typography>Username</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>{user.username}</Typography>
+        <Typography>{user.username}</Typography>
         </AccordionDetails>
       </Accordion>
       <Accordion
@@ -149,7 +209,6 @@ const ProfilePage = (props) => {
           <Typography>{user.password}</Typography>
         </AccordionDetails>
       </Accordion>
-
       <h1 className="Title">
         <StyledText>Your listed items</StyledText>
       </h1>
@@ -162,23 +221,22 @@ const ProfilePage = (props) => {
             )}
           </Grid>
 
-
       <Button
         className={classes.button}
         variant="contained"
         color="secondary"
-        onClick={user.username = ""}
-        onClick={user.email = ""}
-        onClick={user.password = ""}
-        onClick={user._id = ""}
-        onClick={user.authId = ""}
-        onClick={user.loggedIn = false}
-        onClick={() => props.history.push("/login")}
+        onClick={() => {user.username = ""
+                        user.email = ""
+                        user.password = ""
+                        user._id = ""
+                        user.authId = ""
+                        user.loggedIn = false
+                        props.history.push("/login")}}
       >
         LOG OUT
       </Button>
     </div>
-  );
+  );}
 };
 
 export default ProfilePage;

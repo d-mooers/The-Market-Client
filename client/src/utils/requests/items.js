@@ -23,7 +23,6 @@ export const getItems = async () => {
 };
 
 export const getUserItems = async (ownId) => {
-  console.log(ownId)
   const url = `${BASE_URL}${ITEMS}?owner=${ownId}`;
   try {
     const resp = await axios.get(url);
