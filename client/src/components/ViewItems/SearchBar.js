@@ -13,7 +13,7 @@ const useStyle = makeStyles((theme) => ({
     color: 'white',
     height: 40,
     padding: '0 30px',
-    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    boxShadow: '0 3px 5px 2px rgb(0 121 255 / 30%)',
   },
 }));
 

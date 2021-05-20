@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { withStyles } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, Grid } from "@material-ui/core";
 import MuiAccordion from "@material-ui/core/Accordion";
 import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
 import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
@@ -8,7 +8,11 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import UserContext from "../../UserContext";
 import { getItems } from "../../utils/requests/items";
-import ItemList from "C:/Users/slate/The-Market-Client/client/src/components/ViewItems";
+import { getUserItems } from "../../utils/requests/items";
+import ItemList from "../ViewItems/ItemList";
+import Loading from "../shared/Loading";
+import styled from "styled-components";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -18,8 +22,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   button: {
-    marginTop: "3rem",
     marginLeft: "45rem",
+    marginBottom: "3rem",
   },
 }));
 
@@ -73,9 +77,13 @@ const ProfilePage = (props) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
+  console.log(user._id)
+  const ownId = user._id;
+
+
   const fetchItems = async () => {
     setLoading(true);
-    const itms = await getItems();
+    const itms = await getUserItems(ownId);
     if (itms.success) {
       setListings(itms.listings);
       setError(false);
@@ -87,6 +95,16 @@ const ProfilePage = (props) => {
     fetchItems();
   }, []);
 
+  const StyledText = styled.h1`
+  background-image: linear-gradient(#2196F3,#21CBF3);
+  font-size: 2.5rem;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  margin-left: 1rem;
+`;
+
+ 
   const goToItem = (id) => props.history.push(`/item/${id}`);
   
   const handleChange = (panel) => (event, newExpanded) => {
@@ -132,8 +150,17 @@ const ProfilePage = (props) => {
         </AccordionDetails>
       </Accordion>
 
+      <h1 className="Title">
+        <StyledText>Your listed items</StyledText>
+      </h1>
 
-      <ItemList items={listings} goToItem={goToItem} />
+      <Grid item xl={7} lg={9} md={9} sm={9}>
+            {loading ? (
+              <Loading />
+            ) : (
+              <ItemList items={listings} goToItem={goToItem} />
+            )}
+          </Grid>
 
 
       <Button
@@ -153,12 +180,5 @@ const ProfilePage = (props) => {
     </div>
   );
 };
-
-// const user = {
-//   username: "DummyBuyer",
-//   email: "DummyBuyer101@aol.com",
-//   password: "BadPassword",
-//   _id: "asdbcs",
-// };
 
 export default ProfilePage;

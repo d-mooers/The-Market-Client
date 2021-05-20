@@ -52,6 +52,12 @@ class Listings(Model):
             listing["_id"] = str(listing['_id'])
         return listings
 
+    def find_user_listings(self, ownerId):
+        listings = list(self.collection.find({ "owner" : ownerId}))
+        for listing in listings:
+            listing["_id"] = str(listing['_id'])
+        return listings
+
 class User(Model):
     load_dotenv()
     MONGODB_URI = os.environ['MONGODB_URI']
