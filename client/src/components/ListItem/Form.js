@@ -45,11 +45,45 @@ const useStyles = makeStyles((theme) => ({
   categories: {
     marginRight: "2rem",
   },
+  uploadBackground: (props) => ({
+    backgroundImage: `url(${props.uploadedImage})`,
+    transition: "all 1s ease-in-out",
+  }),
+  imageUploaded: {
+    height: "20vh",
+    width: "100%",
+    display: "flex",
+    transition: "all 1s ease-in-out",
+  },
+  deleteImage: {
+    marginLeft: "auto",
+    marginBottom: "auto",
+    padding: "0.25rem",
+    background: "white",
+    fontSize: "1rem",
+    borderRadius: "20%",
+    boxShadow: "-2px 3px 9px 4px black",
+    cursor: "pointer",
+    marginTop: "1rem",
+    marginRight: "1rem",
+    transition: "box-shadow 0.5s ease-in-out",
+    "&:hover": {
+      background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+      boxShadow: "-2px 3px 9px 4px white",
+      transition: "all 0.5s ease-in-out",
+    },
+  },
+  uploaded: {
+    width: "20%",
+    height: "fit-content",
+    margin: "auto",
+  },
 }));
 
 const Form = (props) => {
-  const classes = useStyles();
-  const { fields, setFields, image, getImage } = props;
+  const { fields, setFields, image, getImage, setImage } = props;
+  const classes = useStyles({ uploadedImage: image });
+
   const updateText = (field, e) => {
     setFields({ ...fields, [field]: e.target.value });
     console.log(e.target.value);
@@ -106,22 +140,34 @@ const Form = (props) => {
           />
         </FormControl>
       </div>
-      <TextField
+      {/* <TextField
         label="Image URL"
         value={!!fields && fields.imgUrl}
         onChange={(e) => updateText("imgUrl", e)}
         fullWidth
-      />
-      <div>
-        <img src={image} alt="Upload an image" />
-        <ImageUploader
-          withIcon={true}
-          buttonText="Choose images"
-          onChange={getImage}
-          imgExtension={[".jpg", ".gif", ".png", ".gif"]}
-          maxFileSize={5242880}
-          singleImage
-        />
+      /> */}
+      <div
+        className={`${classes.uploadBackground} ${
+          !!image && classes.imageUploaded
+        }`}
+      >
+        {!!image ? (
+          <Typography
+            className={classes.deleteImage}
+            onClick={() => setImage(null)}
+          >
+            Delete
+          </Typography>
+        ) : (
+          <ImageUploader
+            withIcon={true}
+            buttonText="Choose images"
+            onChange={getImage}
+            imgExtension={[".jpg", ".gif", ".png", ".gif"]}
+            maxFileSize={5242880}
+            singleImage
+          />
+        )}
       </div>
       <TextField
         label="Description"

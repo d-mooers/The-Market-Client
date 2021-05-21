@@ -137,7 +137,7 @@ const ListItem = (props) => {
           <Form
             fields={fields}
             setFields={setFields}
-            {...{ image, getImage }}
+            {...{ image, getImage, setImage }}
           />
         </Paper>
         <div className={classes.buttonGroup}>
