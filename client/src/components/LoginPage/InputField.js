@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core";
 
 const styles = makeStyles({
   textBox: {
-    margin: 10,
+    margin: "0.625rem",
     width: "80%",
   },
 });
@@ -13,7 +13,7 @@ const InputField = ({
   handleChange,
   label,
   name,
-  temp,
+  tempUser,
   errorFlag,
   helperText,
   type,
@@ -30,7 +30,7 @@ const InputField = ({
         size="small"
         label={label}
         name={name}
-        onChange={(e) => handleChange(e, temp)}
+        onChange={(e) => handleChange(e, tempUser)}
       />
     </div>
   );
