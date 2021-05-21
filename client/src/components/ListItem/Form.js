@@ -10,6 +10,7 @@ import {
   Input,
   Typography,
 } from "@material-ui/core";
+import { CATEGORIES } from "../../utils/constants";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -21,6 +22,10 @@ const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
     justifyContent: "space-between",
+    marginTop: "1rem",
+  },
+  radioContainer: {
+    display: "flex",
     marginTop: "1rem",
   },
   price: {
@@ -36,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
   radio: {
     margin: 0,
   },
+  categories: {
+    marginRight: "2rem",
+  },
 }));
 
 const Form = (props) => {
@@ -46,14 +54,27 @@ const Form = (props) => {
     console.log(e.target.value);
   };
 
-  const genRadios = (options) =>
+  const conditionRadios = (options) =>
     options.map((name) => (
       <div className={classes.radio}>
         <Radio
           key={`condition-${name}`}
           label={name}
-          checked={!!fields && fields.condition == name}
+          checked={!!fields && fields.condition === name}
           onChange={(e) => updateText("condition", e)}
+          value={name}
+        />
+        {name}
+      </div>
+    ));
+
+  const CategoryRadios = (props) =>
+    props.categories.map((name) => (
+      <div className={classes.radio} key={"category" + name}>
+        <Radio
+          label={name}
+          checked={!!fields && fields.category === name}
+          onChange={(e) => updateText("category", e)}
           value={name}
         />
         {name}
@@ -97,8 +118,17 @@ const Form = (props) => {
         variant="outlined"
         className={classes.description}
       />
-      <Typography variant="subtitle2">Condition</Typography>
-      <div>{genRadios(["New", "Used", "Broken"])}</div>
+      <div className={classes.radioContainer}>
+        <div className={classes.categories}>
+          <Typography variant="subtitle2">Category</Typography>
+          <CategoryRadios categories={Object.keys(CATEGORIES)} />
+        </div>
+
+        <div>
+          <Typography variant="subtitle2">Condition</Typography>
+          {conditionRadios(["New", "Used", "Broken"])}
+        </div>
+      </div>
     </div>
   );
 };
