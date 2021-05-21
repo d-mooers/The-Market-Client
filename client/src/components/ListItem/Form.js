@@ -48,6 +48,8 @@ const useStyles = makeStyles((theme) => ({
   uploadBackground: (props) => ({
     backgroundImage: `url(${props.uploadedImage})`,
     transition: "all 1s ease-in-out",
+    marginTop: "1rem",
+    marginBottom: "1rem",
   }),
   imageUploaded: {
     height: "20vh",

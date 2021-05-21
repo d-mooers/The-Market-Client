@@ -77,19 +77,19 @@ const ListItem = (props) => {
     setError(false);
 
     // send image to imgur, get URL for image back
-    const imgurResp = await uploadImage(image);
-    console.log(imgurResp);
-    if (!imgurResp.success) {
-      // Image upload failed :(
-      setLoading(false);
-      setError(true);
-      return;
-    }
+    // const imgurResp = await uploadImage(image);
+    // console.log(imgurResp);
+    // if (!imgurResp.success) {
+    //   // Image upload failed :(
+    //   setLoading(false);
+    //   setError(true);
+    //   return;
+    // }
     // Image upload success! Update payload w URL
     const listing = {
       ...fields,
       lngLat: await getPosition(),
-      imgUrl: imgurResp.url,
+      imgUrl: image,
     };
     console.log(listing);
     const resp = await postItem(listing, formatAuth(user._id, user.authId));
