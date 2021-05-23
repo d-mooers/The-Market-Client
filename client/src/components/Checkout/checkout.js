@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { StaticMap } from "../shared/Map";
 import { Typography, Paper, Grid, makeStyles, Button } from "@material-ui/core";
+import Details from "./Details";
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -44,8 +45,17 @@ function goBack() {
   window.location.href="/browse";
 }
 
+const DEFAULT_ITEM = {
+  title: "",
+  desc: "",
+  lngLat: [0, 0],
+  imgUrl: "",
+  id: "",
+};
+
 const Checkout = (props) => {
   const classes = styles();
+  const [item, setItem] = useState(DEFAULT_ITEM);
 
   return (
     <div>
@@ -53,44 +63,39 @@ const Checkout = (props) => {
         <Grid container spacing={3}>
           <Grid item xs>
             <Paper className={classes.paper}>
-              <img />
+              <img
+                src={item.imgUrl}
+                className={classes.image}
+                alt={item.title}
+              />
             </Paper>
           </Grid>
-          <Grid item xs={6} sm container>
-            <Grid item xs container direction="column" spacing={2}>
-              <Grid item xs>
-                <Typography gutterBottom variant="h6">
-                  Name of Item!!!
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Typography variant="subtitle1">Price: xxx</Typography>
-                <Typography variant="subtitle1">Cost: xxx</Typography>
-              </Grid>
-            </Grid>
-          </Grid>
           <Grid item xs>
-            {/* Map goes here */}
+            <StaticMap lngLat={item.lngLat} />
           </Grid>
         </Grid>
       </div>
       <div className="questionsBox">
-        <Typography variant="h5" className={classes.payment}>
-          Payment Info
-        </Typography>
-        <Typography variant="subtitle1">
-          Info goes here... Grabbed from database?
-        </Typography>
+        <Details xs={8} {...item} soldBy="Billy Bob" />
       </div>
       <Grid justify="space-between" container spacing={2}>
         <Grid item xs>
-          <Button raised variant="outlined" className={classes.button} onClick={goBack}>
+          <Button
+            raised
+            variant="outlined"
+            className={classes.button}
+            onClick={goBack}
+          >
             Back
           </Button>
         </Grid>
 
         <Grid item xs>
-          <Button variant="outlined" className={classes.buttonR} onClick={submitForm}>
+          <Button
+            variant="outlined"
+            className={classes.buttonR}
+            onClick={submitForm}
+          >
             Submit
           </Button>
         </Grid>
