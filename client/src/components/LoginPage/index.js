@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button } from "@material-ui/core";
+import { sha256 } from "js-sha256";
 import UserContext from "../../UserContext";
 import Footer from "./Footer";
 import InputField from "./InputField";
@@ -94,7 +95,8 @@ const LoginPage = (props) => {
       setPasswordError(true);
       resp = -1;
     }
-    if (resp === 0) resp = await getUser(tempUser.email, tempUser.password);
+    if (resp === 0)
+      resp = await getUser(tempUser.email, sha256(tempUser.password));
 
     return resp;
   }
