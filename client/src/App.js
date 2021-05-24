@@ -19,8 +19,8 @@ const App = () => {
     username: "",
     email: "",
     password: "",
-    _id: "609cb2b88951a63fccdcf790",
-    authId: "aa94729e-866b-47b1-8c7a-ede2cfd25e51",
+    _id: "60a339a6417c58df0f213c81",
+    authId: "1a38fffa-1e67-4c1f-8be5-12964c824174",
     loggedIn: false,
   });
   //const user = "hello";

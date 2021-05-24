@@ -9,9 +9,13 @@ export const getItems = async () => {
   try {
     const resp = await axios.get(url);
     console.log(resp.data.listings);
+    const listings = resp.data.listings.map((l) => ({
+      ...l,
+      tags: l.tags || [],
+    }));
     return {
       success: resp.status === 200,
-      listings: resp.data.listings,
+      listings: listings,
     };
   } catch (e) {
     console.log(e);

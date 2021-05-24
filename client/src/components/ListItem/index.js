@@ -31,6 +31,7 @@ const ListItem = (props) => {
     imgUrl: "",
     condition: "",
     category: "",
+    tags: "",
   });
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -73,6 +74,15 @@ const ListItem = (props) => {
   };
 
   const handleSubmit = async () => {
+    // First format tags as a set
+    const tagsAsSet = fields.tags.split(",").map((s) => s.trim());
+    // Create a listing object with the tags and user position
+    const listing = {
+      ...fields,
+      tags: tagsAsSet,
+      lngLat: await getPosition(),
+    };
+    console.log(listing);
     setLoading(true);
     setError(false);
 
@@ -86,12 +96,12 @@ const ListItem = (props) => {
     //   return;
     // }
     // Image upload success! Update payload w URL
-    const listing = {
-      ...fields,
-      lngLat: await getPosition(),
-      imgUrl: image,
-    };
-    console.log(listing);
+    // const listing = {
+    //   ...fields,
+    //   lngLat: await getPosition(),
+    //   imgUrl: image,
+    // };
+    // console.log(listing);
     const resp = await postItem(listing, formatAuth(user._id, user.authId));
     if (resp.success) {
       setItemId(resp.id);
