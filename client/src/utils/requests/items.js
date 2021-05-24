@@ -41,6 +41,7 @@ export const getItem = async (id) => {
 
 export const postItem = async (details, auth) => {
   const url = `${BASE_URL}${ITEMS}`;
+  console.log("In post item");
   try {
     const resp = await axios.post(url, JSON.stringify(details), {
       headers: {
