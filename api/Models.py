@@ -74,6 +74,11 @@ class Listings(Model):
             listing["_id"] = str(listing['_id'])
         return listings
 
+    def find_user_listings(self, ownerId):
+        listings = list(self.collection.find({ "owner" : ownerId}))
+        for listing in listings:
+            listing["_id"] = str(listing['_id'])
+        return listings
 
 class User(Model):
     load_dotenv()
@@ -106,6 +111,17 @@ class User(Model):
                 {"_id": ObjectId(user['_id'])}, {'$set': {'authId': user['authId']}})
             return user
         return None
+    
+    def getUserByUsernamePass(self, username, password):
+        user = self.collection.find_one({"username": username, "password": password})
+        if user:
+            user['authId'] = uuid.uuid4()
+            user['_id'] = str(user['_id'])
+            self.collection.update_one(
+                {"_id": ObjectId(user['_id'])}, {'$set': {'authId': user['authId']}})
+            return user
+        return None
+
 
     def getUserByUsernamePass(self, username, password):
         user = self.collection.find_one(

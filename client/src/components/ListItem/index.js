@@ -4,7 +4,9 @@ import Form from "./Form";
 import { postItem } from "../../utils/requests/items";
 import Dialog from "../shared/Dialog";
 import { formatAuth } from "../../utils/utils";
+import { uploadImage } from "../../utils/requests/images";
 import UserContext from "../../UserContext";
+import styled from "styled-components";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -19,7 +21,25 @@ const useStyles = makeStyles((theme) => ({
     width: "min(800px, 80%)",
     marginTop: "1rem",
   },
+  button: {
+    background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+    borderRadius: 3,
+    border: 0,
+    color: "white",
+    height: 40,
+    padding: "0 30px",
+    boxShadow: "0 3px 5px 2px rgb(0 121 255 / 30%)",
+  },
 }));
+
+const StyledText = styled.h1`
+  background-image: linear-gradient(#2196f3, #21cbf3);
+  font-size: 2.5rem;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  margin-left: 1rem;
+`;
 
 const ListItem = (props) => {
   const classes = useStyles();
@@ -30,7 +50,9 @@ const ListItem = (props) => {
     imgUrl: "",
     condition: "",
     category: "",
+    tags: "",
   });
+  const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [itemId, setItemId] = useState("");
@@ -42,22 +64,64 @@ const ListItem = (props) => {
     });
 
   const getPosition = async () => {
-    if (!"geolocation" in navigator) {
-      console.log("Geolocation not available");
-      return [0, 0];
+    try {
+      if (!"geolocation" in navigator) {
+        console.log("Geolocation not available");
+        return [0, 0];
+      }
+      let position;
+      await getCoords().then((pos) => {
+        console.log(pos);
+        position = [pos.coords.longitude, pos.coords.latitude];
+      });
+      return position;
+    } catch (e) {
+      return [-120.54354468, 35.09349968];
     }
-    let position;
-    await getCoords().then((pos) => {
-      console.log(pos);
-      position = [pos.coords.longitude, pos.coords.latitude];
-    });
-    return position;
+  };
+
+  const getImage = (images) => {
+    if (images.length < 1) return; //invalid images array
+
+    //Otherwise, generate an objectURL using the image
+    let reader = new FileReader();
+    reader.onload = (e) => {
+      setImage(e.target.result);
+    };
+    reader.readAsDataURL(images[0]);
+    //setImage(images[0]);
   };
 
   const handleSubmit = async () => {
-    const listing = { ...fields, lngLat: await getPosition() };
+    // First format tags as a set
+    const tagsAsSet = fields.tags.split(",").map((s) => s.trim());
+    // Create a listing object with the tags and user position
+    const listing = {
+      ...fields,
+      tags: tagsAsSet,
+      lngLat: await getPosition(),
+      imgUrl: image,
+    };
+    console.log(listing);
     setLoading(true);
     setError(false);
+
+    // send image to imgur, get URL for image back
+    // const imgurResp = await uploadImage(image);
+    // console.log(imgurResp);
+    // if (!imgurResp.success) {
+    //   // Image upload failed :(
+    //   setLoading(false);
+    //   setError(true);
+    //   return;
+    // }
+    // Image upload success! Update payload w URL
+    // const listing = {
+    //   ...fields,
+    //   lngLat: await getPosition(),
+    //   imgUrl: image,
+    // };
+    // console.log(listing);
     const resp = await postItem(listing, formatAuth(user._id, user.authId));
     if (resp.success) {
       setItemId(resp.id);
@@ -98,15 +162,21 @@ const ListItem = (props) => {
       />
 
       <Grid container alignItems="center" direction="column">
-        <Typography variant="h3">List an Item</Typography>
+        <Typography variant="h3">
+          <StyledText>List an item</StyledText>
+        </Typography>
         <Paper className={classes.paper}>
-          <Form fields={fields} setFields={setFields} />
+          <Form
+            fields={fields}
+            setFields={setFields}
+            {...{ image, getImage, setImage }}
+          />
         </Paper>
         <div className={classes.buttonGroup}>
-          <Button variant="contained" onClick={handleCancel}>
+          <Button className={classes.button} onClick={handleCancel}>
             Back
           </Button>
-          <Button variant="contained" onClick={handleSubmit}>
+          <Button className={classes.button} onClick={handleSubmit}>
             Submit
           </Button>
         </div>
