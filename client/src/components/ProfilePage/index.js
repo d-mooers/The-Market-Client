@@ -12,8 +12,6 @@ import ItemList from "../ViewItems/ItemList";
 import Loading from "../shared/Loading";
 import styled from "styled-components";
 
-
-
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
@@ -70,8 +68,13 @@ const AccordionDetails = withStyles((theme) => ({
 const ProfilePage = (props) => {
   const [expanded, setExpanded] = React.useState("panel1");
   const { user } = React.useContext(UserContext);
+
+  if (!user.authId) {
+    props.history.push("/login");
+  }
+
   const classes = useStyles();
-  
+
   const [listings, setListings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -91,23 +94,22 @@ const ProfilePage = (props) => {
   }, []);
 
   const StyledText = styled.h1`
-  background-image: linear-gradient(#2196F3,#21CBF3);
-  font-size: 2.5rem;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 0;
-  margin-left: 1rem;
-`;
+    background-image: linear-gradient(#2196f3, #21cbf3);
+    font-size: 2.5rem;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    margin-left: 1rem;
+  `;
 
   const goToItem = (id) => props.history.push(`/item/${id}`);
-  
+
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
 
   //if user has no listings
-  if(listings.length === 0)
-  {
+  if (listings.length == 0) {
     return (
       <div>
         <Accordion
@@ -119,7 +121,7 @@ const ProfilePage = (props) => {
             <Typography>Username</Typography>
           </AccordionSummary>
           <AccordionDetails>
-          <Typography>{user.username}</Typography>
+            <Typography>{user.username}</Typography>
           </AccordionDetails>
         </Accordion>
         <Accordion
@@ -146,97 +148,101 @@ const ProfilePage = (props) => {
             <Typography>{user.password}</Typography>
           </AccordionDetails>
         </Accordion>
-        
+
         <h1 className="Title">
           <StyledText>You have no items up for sale</StyledText>
         </h1>
-  
+
         <Button
           className={classes.button}
           variant="contained"
           color="secondary"
-          onClick={() => {user.username = ""
-                          user.email = ""
-                          user.password = ""
-                          user._id = ""
-                          user.authId = ""
-                          user.loggedIn = false
-                          props.history.push("/login")}}
+          onClick={() => {
+            user.username = "";
+            user.email = "";
+            user.password = "";
+            user._id = "";
+            user.authId = "";
+            user.loggedIn = false;
+            props.history.push("/login");
+          }}
         >
           LOG OUT
         </Button>
       </div>
     );
-
   }
   //if user has at least 1 listing
-  else{
-  return (
-    <div>
-      <Accordion
-        square
-        expanded={expanded === "panel1"}
-        onChange={handleChange("panel1")}
-      >
-        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-          <Typography>Username</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-        <Typography>{user.username}</Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        square
-        expanded={expanded === "panel2"}
-        onChange={handleChange("panel2")}
-      >
-        <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-          <Typography>Email</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>{user.email}</Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        square
-        expanded={expanded === "panel3"}
-        onChange={handleChange("panel3")}
-      >
-        <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-          <Typography>Password</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>{user.password}</Typography>
-        </AccordionDetails>
-      </Accordion>
-      <h1 className="Title">
-        <StyledText>Your listed items</StyledText>
-      </h1>
+  else {
+    return (
+      <div>
+        <Accordion
+          square
+          expanded={expanded === "panel1"}
+          onChange={handleChange("panel1")}
+        >
+          <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
+            <Typography>Username</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>{user.username}</Typography>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          square
+          expanded={expanded === "panel2"}
+          onChange={handleChange("panel2")}
+        >
+          <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
+            <Typography>Email</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>{user.email}</Typography>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          square
+          expanded={expanded === "panel3"}
+          onChange={handleChange("panel3")}
+        >
+          <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
+            <Typography>Password</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>{user.password}</Typography>
+          </AccordionDetails>
+        </Accordion>
+        <h1 className="Title">
+          <StyledText>Your listed items</StyledText>
+        </h1>
 
-      <Grid item xl={7} lg={9} md={9} sm={9}>
-            {loading ? (
-              <Loading />
-            ) : (
-              <ItemList items={listings} goToItem={goToItem} />
-            )}
-          </Grid>
+        <Grid item xl={7} lg={9} md={9} sm={9}>
+          {loading ? (
+            <Loading />
+          ) : (
+            <ItemList items={listings} goToItem={goToItem} />
+          )}
+        </Grid>
 
-      <Button
-        className={classes.button}
-        variant="contained"
-        color="secondary"
-        onClick={() => {user.username = ""
-                        user.email = ""
-                        user.password = ""
-                        user._id = ""
-                        user.authId = ""
-                        user.loggedIn = false
-                        props.history.push("/login")}}
-      >
-        LOG OUT
-      </Button>
-    </div>
-  );}
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="secondary"
+          onClick={() => {
+            user.username = "";
+            user.email = "";
+            user.password = "";
+            user._id = "";
+            user.authId = "";
+            user.loggedIn = false;
+            props.history.push("/login");
+          }}
+        >
+          LOG OUT
+        </Button>
+      </div>
+    );
+  }
 };
 
 export default ProfilePage;

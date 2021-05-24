@@ -15,6 +15,7 @@ const StyledText = styled.h1`
   -webkit-text-fill-color: transparent;
   margin: 0;
   margin-left: 1rem;
+  cursor: pointer;
 `;
 
 const useStyles = makeStyles((theme) => ({
