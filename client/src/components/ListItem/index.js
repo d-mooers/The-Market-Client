@@ -22,18 +22,18 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "1rem",
   },
   button: {
-    background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+    background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
     borderRadius: 3,
     border: 0,
-    color: 'white',
+    color: "white",
     height: 40,
-    padding: '0 30px',
-    boxShadow: '0 3px 5px 2px rgb(0 121 255 / 30%)',
+    padding: "0 30px",
+    boxShadow: "0 3px 5px 2px rgb(0 121 255 / 30%)",
   },
 }));
 
 const StyledText = styled.h1`
-  background-image: linear-gradient(#2196F3,#21CBF3);
+  background-image: linear-gradient(#2196f3, #21cbf3);
   font-size: 2.5rem;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -100,6 +100,7 @@ const ListItem = (props) => {
       ...fields,
       tags: tagsAsSet,
       lngLat: await getPosition(),
+      imgUrl: image,
     };
     console.log(listing);
     setLoading(true);

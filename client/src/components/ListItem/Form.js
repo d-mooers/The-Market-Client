@@ -52,7 +52,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "1rem",
   }),
   imageUploaded: {
-    height: "20vh",
+    height: "20rem",
+    backgroundRepeat: "no-repeat",
     width: "100%",
     display: "flex",
     transition: "all 1s ease-in-out",

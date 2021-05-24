@@ -43,7 +43,7 @@ const LandingPage = (props) => {
   const classes = useStyles();
   const { user } = React.useContext(UserContext);
 
-  if (user.loggedIn == true) {
+  if (!!user.authId) {
     return (
       <div className={classes.root}>
         <Grid xs={12} container justify="center">
@@ -55,13 +55,12 @@ const LandingPage = (props) => {
           direction="row"
           justify="space-evenly"
           alignItems="center"
-          className={classes.button}
         >
           <Button
             variant="contained"
             size="large"
             color="primary"
-            className={classes.margin}
+            className={classes.button}
             onClick={() => props.history.push("/browse")}
           >
             Buy
@@ -70,7 +69,7 @@ const LandingPage = (props) => {
             variant="contained"
             size="large"
             color="primary"
-            className={classes.margin}
+            className={classes.button}
             onClick={() => props.history.push("/sell")}
           >
             Sell
@@ -79,7 +78,7 @@ const LandingPage = (props) => {
             variant="contained"
             size="large"
             color="primary"
-            className={classes.margin}
+            className={classes.button}
             onClick={() => props.history.push("/profile")}
           >
             Profile
