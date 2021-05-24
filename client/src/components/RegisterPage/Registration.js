@@ -82,11 +82,9 @@ const Register = (props) => {
       }
       else if (resp === 401) {
         await axios.post("https://127.0.0.1/users", {
-          auth: {
-            username: user.username,
-            password: sha256(user.password),
-            email: user.email,
-          }
+          username: user.username,
+          password: sha256(user.password),
+          email: user.email,
         });
         window.location.href = "/browse";
       }

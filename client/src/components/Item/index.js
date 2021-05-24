@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
-import { getItem } from "../../utils/requests/items";
+import { getItem, deleteItem } from "../../utils/requests/items";
 import Details from "./Details";
 import Loading from "../shared/Loading";
 import { StaticMap } from "../shared/Map";
