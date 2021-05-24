@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from Utils import verifyListingShape, verifyUserShape, verifyUser, verifyLoginShape, verifyAuthShape
-from Models import Listings, User
+from Models import Listings, User, Messages
 app = Flask(__name__)
 CORS(app)
 
@@ -69,3 +69,15 @@ def register_user():
         user = User(newUser)
         user.addUser()
         return jsonify(user), 201
+
+
+# GET call requires context (user) to be sent to related msgs can be sorted
+@app.route('/messages', methods=['GET', 'POST', 'DELETE'])
+def get_messages():
+    if request.method == 'GET':
+        user = request.get_json()
+        return jsonify({"messages": Messages().find_all()}), 200
+    if request.method == 'POST':
+        return -1
+    if request.method == 'DELETE':
+        return -1

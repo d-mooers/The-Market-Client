@@ -38,6 +38,22 @@ class Model(dict):
             return resp
 
 
+class Messages(Model):
+    load_dotenv()
+    MONGODB_URI = os.environ['MONGODB_URI']
+    db_client = pymongo.MongoClient(MONGODB_URI)
+    db = db_client['users']
+
+    collection = db.db_client['messages']
+
+    # finds all messages that pertain to the user currently logged in
+    def find_all(self):
+        messages = list(self.collection.find())
+        for msg in messages:
+            if msg['sender'] or msg['reciever']
+        return messages
+
+
 class Listings(Model):
     load_dotenv()
     MONGODB_URI = os.environ['MONGODB_URI']
