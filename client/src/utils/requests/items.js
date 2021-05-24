@@ -27,9 +27,13 @@ export const getUserItems = async (ownId) => {
   try {
     const resp = await axios.get(url);
     console.log(resp.data.listings);
+    const listings = resp.data.listings.map((l) => ({
+      ...l,
+      tags: l.tags || [],
+    }));
     return {
       success: resp.status === 200,
-      listings: resp.data.listings,
+      listings: listings,
     };
   } catch (e) {
     console.log(e);
@@ -60,6 +64,7 @@ export const getItem = async (id) => {
 
 export const postItem = async (details, auth) => {
   const url = `${BASE_URL}${ITEMS}`;
+  console.log("In post item");
   try {
     const resp = await axios.post(url, JSON.stringify(details), {
       headers: {

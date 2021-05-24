@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import "./Register.css";
 import { Button, makeStyles, TextField } from "@material-ui/core";
 import styled from "styled-components";
+import { sha256 } from "js-sha256";
+import UserContext from "../../UserContext";
+import axios from "axios";
 
 const styles = makeStyles((theme) => ({
   textBox: {
@@ -9,18 +12,22 @@ const styles = makeStyles((theme) => ({
     width: "80%",
   },
   button: {
-    background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+    background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
     borderRadius: 3,
     border: 0,
-    color: 'white',
+    color: "white",
     height: 40,
-    padding: '0 30px',
-    boxShadow: '0 3px 5px 2px rgb(0 121 255 / 30%)',
+    padding: "0 30px",
+    "&:hover": {
+      opacity: 0.75,
+      transtion: "all 1s ease-in-out",
+      boxShadow: "0 3px 5px 2px rgb(0 121 255 / 30%)",
+    },
   },
 }));
 
 const Register = (props) => {
-  const [user, setUser] = useState({
+  const [user, setUserInfo] = useState({
     username: "",
     email: "",
     password: "",
@@ -28,39 +35,40 @@ const Register = (props) => {
   });
 
   const StyledText = styled.h1`
-  background-image: linear-gradient(#2196F3,#21CBF3);
-  font-size: 2.5rem;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 0;
-  margin-left: 1rem;
-`;
+    background-image: linear-gradient(#2196f3, #21cbf3);
+    font-size: 2.5rem;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    margin-left: 1rem;
+  `;
+  const { setUser } = React.useContext(UserContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "username") {
-      setUser({
+      setUserInfo({
         username: value,
         email: user["email"],
         password: user["password"],
         secondPass: user["secondPass"],
       });
     } else if (name === "email") {
-      setUser({
+      setUserInfo({
         username: user["username"],
         email: value,
         password: user["password"],
         secondPass: user["secondPass"],
       });
     } else if (name === "password") {
-      setUser({
+      setUserInfo({
         username: user["username"],
         email: user["email"],
         password: value,
         secondPass: user["secondPass"],
       });
     } else if (name === "secondPass") {
-      setUser({
+      setUserInfo({
         username: user["username"],
         email: user["email"],
         password: user["password"],
@@ -69,7 +77,7 @@ const Register = (props) => {
     }
   };
 
-  function submitForm() {
+  async function submitForm() {
     // Place stuff in here to add person to database
     console.log("Submitting");
     if (
@@ -77,8 +85,16 @@ const Register = (props) => {
       validateEmail() === 0 &&
       validatePassword() === 0
     ) {
-      console.log("All good to add them to database and send them off");
-      window.location.href = "/browse";
+      try {
+        const resp = await axios.post("http://127.0.0.1:5000/users", {
+          ...user,
+          password: sha256(user.password),
+        });
+        setUser(resp.data);
+        props.history.push("/profile");
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 

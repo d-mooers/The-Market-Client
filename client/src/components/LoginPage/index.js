@@ -2,8 +2,13 @@ import React, { useState } from "react";
 import { Button, makeStyles } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import styled from "styled-components";
+import { sha256 } from "js-sha256";
+import UserContext from "../../UserContext";
 import Footer from "./Footer";
+import InputField from "./InputField";
 import "./Login.css";
+import Dialog from "../shared/Dialog";
+import axios from "axios";
 
 const styles = makeStyles({
   textBox: {
@@ -11,18 +16,18 @@ const styles = makeStyles({
     width: "80%",
   },
   button: {
-    background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+    background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
     borderRadius: 3,
     border: 0,
-    color: 'white',
+    color: "white",
     height: 40,
-    padding: '0 30px',
-    boxShadow: '0 3px 5px 2px rgb(0 121 255 / 30%)',
+    padding: "0 30px",
+    boxShadow: "0 3px 5px 2px rgb(0 121 255 / 30%)",
   },
 });
 
 const StyledText = styled.h1`
-  background-image: linear-gradient(#2196F3,#21CBF3);
+  background-image: linear-gradient(#2196f3, #21cbf3);
   font-size: 2.5rem;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -33,72 +38,98 @@ const StyledText = styled.h1`
 // const [state name, function to update state]
 // body = default state
 const LoginPage = (props) => {
-  const [user, setTempUser] = useState({
+  const { user, setUser } = React.useContext(UserContext);
+  const classes = styles();
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [tempUser, setTempUser] = useState({
     username: "",
     email: "",
     password: "",
   });
 
   // called when user types into fields
-  const handleChange = (e) => {
+  // if any fields are red (error), remove them at this time
+  // update temp user fields based on which field was typed into
+  const handleChange = (e, tempUser) => {
     const { name, value } = e.target;
-    if (name === "username") {
-      setTempUser({
-        username: value,
-        email: user["email"],
-        password: user["password"],
-      });
-    } else if (name === "email") {
-      setTempUser({
-        username: user["username"],
-        email: value,
-        password: user["password"],
-      });
+    if (name === "email") {
+      setTempUser({ ...tempUser, email: value });
+      setEmailError(false);
     } else if (name === "password") {
-      setTempUser({
-        username: user["username"],
-        email: user["email"],
-        password: value,
-      });
+      setTempUser({ ...tempUser, password: value });
+      setPasswordError(false);
     }
   };
 
-  function submitForm() {
-    console.log("Submitting");
-    const resp = validateUser();
+  // does a GET /users call with tempUser's saved credentials
+  async function getUser(emailID, passwordID) {
+    try {
+      const resp = await axios.get("http://127.0.0.1:5000/users", {
+        auth: {
+          username: emailID,
+          password: passwordID,
+        },
+      });
 
-    if (resp === 0) {
+      // Query went through successfully
+      return {
+        success: resp.status === 200,
+        user: resp.data,
+      };
+    } catch (e) {
+      return {
+        success: false,
+        err: e,
+      };
+    }
+  }
+
+  // User hits 'Log In'
+  async function submitForm() {
+    console.log("Submitting...");
+    setLoading(true);
+    var resp = await validateUser();
+
+    // any fields were empty
+    if (resp === -1) {
+      console.log("Empty Field(s)");
+    }
+    // successful login - global user values
+    else if (resp.success === true) {
       console.log("Successful Login credentials");
+      setUser(resp.user);
       props.history.push("/browse");
-    } else if (resp === -1) {
-      alert("Invalid login");
     }
+    // unsuccessful login - setError
+    else if (resp.success === false) {
+      console.log("Invalid Credentials");
+      console.log(resp.err);
+      setError(true);
+    }
+    setLoading(false);
   }
 
-  function validateUser() {
-    // potentially change to allow username OR email
-    // change to check database
-    if (
-      user.username === "DummyUser" &&
-      user.email === "Dummy@yahoo.com" &&
-      user.password == "Password123"
-    )
-      return 0;
-
-    if (user.username.length === 0) {
-      alert("Please enter a Username");
-      return -2;
-    } else if (user.email.length === 0) {
-      alert("Please enter an Email");
-      return -2;
-    } else if (user.password.length === 0) {
-      alert("Please enter a Password");
-      return -2;
+  // checks InputFields
+  // resp === -1, if fields are empty
+  // otherwise, holds info from GET call (error or user data)
+  async function validateUser() {
+    let resp = 0;
+    if (tempUser.email.length === 0) {
+      setEmailError(true);
+      resp = -1;
     }
-    return -1;
-  }
+    if (tempUser.password.length === 0) {
+      setPasswordError(true);
+      resp = -1;
+    }
+    if (resp === 0)
+      resp = await getUser(tempUser.email, sha256(tempUser.password));
 
-  const classes = styles();
+    return resp;
+  }
 
   return (
     <div>
@@ -107,46 +138,53 @@ const LoginPage = (props) => {
       </h1>
       <div className="box">
         <center>
-          <h1>        
+          <h1>
             <StyledText>The Market</StyledText>
           </h1>
         </center>
         <form>
-          <TextField
-            className={classes.textBox}
-            type="text"
-            variant="outlined"
-            size="small"
-            label="Username"
-            name="username"
-            onChange={handleChange}
+          <InputField
+            handleChange={handleChange}
+            label={"Email"}
+            name={"email"}
+            tempUser={tempUser}
+            errorFlag={emailError}
+            helperText={"Invalid Email"}
+            type={"email"}
           />
-          <br />
-
-          <TextField
-            className={classes.textBox}
-            type="email"
-            variant="outlined"
-            size="small"
-            label="Email"
-            name="email"
-            onChange={handleChange}
+          <InputField
+            handleChange={handleChange}
+            label={"Password"}
+            name={"password"}
+            tempUser={tempUser}
+            errorFlag={passwordError}
+            helperText={"Invalid Password"}
+            type={"password"}
           />
-          <br />
-
-          <TextField
-            className={classes.textBox}
-            type="password"
-            variant="outlined"
-            size="small"
-            label="Password"
-            name="password"
-            onChange={handleChange}
+          <Dialog
+            title="Invalid Email or Password"
+            description={"Invalid Login"}
+            closeButtonText="Got It"
+            buttonText={null}
+            onClose={() => setError(false)}
+            onAccept={() => null}
+            open={error}
           />
-          <br />
+          <Dialog
+            title="Loading..."
+            description={"Checking backend"}
+            content="Checking my sources..."
+            onClose={() => null}
+            onAccept={() => null}
+            open={loading}
+          />
           <center>
-            <Button variant="outlined" onClick={submitForm} className={classes.button}>
-              Submit
+            <Button
+              variant="outlined"
+              onClick={submitForm}
+              className={classes.button}
+            >
+              Log In
             </Button>
           </center>
         </form>

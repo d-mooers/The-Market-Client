@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from Utils import verifyListingShape, verifyUserShape, verifyUser, verifyLoginShape, verifyAuthShape
 from Models import Listings, User
+from basicauth import decode
 app = Flask(__name__)
 CORS(app)
 
@@ -52,18 +53,19 @@ def get_item(id):
         return jsonify({}), 204
 
 
-@app.route('/users', methods=['GET', 'POST'])
+@app.route('/users')
 def register_user():
     if request.method == 'GET':
-        auth = request.get_json()
-        missingFields = verifyLoginShape(auth)
-        if len(missingFields) > 0:
-            return jsonify({"message": "Bad request, missing fields",
-                            "details": missingFields}), 400
-        user = User().getUserByEmailPass(auth['email'], auth['password'])
+        auth = request.headers.get("Authorization")
+        email, password = decode(auth) # Decodes basic auth into email and password!
+        user = User().getUserByEmailPass(email, password)
         if user:
+            del user['password']
             return jsonify(user), 200
         return jsonify({"message": "Incorrect email and password combination"}), 401
+    
+@app.route('/users', methods=['POST'])
+def register():
     if request.method == 'POST':
         newUser = request.get_json()
         missingFields = verifyUserShape(newUser)
