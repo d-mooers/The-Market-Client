@@ -106,7 +106,7 @@ const ProfilePage = (props) => {
   };
 
   //if user has no listings
-  if(listings.length == 0)
+  if(listings.length === 0)
   {
     return (
       <div>

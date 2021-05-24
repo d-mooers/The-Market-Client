@@ -28,6 +28,7 @@ const StyledText = styled.h1`
   -webkit-text-fill-color: transparent;
   margin: 0;
   margin-left: 1rem;
+  text-align: center;
 `;
 
 // const [state name, function to update state]
@@ -102,9 +103,7 @@ const LoginPage = (props) => {
 
   return (
     <div>
-      <h1 className="Title">
         <StyledText>Login</StyledText>
-      </h1>
       <div className="box">
         <center>
           <h1>        

@@ -34,6 +34,7 @@ const Register = (props) => {
   -webkit-text-fill-color: transparent;
   margin: 0;
   margin-left: 1rem;
+  text-align: center;
 `;
 
   const handleChange = (e) => {
@@ -119,9 +120,7 @@ const Register = (props) => {
   // Make sure to place proper link going into the login page in the href
   return (
     <div>
-      <h1 className="Title">
         <StyledText>Register</StyledText>
-      </h1>
       <div className="box">
         <center>
           <h1>

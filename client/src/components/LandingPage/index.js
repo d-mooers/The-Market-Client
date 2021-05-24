@@ -3,8 +3,6 @@ import styled from "styled-components";
 import { Button, Grid, makeStyles } from "@material-ui/core";
 import UserContext from "../../UserContext";
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import Checkbox from '@material-ui/core/Checkbox';
-import { green, orange } from '@material-ui/core/colors';
 
 
 //background-image: linear-gradient(#2196F3,#21CBF3);
@@ -20,6 +18,16 @@ const StyledText = styled.h1`
   margin: 0;
   margin-left: 1rem;
 `;
+
+/*
+const theme1 = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#2196F3',
+      mainGradient: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+    },
+  },
+}); */
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,31 +68,27 @@ const LandingPage = (props) => {
         direction="row"
         justify="space-evenly"
         alignItems="center"
-        className={classes.button}
       >
         <Button
+          className={classes.button}
           variant="contained"
           size="large"
-          color="primary"
-          className={classes.margin}
           onClick={() => props.history.push("/browse")}
         >
           Buy
         </Button>
         <Button
+          className={classes.button}
           variant="contained"
           size="large"
-          color="primary"
-          className={classes.margin}
           onClick={() => props.history.push("/sell")}
         >
           Sell
         </Button>
         <Button
+          className={classes.button}
           variant="contained"
           size="large"
-          color="primary"
-          className={classes.margin}
           onClick={() => props.history.push("/profile")}
         >
           Profile
@@ -106,11 +110,11 @@ const LandingPage = (props) => {
           direction="row"
           justify="space-evenly"
           alignItems="center"
-          //className={classes.button}
         >
           <Button
             className={classes.button}
             variant="contained"
+            //color = "primary"
             size="large"
             onClick={() => props.history.push("/login")}
           >
@@ -122,3 +126,4 @@ const LandingPage = (props) => {
 };
 
 export default LandingPage;
+
