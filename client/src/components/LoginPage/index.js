@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Button } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
+import styled from "styled-components";
 import { sha256 } from "js-sha256";
 import UserContext from "../../UserContext";
 import Footer from "./Footer";
@@ -8,8 +10,36 @@ import "./Login.css";
 import Dialog from "../shared/Dialog";
 import axios from "axios";
 
+const styles = makeStyles({
+  textBox: {
+    margin: 10,
+    width: "80%",
+  },
+  button: {
+    background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+    borderRadius: 3,
+    border: 0,
+    color: "white",
+    height: 40,
+    padding: "0 30px",
+    boxShadow: "0 3px 5px 2px rgb(0 121 255 / 30%)",
+  },
+});
+
+const StyledText = styled.h1`
+  background-image: linear-gradient(#2196f3, #21cbf3);
+  font-size: 2.5rem;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  margin-left: 1rem;
+`;
+
+// const [state name, function to update state]
+// body = default state
 const LoginPage = (props) => {
   const { user, setUser } = React.useContext(UserContext);
+  const classes = styles();
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [error, setError] = useState(false);
@@ -103,10 +133,14 @@ const LoginPage = (props) => {
 
   return (
     <div>
-      <h1 className="Title">Login</h1>
+      <h1 className="Title">
+        <StyledText>Login</StyledText>
+      </h1>
       <div className="box">
         <center>
-          <h1>The Market</h1>
+          <h1>
+            <StyledText>The Market</StyledText>
+          </h1>
         </center>
         <form>
           <InputField
@@ -145,7 +179,11 @@ const LoginPage = (props) => {
             open={loading}
           />
           <center>
-            <Button variant="outlined" onClick={submitForm}>
+            <Button
+              variant="outlined"
+              onClick={submitForm}
+              className={classes.button}
+            >
               Log In
             </Button>
           </center>

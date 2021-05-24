@@ -10,7 +10,12 @@ CORS(app)
 @app.route('/items', methods=['GET', 'POST'])
 def get_items():
     if request.method == 'GET':
-        return jsonify({"listings": Listings().find_all()}), 200
+        ownerId = request.args.get('owner')
+        print(ownerId)
+        if ownerId:
+            return jsonify({"listings": Listings().find_user_listings(ownerId)}), 200
+        else:
+            return jsonify({"listings": Listings().find_all()}), 200
     if request.method == 'POST':
         auth = request.headers
         print(auth)

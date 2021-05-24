@@ -5,7 +5,25 @@ const BASE_URL = config.api_base.development;
 const ITEMS = "items";
 
 export const getItems = async () => {
-  const url = `${BASE_URL}${ITEMS}`;
+    const url = `${BASE_URL}${ITEMS}`;
+    try {
+      const resp = await axios.get(url);
+      console.log(resp.data.listings);
+      return {
+        success: resp.status === 200,
+        listings: resp.data.listings,
+      };
+    } catch (e) {
+      console.log(e);
+      return {
+        success: false,
+        err: e,
+      };
+    }
+};
+
+export const getUserItems = async (ownId) => {
+  const url = `${BASE_URL}${ITEMS}?owner=${ownId}`;
   try {
     const resp = await axios.get(url);
     console.log(resp.data.listings);
@@ -25,6 +43,7 @@ export const getItems = async () => {
     };
   }
 };
+
 
 export const getItem = async (id) => {
   const url = `${BASE_URL}${ITEMS}/${id}`;

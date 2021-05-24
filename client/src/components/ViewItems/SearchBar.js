@@ -12,6 +12,19 @@ const useStyle = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
   },
+  button: {
+    background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+    borderRadius: 3,
+    border: 0,
+    color: "white",
+    height: 40,
+    padding: "0 30px",
+    "&:hover": {
+      opacity: 0.75,
+      transtion: "all 1s ease-in-out",
+      boxShadow: "0 3px 5px 2px rgb(0 121 255 / 30%)",
+    },
+  },
   clearSearch: {
     color: "red",
     marginLeft: "1rem",
@@ -52,7 +65,9 @@ const SearchBar = (props) => {
         )}
       </Grid>
       <Grid item xs={2} justify="center" className={classes.centeredItem}>
-        <Button onClick={submitSearch}>Search</Button>
+        <Button onClick={submitSearch} className={classes.button}>
+          Search
+        </Button>
       </Grid>
     </Grid>
   );

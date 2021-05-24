@@ -6,6 +6,7 @@ import Dialog from "../shared/Dialog";
 import { formatAuth } from "../../utils/utils";
 import { uploadImage } from "../../utils/requests/images";
 import UserContext from "../../UserContext";
+import styled from "styled-components";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -20,7 +21,25 @@ const useStyles = makeStyles((theme) => ({
     width: "min(800px, 80%)",
     marginTop: "1rem",
   },
+  button: {
+    background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+    borderRadius: 3,
+    border: 0,
+    color: "white",
+    height: 40,
+    padding: "0 30px",
+    boxShadow: "0 3px 5px 2px rgb(0 121 255 / 30%)",
+  },
 }));
+
+const StyledText = styled.h1`
+  background-image: linear-gradient(#2196f3, #21cbf3);
+  font-size: 2.5rem;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+  margin-left: 1rem;
+`;
 
 const ListItem = (props) => {
   const classes = useStyles();
@@ -81,6 +100,7 @@ const ListItem = (props) => {
       ...fields,
       tags: tagsAsSet,
       lngLat: await getPosition(),
+      imgUrl: image,
     };
     console.log(listing);
     setLoading(true);
@@ -142,7 +162,9 @@ const ListItem = (props) => {
       />
 
       <Grid container alignItems="center" direction="column">
-        <Typography variant="h3">List an Item</Typography>
+        <Typography variant="h3">
+          <StyledText>List an item</StyledText>
+        </Typography>
         <Paper className={classes.paper}>
           <Form
             fields={fields}
@@ -151,10 +173,10 @@ const ListItem = (props) => {
           />
         </Paper>
         <div className={classes.buttonGroup}>
-          <Button variant="contained" onClick={handleCancel}>
+          <Button className={classes.button} onClick={handleCancel}>
             Back
           </Button>
-          <Button variant="contained" onClick={handleSubmit}>
+          <Button className={classes.button} onClick={handleSubmit}>
             Submit
           </Button>
         </div>

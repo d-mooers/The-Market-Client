@@ -14,6 +14,10 @@ const theme = createMuiTheme({
     accent2: "#34e4ea",
     accent3: "#8ab9b5",
   },
+  palette: {
+    accent1: "#2196F3",
+    accent2: "#21CBF3",
+  },
 });
 
 ReactDOM.render(
