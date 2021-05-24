@@ -81,15 +81,17 @@ def register():
         return jsonify(user), 201
 
 
-# GET call requires context (user) to be sent to related msgs can be sorted
-# POST - might need to add a check that validates user?
-@app.route('/messages/<id>', methods=['GET', 'POST', 'DELETE'])
+# returns list of all messages that pertain to the logged in user (must include their id in GET url call)
+# sender/reciever info is decoded in user._id - you will have to find the user in the data base to conver to username
+@app.route('/messages/<id>', methods=['GET'])
 def get_messages(id):
-    # returns list of all messages - TODOO: change to only send msgs pertaining to the logged in user
-    if request.method == 'GET':
-        user = User().getUserById(id)
-        return jsonify({"messages": Messages().find_all(id)}), 200
-    # time and date taken from datetime import, user info passed. Verify all fields and save to collection
+    return jsonify({"messages": Messages().find_all(id)}), 200
+
+
+# POST: time and date taken from datetime import, user info passed. Verify all fields and save to collection
+# POST: sender/reciever info must be passed. Must be user._id NOT username
+@app.route('/messages', methods=['POST', 'DELETE'])
+def post_messages():
     if request.method == 'POST':
         msg = request.get_json()
         tempTime = datetime.now()

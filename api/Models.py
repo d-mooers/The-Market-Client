@@ -46,18 +46,16 @@ class Messages(Model):
 
     collection = db.db_client['messages']
 
-    # finds all messages
-    # TODOO: only send messages by user signed in
-    def find_all(self, username):
+    # returns all messages in database that have the logged in user as the sender/reciever
+    def find_all(self, user_id):
         messages = list(self.collection.find())
         for msg in messages:
             msg["_id"] = str(msg['_id'])
-        return messages
-        # res = list()
-        # for msg in messages:
-        #     if msg['sender'] == user(['username']) or msg['reciever'] == user(['username']):
-        #         res.append(msg)
-        # return res
+        res = list()
+        for msg in messages:
+            if msg['sender'] == user_id or msg['reciever'] == user_id:
+                res.append(msg)
+        return res
 
 
 class Listings(Model):
@@ -75,10 +73,11 @@ class Listings(Model):
         return listings
 
     def find_user_listings(self, ownerId):
-        listings = list(self.collection.find({ "owner" : ownerId}))
+        listings = list(self.collection.find({"owner": ownerId}))
         for listing in listings:
             listing["_id"] = str(listing['_id'])
         return listings
+
 
 class User(Model):
     load_dotenv()
@@ -97,11 +96,6 @@ class User(Model):
             'auth': False
         }
 
-    def getUserById(self, Id):
-        if self._id:
-            user = self.collection.find_one({"_id": ObjectId(self._id)})
-        return user
-
     def getUserByEmailPass(self, email, password):
         user = self.collection.find_one({"email": email, "password": password})
         if user:
@@ -111,9 +105,10 @@ class User(Model):
                 {"_id": ObjectId(user['_id'])}, {'$set': {'authId': user['authId']}})
             return user
         return None
-    
+
     def getUserByUsernamePass(self, username, password):
-        user = self.collection.find_one({"username": username, "password": password})
+        user = self.collection.find_one(
+            {"username": username, "password": password})
         if user:
             user['authId'] = uuid.uuid4()
             user['_id'] = str(user['_id'])
@@ -121,7 +116,6 @@ class User(Model):
                 {"_id": ObjectId(user['_id'])}, {'$set': {'authId': user['authId']}})
             return user
         return None
-
 
     def getUserByUsernamePass(self, username, password):
         user = self.collection.find_one(
