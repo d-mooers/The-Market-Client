@@ -15,6 +15,13 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     marginTop: "1rem",
+    background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+    borderRadius: 3,
+    border: 0,
+    color: 'white',
+    height: 35,
+    padding: '0 30px',
+    boxShadow: '0 3px 5px 2px rgb(0 121 255 / 30%)',
   },
   buttonGroup: {
     display: "flex",
@@ -23,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Details = (props) => {
-  const { title, price, description, soldBy, xs } = props;
+  const { title, price, description, owner, xs, isOwner, handleDelete } = props;
   const classes = useStyles();
   console.log(props);
   return (
@@ -34,7 +41,7 @@ const Details = (props) => {
       </Grid>
       <Divider />
       <Grid item>
-        <Typography variant="subtitle2">Sold by: {soldBy}</Typography>
+        <Typography variant="subtitle2">Sold by: {owner}</Typography>
       </Grid>
       <Grid
         item
@@ -45,24 +52,28 @@ const Details = (props) => {
         <Grid item xs={9}>
           <Typography variant="body1">{description}</Typography>
         </Grid>
-        <Box className={classes.buttonGroup}>
-          <Button
-            variant="contained"
-            className={classes.buttton}
-            onClick={() => console.log("User wants to purchase")}
-          >
-            Purchase
+        {isOwner ? (
+          <Button className={classes.button} onClick={handleDelete}>
+            Delete Item
           </Button>
-          <Button
-            variant="contained"
-            onClick={() => console.log("User wants to ask a question")}
-            className={classes.button}
-          >
-            Ask A Question
-          </Button>
-        </Box>
+        ) : (
+          <Box className={classes.buttonGroup}>
+            <Button
+              className={classes.button}
+              onClick={() => console.log("User wants to purchase")}
+            >
+              Purchase
+            </Button>
+            <Button
+              onClick={() => console.log("User wants to ask a question")}
+              className={classes.button}
+            >
+              Ask A Question
+            </Button>
+          </Box>
+        )}
       </Grid>
-      <Grid item className={classes.button}></Grid>
+      <Grid item ></Grid>
     </Grid>
   );
 };

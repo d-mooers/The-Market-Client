@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export const Filters = (props) => {
-  const [categories, setCategories] = useState({});
+  const { categories, setCategories } = props;
   const classes = useStyles();
   const handleChange = (e) =>
     setCategories({

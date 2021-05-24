@@ -4,4 +4,10 @@ export const CATEGORIES = {
   videogames: "videogames",
   electronics: "electronics",
   clothing: "clothing",
+  games: "games",
+  furniture: "furniture",
+  appliances: "appliances",
+  materials: "materials",
+  jewelry: "jewerly",
+  other: "other",
 };
