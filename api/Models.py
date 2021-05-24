@@ -48,7 +48,7 @@ class Messages(Model):
 
     # finds all messages
     # TODOO: only send messages by user signed in
-    def find_all(self):
+    def find_all(self, username):
         messages = list(self.collection.find())
         for msg in messages:
             msg["_id"] = str(msg['_id'])
@@ -91,6 +91,11 @@ class User(Model):
             'message': 'unauthorized',
             'auth': False
         }
+
+    def getUserById(self, Id):
+        if self._id:
+            user = self.collection.find_one({"_id": ObjectId(self._id)})
+        return user
 
     def getUserByEmailPass(self, email, password):
         user = self.collection.find_one({"email": email, "password": password})
