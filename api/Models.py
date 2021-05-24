@@ -46,13 +46,18 @@ class Messages(Model):
 
     collection = db.db_client['messages']
 
-    # finds all messages that pertain to the user currently logged in
-    def find_all(self, user):
+    # finds all messages
+    # TODOO: only send messages by user signed in
+    def find_all(self):
         messages = list(self.collection.find())
         for msg in messages:
-            if msg['sender'] or msg['reciever']:
-                return 0
+            msg["_id"] = str(msg['_id'])
         return messages
+        # res = list()
+        # for msg in messages:
+        #     if msg['sender'] == user(['username']) or msg['reciever'] == user(['username']):
+        #         res.append(msg)
+        # return res
 
 
 class Listings(Model):
@@ -89,6 +94,17 @@ class User(Model):
 
     def getUserByEmailPass(self, email, password):
         user = self.collection.find_one({"email": email, "password": password})
+        if user:
+            user['authId'] = uuid.uuid4()
+            user['_id'] = str(user['_id'])
+            self.collection.update_one(
+                {"_id": ObjectId(user['_id'])}, {'$set': {'authId': user['authId']}})
+            return user
+        return None
+
+    def getUserByUsernamePass(self, username, password):
+        user = self.collection.find_one(
+            {"username": username, "password": password})
         if user:
             user['authId'] = uuid.uuid4()
             user['_id'] = str(user['_id'])
