@@ -47,10 +47,11 @@ class Messages(Model):
     collection = db.db_client['messages']
 
     # finds all messages that pertain to the user currently logged in
-    def find_all(self):
+    def find_all(self, user):
         messages = list(self.collection.find())
         for msg in messages:
-            if msg['sender'] or msg['reciever']
+            if msg['sender'] or msg['reciever']:
+                return 0
         return messages
 
 
