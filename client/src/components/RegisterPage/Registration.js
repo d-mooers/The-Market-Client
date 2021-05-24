@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import "./Register.css";
 import { Button, makeStyles, TextField } from "@material-ui/core";
+import { sha256 } from "js-sha256";
+import UserContext from "../../UserContext";
+import axios from "axios";
 
 const styles = makeStyles((theme) => ({
   textBox: {
@@ -10,38 +13,40 @@ const styles = makeStyles((theme) => ({
 }));
 
 const Register = (props) => {
-  const [user, setUser] = useState({
+  const [user, setUserInfo] = useState({
     username: "",
     email: "",
     password: "",
     secondPass: "",
   });
 
+  const { setUser } = React.useContext(UserContext);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "username") {
-      setUser({
+      setUserInfo({
         username: value,
         email: user["email"],
         password: user["password"],
         secondPass: user["secondPass"],
       });
     } else if (name === "email") {
-      setUser({
+      setUserInfo({
         username: user["username"],
         email: value,
         password: user["password"],
         secondPass: user["secondPass"],
       });
     } else if (name === "password") {
-      setUser({
+      setUserInfo({
         username: user["username"],
         email: user["email"],
         password: value,
         secondPass: user["secondPass"],
       });
     } else if (name === "secondPass") {
-      setUser({
+      setUserInfo({
         username: user["username"],
         email: user["email"],
         password: user["password"],
@@ -50,7 +55,7 @@ const Register = (props) => {
     }
   };
 
-  function submitForm() {
+  async function submitForm() {
     // Place stuff in here to add person to database
     console.log("Submitting");
     if (
@@ -58,8 +63,16 @@ const Register = (props) => {
       validateEmail() === 0 &&
       validatePassword() === 0
     ) {
-      console.log("All good to add them to database and send them off");
-      window.location.href = "/browse";
+      try {
+        const resp = await axios.post("http://127.0.0.1:5000/users", {
+          ...user,
+          password: sha256(user.password),
+        });
+        setUser(resp.data);
+        props.history.push("/profile");
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 

@@ -4,6 +4,7 @@ import Form from "./Form";
 import { postItem } from "../../utils/requests/items";
 import Dialog from "../shared/Dialog";
 import { formatAuth } from "../../utils/utils";
+import { uploadImage } from "../../utils/requests/images";
 import UserContext from "../../UserContext";
 
 const useStyles = makeStyles((theme) => ({
@@ -32,6 +33,7 @@ const ListItem = (props) => {
     category: "",
     tags: "",
   });
+  const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [itemId, setItemId] = useState("");
@@ -43,16 +45,32 @@ const ListItem = (props) => {
     });
 
   const getPosition = async () => {
-    if (!"geolocation" in navigator) {
-      console.log("Geolocation not available");
-      return [0, 0];
+    try {
+      if (!"geolocation" in navigator) {
+        console.log("Geolocation not available");
+        return [0, 0];
+      }
+      let position;
+      await getCoords().then((pos) => {
+        console.log(pos);
+        position = [pos.coords.longitude, pos.coords.latitude];
+      });
+      return position;
+    } catch (e) {
+      return [-120.54354468, 35.09349968];
     }
-    let position;
-    await getCoords().then((pos) => {
-      console.log(pos);
-      position = [pos.coords.longitude, pos.coords.latitude];
-    });
-    return position;
+  };
+
+  const getImage = (images) => {
+    if (images.length < 1) return; //invalid images array
+
+    //Otherwise, generate an objectURL using the image
+    let reader = new FileReader();
+    reader.onload = (e) => {
+      setImage(e.target.result);
+    };
+    reader.readAsDataURL(images[0]);
+    //setImage(images[0]);
   };
 
   const handleSubmit = async () => {
@@ -67,6 +85,23 @@ const ListItem = (props) => {
     console.log(listing);
     setLoading(true);
     setError(false);
+
+    // send image to imgur, get URL for image back
+    // const imgurResp = await uploadImage(image);
+    // console.log(imgurResp);
+    // if (!imgurResp.success) {
+    //   // Image upload failed :(
+    //   setLoading(false);
+    //   setError(true);
+    //   return;
+    // }
+    // Image upload success! Update payload w URL
+    // const listing = {
+    //   ...fields,
+    //   lngLat: await getPosition(),
+    //   imgUrl: image,
+    // };
+    // console.log(listing);
     const resp = await postItem(listing, formatAuth(user._id, user.authId));
     if (resp.success) {
       setItemId(resp.id);
@@ -109,7 +144,11 @@ const ListItem = (props) => {
       <Grid container alignItems="center" direction="column">
         <Typography variant="h3">List an Item</Typography>
         <Paper className={classes.paper}>
-          <Form fields={fields} setFields={setFields} />
+          <Form
+            fields={fields}
+            setFields={setFields}
+            {...{ image, getImage, setImage }}
+          />
         </Paper>
         <div className={classes.buttonGroup}>
           <Button variant="contained" onClick={handleCancel}>

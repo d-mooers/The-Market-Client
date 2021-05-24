@@ -51,7 +51,7 @@ export default function Item(props) {
   const { title, price, description, imgUrl, handleClick, condition } = props;
 
   return (
-    <Grid item xl={3} lg={3} md={4} sm={5}>
+    <Grid item xl={4} lg={4} md={4} sm={5}>
       <div className={classes.grid}>
         <Card
           className={classes.root}
