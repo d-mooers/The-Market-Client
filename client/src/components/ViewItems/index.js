@@ -43,8 +43,9 @@ const filteredListings = (listings, categories, tags) => {
     filtered = listings.filter((listing) => !!categories[listing.category]);
   console.log(filtered);
   if (tags.size > 0)
-    filtered = filtered.filter((l) =>
-      l.tags.reduce((accum, tag) => accum || tags.has(tag), false)
+    filtered = filtered.filter(
+      (l) =>
+        !!l.tags && l.tags.reduce((accum, tag) => accum || tags.has(tag), false)
     );
   return filtered;
 };

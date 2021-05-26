@@ -17,6 +17,7 @@ const StyledText = styled.h1`
   -webkit-text-fill-color: transparent;
   margin: 0;
   margin-left: 1rem;
+  display: flex;
 `;
 
 const useStyles = makeStyles((theme) => ({
@@ -37,6 +38,25 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: "0 3px 5px 2px rgb(0 121 255 / 30%)",
     marginTop: "11.25rem",
   },
+  bouncyText: {
+    margin: 0,
+    padding: 0,
+    animation: "1s ease-in 0s 1 $bounce",
+    "&:hover": {
+      animation: "1s ease-in 0s 1 $bounce",
+    },
+  },
+  "@keyframes bounce": {
+    "0%": {
+      transform: "translate3d(0, 0, 0)",
+    },
+    "50%": {
+      transform: "translate3d(0, 100%, 0)",
+    },
+    "0%": {
+      transform: "translate3d(0, 0, 0)",
+    },
+  },
 }));
 
 const LandingPage = (props) => {
@@ -47,7 +67,12 @@ const LandingPage = (props) => {
     return (
       <div className={classes.root}>
         <Grid xs={12} container justify="center">
-          <StyledText>The Market</StyledText>
+          <StyledText>
+            {/* {"The Market".split("").map((s) => (
+              <h1 className={classes.bouncyText}>{s}</h1>
+            ))} */}
+            The Market
+          </StyledText>
         </Grid>
 
         <Grid
@@ -90,7 +115,12 @@ const LandingPage = (props) => {
     return (
       <div className={classes.root}>
         <Grid xs={12} container justify="center">
-          <StyledText>The Market</StyledText>
+          <StyledText>
+            {/* {"The Market".split("").map((s) => (
+              <h1 className={classes.bouncyText}>{s}</h1>
+            ))} */}
+            The Market
+          </StyledText>
         </Grid>
 
         <Grid
