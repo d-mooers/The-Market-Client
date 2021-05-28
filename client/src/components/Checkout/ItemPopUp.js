@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       color: theme.palette.accent1,
       textShadow: "none",
-      boxShadow: `inset 0 0 3px 3px ${theme.palette.accent2}, 0 0 6px 6px ${theme.palette.accent2}`,
+      boxShadow: `inset 0 0 3px 3px ${theme.palette.accent2}, 0 0 12px 6px ${theme.palette.accent2}`,
       background: theme.palette.accent2,
     },
   },
@@ -54,6 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonClosed: {
     textTransform: "none",
+    fontSize: "1rem",
     textShadow: `0 0 0.125em hsl(0 0% 100% / 0.3), 0 0 0.45em ${theme.palette.accent2}`,
     color: theme.palette.accent2,
     "&:hover": {
@@ -72,9 +73,11 @@ const useStyles = makeStyles((theme) => ({
   "@keyframes grow": {
     "0%": {
       width: "5rem",
+      transform: "rotateX(90deg) rotateY(90deg)",
     },
     "100%": {
       width: "max(20vw, 10rem)",
+      transform: "rotateX(0deg) rotateY(0deg)",
     },
   },
 }));
