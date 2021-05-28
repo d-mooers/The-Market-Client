@@ -12,7 +12,7 @@ const styles = makeStyles((theme) => ({
     width: "80%",
   },
   button: {
-    background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+    background: `linear-gradient(45deg, ${theme.palette.accent1} 30%, ${theme.palette.accent2} 90%)`,
     borderRadius: 3,
     border: 0,
     color: "white",
@@ -24,6 +24,14 @@ const styles = makeStyles((theme) => ({
       boxShadow: "0 3px 5px 2px rgb(0 121 255 / 30%)",
     },
   },
+  styledText: {
+    background: `linear-gradient(${theme.palette.accent1}, ${theme.palette.accent2})`,
+    fontSize: "2.5rem",
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    margin: '0',
+    marginLeft: '1rem',
+  },
 }));
 
 const Register = (props) => {
@@ -34,14 +42,6 @@ const Register = (props) => {
     secondPass: "",
   });
 
-  const StyledText = styled.h1`
-    background-image: linear-gradient(#2196f3, #21cbf3);
-    font-size: 2.5rem;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin: 0;
-    margin-left: 1rem;
-  `;
   const { setUser } = React.useContext(UserContext);
 
   const handleChange = (e) => {
@@ -135,11 +135,11 @@ const Register = (props) => {
   // Make sure to place proper link going into the login page in the href
   return (
     <div>
-        <StyledText>Register</StyledText>
+        <h1 className={classes.styledText}>Register</h1>
       <div className="box">
         <center>
           <h1>
-            <StyledText>The Market</StyledText>
+            <h1 className={classes.styledText}>The Market</h1>
           </h1>
         </center>
         <form>

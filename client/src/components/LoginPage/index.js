@@ -10,13 +10,13 @@ import "./Login.css";
 import Dialog from "../shared/Dialog";
 import axios from "axios";
 
-const styles = makeStyles({
+const styles = makeStyles((theme) => ({
   textBox: {
     margin: 10,
     width: "80%",
   },
   button: {
-    background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+    background: `linear-gradient(45deg, ${theme.palette.accent1} 30%, ${theme.palette.accent2} 90%)`,
     borderRadius: 3,
     border: 0,
     color: "white",
@@ -24,17 +24,17 @@ const styles = makeStyles({
     padding: "0 30px",
     boxShadow: "0 3px 5px 2px rgb(0 121 255 / 30%)",
   },
-});
+  styledText: {
+    background: `linear-gradient(${theme.palette.accent1}, ${theme.palette.accent2})`,
+    fontSize: "2.5rem",
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    margin: '0',
+    marginLeft: '1rem',
+    textAlign: 'center',
+  },
+}));
 
-const StyledText = styled.h1`
-  background-image: linear-gradient(#2196f3, #21cbf3);
-  font-size: 2.5rem;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 0;
-  margin-left: 1rem;
-  text-align: center;
-`;
 
 // const [state name, function to update state]
 // body = default state
@@ -134,13 +134,9 @@ const LoginPage = (props) => {
 
   return (
     <div>
-        <StyledText>Login</StyledText>
+        <h1 className={classes.styledText}>Login</h1>
       <div className="box">
-        <center>
-          <h1>
-            <StyledText>The Market</StyledText>
-          </h1>
-        </center>
+            <h1 className={classes.styledText}>The Market</h1>
         <form>
           <InputField
             handleChange={handleChange}

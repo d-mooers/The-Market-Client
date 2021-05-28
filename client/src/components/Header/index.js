@@ -8,16 +8,6 @@ import {
   Divider,
 } from "@material-ui/core";
 
-const StyledText = styled.h1`
-  background-image: linear-gradient(#2196f3, #21cbf3);
-  font-size: 2.5rem;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 0;
-  margin-left: 1rem;
-  cursor: pointer;
-`;
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -45,6 +35,15 @@ const useStyles = makeStyles((theme) => ({
     // height: 40,
     // padding: '0 30px',
   },
+  styledText: {
+    background: `linear-gradient(${theme.palette.accent1}, ${theme.palette.accent2})`,
+    fontSize: "2.5rem",
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    margin: '0',
+    marginLeft: '1rem',
+    cursor: 'pointer',
+  },
 }));
 
 const Header = (props) => {
@@ -54,9 +53,9 @@ const Header = (props) => {
     <div className={classes.root}>
       <Grid container justify="space-between" align-items="center" spacing={0}>
         <Grid item xs={3} alignItems="flex-end">
-          <StyledText onClick={() => props.history.push("/")}>
+          <h1 className={classes.styledText} onClick={() => props.history.push("/")}>
             The Market
-          </StyledText>
+          </h1>
         </Grid>
         <Grid
           container

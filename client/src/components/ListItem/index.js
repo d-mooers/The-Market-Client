@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "1rem",
   },
   button: {
-    background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+    background: `linear-gradient(45deg, ${theme.palette.accent1} 30%, ${theme.palette.accent2} 90%)`,
     borderRadius: 3,
     border: 0,
     color: "white",
@@ -30,16 +30,15 @@ const useStyles = makeStyles((theme) => ({
     padding: "0 30px",
     boxShadow: "0 3px 5px 2px rgb(0 121 255 / 30%)",
   },
+  styledText: {
+    background: `linear-gradient(${theme.palette.accent1}, ${theme.palette.accent2})`,
+    fontSize: "2.5rem",
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    margin: '0',
+    marginLeft: '1rem',
+  },
 }));
-
-const StyledText = styled.h1`
-  background-image: linear-gradient(#2196f3, #21cbf3);
-  font-size: 2.5rem;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 0;
-  margin-left: 1rem;
-`;
 
 const ListItem = (props) => {
   const classes = useStyles();
@@ -163,7 +162,7 @@ const ListItem = (props) => {
 
       <Grid container alignItems="center" direction="column">
         <Typography variant="h3">
-          <StyledText>List an item</StyledText>
+          <h1 className={classes.styledText}>List an item</h1>
         </Typography>
         <Paper className={classes.paper}>
           <Form
