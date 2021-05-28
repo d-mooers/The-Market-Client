@@ -77,7 +77,7 @@ def register():
         user.addUser()
         return jsonify(user), 201
     
-@app.route('transactions', methods=['POST'])
+@app.route('/transactions', methods=['POST'])
 def checkout():
     if request.method == 'POST':
         userId, authId = decode(request.headers.get('Authorization'))

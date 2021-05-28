@@ -3,12 +3,14 @@ import { StaticMap } from "../shared/Map";
 import { Typography, Paper, Grid, makeStyles, Button } from "@material-ui/core";
 import ItemInfo from "./ItemInfo";
 import CheckoutForm from "./CheckoutForm";
+import ItemPopUp from "./ItemPopUp";
 
 const listing = {
   title: "Bike",
   price: 10.29,
   imgUrl:
     "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
+  description: "A super aweseom bike!",
 };
 
 const styles = makeStyles((theme) => ({
@@ -69,18 +71,18 @@ const styles = makeStyles((theme) => ({
   viewItem: {
     width: "1px",
     height: "1px",
-    position: "relative",
-    left: "2rem",
+    position: "absolute",
+    // left: "2rem",
     //background: "black",
 
-    "&::before": {
-      content: '"View Item"',
-      display: "block",
-      width: "5rem",
-      height: "1rem",
-      opacity: 1,
-      background: "green",
-    },
+    // "&::before": {
+    //   content: '"View Item"',
+    //   display: "block",
+    //   width: "5rem",
+    //   height: "1rem",
+    //   opacity: 1,
+    //   background: "green",
+    // },
   },
 }));
 
@@ -114,7 +116,9 @@ const Checkout = (props) => {
           <Typography variant="h2" className={classes.checkout}>
             Checkout
           </Typography>
-          <div className={classes.viewItem} />
+          <div className={classes.viewItem}>
+            <ItemPopUp {...listing} />
+          </div>
         </div>
         {/* <ItemInfo {...listing} /> */}
         <Grid item className={classes.formContainer}>
