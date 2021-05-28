@@ -105,5 +105,9 @@ def post_messages():
         msg.save()
         return jsonify(msg), 201
 
+    # idea: add booleans to msg json to show if sender/reciever has deleted msg or not
+    # ex: Chase and Chris have a 10msg convo. Each msg has a boolean Chase and boolean Chris which are all true.
+    # Chase deletes convo on his end - all chase booleans go false. So on a GET, Chris sees convo but Chase does not
+    # optionally: add if boolean for both parties = false then delete from database
     if request.method == 'DELETE':
         return -1
