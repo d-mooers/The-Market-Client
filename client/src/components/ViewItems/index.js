@@ -85,6 +85,7 @@ const ViewItems = (props) => {
 
   // Takes user to the page of the specified item
   const goToItem = (id) => props.history.push(`/item/${id}`);
+  const checkoutItem = (id) => props.history.push(`/checkout/${id}`);
 
   const map = (
     <Grid item className={classes.mapContainer}>
@@ -140,6 +141,7 @@ const ViewItems = (props) => {
               <ItemList
                 items={filteredListings(listings, categories, tags)}
                 goToItem={goToItem}
+                checkoutItem={checkoutItem}
               />
             )}
           </Grid>

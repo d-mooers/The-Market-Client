@@ -16,7 +16,6 @@ import {
   Button,
 } from "@material-ui/core";
 import { STATES } from "../../utils/constants";
-import ImageUploader from "react-images-upload";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -114,9 +113,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Form = (props) => {
-  const { fields, setFields, image, getImage, setImage } = props;
+  const { fields, setFields, image, sendTransaction } = props;
   const [copyShipping, setCopyShipping] = useState(false);
+  const [error, setError] = useState(false);
   const classes = useStyles({ uploadedImage: image });
+
+  const handleSubmit = () => {
+    const filledOut = Object.keys(fields).reduce(
+      (accum, field) => accum && !!fields[field],
+      true
+    );
+    setError(!filledOut);
+    if (filledOut) sendTransaction();
+  };
 
   useEffect(() => {
     if (copyShipping) {
@@ -125,6 +134,7 @@ const Form = (props) => {
         billingCity: fields.city,
         billingStreet: fields.street,
         billingPostalCode: fields.postalCode,
+        billingState: fields.state,
       });
     } else {
       setFields({
@@ -132,13 +142,13 @@ const Form = (props) => {
         billingCity: "",
         billingStreet: "",
         billingPostalCode: "",
+        billingState: "",
       });
     }
   }, [copyShipping]);
 
   const updateText = (field, e) => {
     setFields({ ...fields, [field]: e.target.value });
-    console.log(e.target.value);
   };
 
   const SectionHeader = ({ title }) => (
@@ -173,6 +183,8 @@ const Form = (props) => {
         label="Street Address"
         value={!!fields && fields.street}
         onChange={(e) => updateText("street", e)}
+        required
+        error={error && !fields.street}
         //className={classes.title}
       />
       <div className={`${classes.container} ${classes.cityAndState}`}>
@@ -180,38 +192,48 @@ const Form = (props) => {
           label="City"
           value={!!fields && fields.city}
           onChange={(e) => updateText("city", e)}
+          error={error && !fields.city}
         />
         {/* <TextField
           label="State"
           value={!!fields && fields.state}
           onChange={(e) => updateText("state", e)}
         /> */}
-        <DropDown values={STATES} fieldName="state" title="State" />
+        <DropDown
+          values={STATES}
+          fieldName="state"
+          title="State"
+          error={error && !fields.state}
+        />
       </div>
       <TextField
         label="Postal Code"
         value={!!fields && fields.postalCode}
         onChange={(e) => updateText("postalCode", e)}
         className={classes.postalCode}
+        error={error && !fields.postalCode}
       />
 
       <SectionHeader title="Payment Information" />
       <div className={classes.container}>
         <TextField
           label="Card Number"
-          value={!!fields && fields.title}
-          onChange={(e) => updateText("cardNumber", e)}
+          value={!!fields && fields.card}
+          onChange={(e) => updateText("card", e)}
           className={classes.title}
+          error={error && !fields.card}
         />
         <TextField
           label="Security Code"
           value={!!fields && fields.securityCode}
           onChange={(e) => updateText("securityCode", e)}
+          error={error && !fields.securityCode}
         />
         <TextField
           label="Expiration"
           value={!!fields && fields.expiration}
           onChange={(e) => updateText("expiration", e)}
+          error={error && !fields.expiration}
         />
       </div>
       <FormControlLabel
@@ -225,31 +247,44 @@ const Form = (props) => {
         label="Copy Shipping Address"
       />
       <TextField
-        label="Billing Address"
+        label={!copyShipping && "Billing Address"}
         value={!!fields && fields.billingStreet}
         onChange={(e) => updateText("billingStreet", e)}
+        error={error && !fields.billingStreet}
+
         //className={classes.title}
       />
       <div className={`${classes.container} ${classes.cityAndState}`}>
         <TextField
-          label="City"
+          label={!copyShipping && "City"}
           value={!!fields && fields.billingCity}
           onChange={(e) => updateText("billingCity", e)}
+          error={error && !fields.billingCity}
         />
         {/* <TextField
           label="State"
           value={!!fields && fields.state}
           onChange={(e) => updateText("state", e)}
         /> */}
-        <DropDown values={STATES} fieldName="billingState" title="State" />
+        <DropDown
+          values={STATES}
+          fieldName="billingState"
+          title="State"
+          error={error && !fields.billingState}
+        />
       </div>
       <TextField
-        label="Postal Code"
+        label={!copyShipping && "Postal Code"}
         value={!!fields && fields.billingPostalCode}
         onChange={(e) => updateText("billingPostalCode", e)}
         className={classes.postalCode}
+        error={error && !fields.postalCode}
       />
-      <Button className={classes.submitBtn} onClick={props.handleSubmit}>
+      <Button
+        className={classes.submitBtn}
+        onClick={handleSubmit}
+        variant="outlined"
+      >
         Submit
       </Button>
     </div>

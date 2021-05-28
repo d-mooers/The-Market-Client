@@ -31,7 +31,7 @@ def verifyAuthShape(auth: dict) -> list:
     return findMissingFields(auth, AUTH_FIELDS)
 
 def verifyTransacationShape(obj: dict) -> list:
-    TRANS_FIELDS = ['listingId', 'buyer', 'seller', 'date', 'card', 'street', 'city', 'state']
+    TRANS_FIELDS = ['listingId', 'buyer', 'date', 'card', 'street', 'city', 'state']
     return findMissingFields(obj, TRANS_FIELDS)
 
 

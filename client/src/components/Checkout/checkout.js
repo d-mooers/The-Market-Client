@@ -4,6 +4,10 @@ import { Typography, Paper, Grid, makeStyles, Button } from "@material-ui/core";
 import ItemInfo from "./ItemInfo";
 import CheckoutForm from "./CheckoutForm";
 import ItemPopUp from "./ItemPopUp";
+import { getItem, postTransaction } from "../../utils/requests/items";
+import UserContext from "../../UserContext";
+import { formatAuth } from "../../utils/utils";
+import Dialog from "../shared/Dialog";
 
 const listing = {
   title: "Bike",
@@ -11,6 +15,15 @@ const listing = {
   imgUrl:
     "https://target.scene7.com/is/image/Target/GUEST_9251c93b-9ab1-42d4-beed-5f2ea738a131?fmt=webp&wid=1400&qlt=80",
   description: "A super aweseom bike!",
+};
+
+const parseId = (path) => {
+  const toks = path.split("/");
+  if (toks.length !== 3) {
+    console.log("Not sure what to do here");
+    return null;
+  }
+  return toks[2];
 };
 
 const styles = makeStyles((theme) => ({
@@ -96,36 +109,98 @@ function goBack() {
 
 const Checkout = (props) => {
   const classes = styles();
+  const itemId = parseId(props.location.pathname);
+  const { user } = React.useContext(UserContext);
+
+  const [itemLoading, setItemLoading] = useState(true);
+  const [itemError, setItemError] = useState(false);
+  const [listing, setListing] = useState({});
+  const [postLoading, setPostLoading] = useState(false);
+  const [postError, setPostError] = useState("");
+  const [postSuccess, setPostSuccess] = useState(false);
+
   const [fields, setFields] = useState({
     card: "",
     street: "",
     city: "",
     state: "",
-    shippingSpeed: "",
   });
 
+  const fetchItem = async () => {
+    setItemLoading(true);
+    const resp = await getItem(itemId);
+    if (resp.success) {
+      setListing(resp.item);
+      setItemError(false);
+    } else {
+      setItemError(true);
+    }
+    setItemLoading(false);
+  };
+
+  const sendTransaction = async () => {
+    setPostLoading(true);
+    const resp = await postTransaction(
+      fields,
+      listing._id,
+      user._id,
+      formatAuth(user._id, user.authId)
+    );
+    if (resp.success) {
+      setPostError("");
+      setPostSuccess(true);
+    } else {
+      setPostError(resp.message);
+    }
+    setPostLoading(false);
+  };
+
+  useEffect(() => {
+    fetchItem();
+  }, []);
+
   return (
-    <Grid container xs={12} alignContent="center" direction="column">
-      <Grid
-        container
-        item
-        className={classes.containerInner}
-        direction="column"
-      >
-        <div className={classes.topContainer}>
-          <Typography variant="h2" className={classes.checkout}>
-            Checkout
-          </Typography>
-          <div className={classes.viewItem}>
-            <ItemPopUp {...listing} />
+    <>
+      <Dialog
+        open={postSuccess}
+        onClose={() => props.history.push("/browse")}
+        onAccept={() => props.history.push("/")}
+        closeButtonText="Browse"
+        title="Transaction Successful"
+        buttonText="To Home"
+        content="You should receive your item in the next 1 - 20 business days"
+      />
+      <Dialog
+        open={!!postError}
+        onClose={() => setPostError(false)}
+        onAccept={() => setPostError(false)}
+        title="Transaction Failed"
+        closeButtonText="Close"
+        content={`Reason: ${postError}`}
+      />
+
+      <Grid container xs={12} alignContent="center" direction="column">
+        <Grid
+          container
+          item
+          className={classes.containerInner}
+          direction="column"
+        >
+          <div className={classes.topContainer}>
+            <Typography variant="h2" className={classes.checkout}>
+              Checkout
+            </Typography>
+            <div className={classes.viewItem}>
+              <ItemPopUp {...listing} />
+            </div>
           </div>
-        </div>
-        {/* <ItemInfo {...listing} /> */}
-        <Grid item className={classes.formContainer}>
-          <CheckoutForm {...{ fields, setFields }} />
+          {/* <ItemInfo {...listing} /> */}
+          <Grid item className={classes.formContainer}>
+            <CheckoutForm {...{ fields, setFields, sendTransaction }} />
+          </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </>
   );
 
   // return (

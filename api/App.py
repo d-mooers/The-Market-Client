@@ -80,9 +80,9 @@ def register():
 @app.route('/transactions', methods=['POST'])
 def checkout():
     if request.method == 'POST':
-        userId, authId = decode(request.headers.get('Authorization'))
+        auth = request.headers
         transaction = request.get_json()
-        if (not verifyUser(userId, authId)) :
+        if (not verifyUser(auth['Auth'], auth['User'])) :
             return jsonify({'message': 'User is unauthorized'}), 401
         missingFields = verifyTransacationShape(transaction)
         if len(missingFields) > 0:

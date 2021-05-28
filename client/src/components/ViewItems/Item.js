@@ -48,7 +48,15 @@ const useStyles = makeStyles({
 export default function Item(props) {
   const classes = useStyles();
   const [hover, setHover] = useState(false);
-  const { title, price, description, imgUrl, handleClick, condition } = props;
+  const {
+    title,
+    price,
+    description,
+    imgUrl,
+    handleClick,
+    condition,
+    checkout,
+  } = props;
 
   return (
     <Grid item xl={4} lg={4} md={4} sm={5}>

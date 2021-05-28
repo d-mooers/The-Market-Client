@@ -59,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.accent2,
     "&:hover": {
       background: "none",
-      color: "#d729ec",
+      color: "white",
       textShadow: "none",
     },
   },
