@@ -7,9 +7,16 @@ import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import UserContext from "../../UserContext";
-import { getUserItems } from "../../utils/requests/items";
+import { getUserItems, deleteUserItems } from "../../utils/requests/items";
+import { removeAccount } from "../../utils/requests/accounts";
 import ItemList from "../ViewItems/ItemList";
 import Loading from "../shared/Loading";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -17,9 +24,15 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
     },
   },
-  button: {
+  button1: {
+    marginTop: "1.5rem",
     marginLeft: "45rem",
-    marginBottom: "3rem",
+    marginBottom: "2rem",
+  },
+  button2: {
+    marginLeft: "43rem",
+    marginBottom: "2rem",
+    
   },
   styledText: {
     background: `linear-gradient(${theme.palette.accent1}, ${theme.palette.accent2})`,
@@ -74,6 +87,17 @@ const AccordionDetails = withStyles((theme) => ({
 }))(MuiAccordionDetails);
 
 const ProfilePage = (props) => {
+    const [open, setOpen] = React.useState(false);
+  
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+    };
+
+
   const [expanded, setExpanded] = React.useState("panel1");
   const { user, setUser } = React.useContext(UserContext);
 
@@ -95,6 +119,16 @@ const ProfilePage = (props) => {
       setError(false);
     } else setError(true);
     setLoading(false);
+  };
+
+  const deleteAccount = async () => {
+    const resp = await removeAccount(user._id);
+    console.log(resp);
+  };
+
+  const removeUserItems = async () => {
+    const resp = await deleteUserItems(user._id);
+    console.log(resp);
   };
 
   useEffect(() => {
@@ -158,7 +192,7 @@ const ProfilePage = (props) => {
         </Grid>] }
         
         <Button
-          className={classes.button}
+          className={classes.button1}
           variant="contained"
           color="secondary"
           onClick={() => {
@@ -168,6 +202,43 @@ const ProfilePage = (props) => {
         >
           LOG OUT
         </Button>
+
+        <Button
+          className={classes.button2}
+          variant="contained"
+          color="secondary"
+          onClick={handleClickOpen}
+        >
+          DELETE ACCOUNT
+        </Button>
+        <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{"Are you sure you want to delete your account?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Deleting your account will remove you and all your listed items off our website. Are you sure you want continue?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            No
+          </Button>
+          <Button onClick={() => {
+                  handleClose()
+                  removeUserItems()
+                  deleteAccount()
+                  setUser({})
+                  props.history.push("/login");
+                  }}
+                  color="primary" autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
       </div>
     );  
 };

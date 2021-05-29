@@ -12,9 +12,6 @@ import ListItemPage from "./containers/ListItemPage";
 import Checkout from "./containers/CheckoutContainer";
 import { UserProvider } from "./UserContext";
 
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-
-
 const RoutedHeader = withRouter(Header);
 
 const App = () => {
