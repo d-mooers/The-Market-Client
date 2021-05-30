@@ -6,7 +6,6 @@ const USERS = "users";
 
 export const removeAccount = async (accId) => {
   const url = `${BASE_URL}${USERS}/${accId}`;
-  //console.log(auth);
   try {
     const resp = await axios.delete(url);
     console.log(resp);

@@ -47,10 +47,7 @@ export const getUserItems = async (ownId) => {
 export const deleteUserItems = async (ownId) => {
   const url = `${BASE_URL}${ITEMS}?owner=${ownId}`;
   try {
-    console.log("got in")
-    console.log(url)
     const resp = await axios.delete(url);
-    console.log("got out")
     console.log(resp.data.listings);
     const listings = resp.data.listings.map((l) => ({
       ...l,

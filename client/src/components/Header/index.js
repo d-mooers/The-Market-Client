@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     transition: "all 0.5s ease-in",
 
     "&:hover": {
-      background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+      background: `linear-gradient(${theme.palette.accent1}, ${theme.palette.accent2})`,
       transition: "all 0.5s ease-in",
     },
 
