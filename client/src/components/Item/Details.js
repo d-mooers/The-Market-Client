@@ -39,6 +39,7 @@ const Details = (props) => {
     isOwner,
     handleDelete,
     askQuestion,
+    checkout,
   } = props;
   const classes = useStyles();
   console.log(props);
@@ -67,10 +68,7 @@ const Details = (props) => {
           </Button>
         ) : (
           <Box className={classes.buttonGroup}>
-            <Button
-              className={classes.button}
-              onClick={() => console.log("User wants to purchase")}
-            >
+            <Button className={classes.button} onClick={checkout}>
               Purchase
             </Button>
             <Button onClick={askQuestion} className={classes.button}>

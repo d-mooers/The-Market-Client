@@ -1,8 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from Utils import verifyListingShape, verifyUserShape, verifyUser, verifyLoginShape, verifyAuthShape, verifyMessageShape
-from Models import Listings, User, Messages
-from datetime import date, datetime, time
+from Utils import verifyListingShape, verifyUserShape, verifyUser, verifyLoginShape, verifyAuthShape, verifyTransacationShape, verifyMessageShape
+from Models import Listings, User, Transaction, Messages
 from basicauth import decode
 app = Flask(__name__)
 CORS(app)
@@ -116,3 +115,26 @@ def post_messages():
     # optionally: add if boolean for both parties = false then delete from database
     if request.method == 'DELETE':
         return -1
+    
+@app.route('/transactions', methods=['POST'])
+def checkout():
+    if request.method == 'POST':
+        auth = request.headers
+        transaction = request.get_json()
+        if (not verifyUser(auth['Auth'], auth['User'])) :
+            return jsonify({'message': 'User is unauthorized'}), 401
+        missingFields = verifyTransacationShape(transaction)
+        if len(missingFields) > 0:
+            return jsonify({"message": "Bad request, missing fields",
+                "details": missingFields}), 400
+        if transaction['card'][-4:] == "1111":
+            return jsonify({'message': 'Card rejected!'}), 403
+
+        listing = Listings({'_id': transaction['listingId']})
+        listing.reload()
+        transaction['listing'] = listing
+        listing.remove()
+        toAdd = Transaction(transaction)
+        toAdd.save()
+        return jsonify('success'), 201
+ 

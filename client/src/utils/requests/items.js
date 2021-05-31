@@ -5,21 +5,21 @@ const BASE_URL = config.api_base.development;
 const ITEMS = "items";
 
 export const getItems = async () => {
-    const url = `${BASE_URL}${ITEMS}`;
-    try {
-      const resp = await axios.get(url);
-      console.log(resp.data.listings);
-      return {
-        success: resp.status === 200,
-        listings: resp.data.listings,
-      };
-    } catch (e) {
-      console.log(e);
-      return {
-        success: false,
-        err: e,
-      };
-    }
+  const url = `${BASE_URL}${ITEMS}`;
+  try {
+    const resp = await axios.get(url);
+    console.log(resp.data.listings);
+    return {
+      success: resp.status === 200,
+      listings: resp.data.listings,
+    };
+  } catch (e) {
+    console.log(e);
+    return {
+      success: false,
+      err: e,
+    };
+  }
 };
 
 export const getUserItems = async (ownId) => {
@@ -43,7 +43,6 @@ export const getUserItems = async (ownId) => {
     };
   }
 };
-
 
 export const getItem = async (id) => {
   const url = `${BASE_URL}${ITEMS}/${id}`;
@@ -101,6 +100,34 @@ export const deleteItem = async (itemId, auth) => {
     return {
       success: false,
       data: e.data,
+    };
+  }
+};
+
+export const postTransaction = async (transObj, listingId, buyerId, auth) => {
+  const url = `${BASE_URL}transactions`;
+  const data = {
+    listingId: listingId,
+    buyer: buyerId,
+    date: Date.now(),
+    card: transObj.card,
+    street: transObj.street,
+    city: transObj.city,
+    state: transObj.state,
+  };
+  try {
+    const resp = await axios.post(url, data, {
+      headers: {
+        ...auth,
+      },
+    });
+    return {
+      success: resp.status === 201,
+    };
+  } catch (e) {
+    return {
+      success: false,
+      message: "Card declined.",
     };
   }
 };

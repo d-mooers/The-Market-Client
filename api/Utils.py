@@ -35,6 +35,10 @@ def verifyAuthShape(auth: dict) -> list:
     AUTH_FIELDS = ['authId', '_id']
     return findMissingFields(auth, AUTH_FIELDS)
 
+def verifyTransacationShape(obj: dict) -> list:
+    TRANS_FIELDS = ['listingId', 'buyer', 'date', 'card', 'street', 'city', 'state']
+    return findMissingFields(obj, TRANS_FIELDS)
+
 
 def verifyUser(authId, userId) -> bool:
     user = User({'_id': userId})
