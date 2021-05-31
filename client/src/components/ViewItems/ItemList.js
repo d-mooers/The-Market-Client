@@ -10,6 +10,7 @@ const ItemList = (props) => {
           {...itm}
           key={`itm-${i}`}
           handleClick={() => props.goToItem(itm._id)}
+          checkout={() => props.checkoutItem(itm._id)}
         />
       ))}
     </Grid>

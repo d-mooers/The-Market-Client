@@ -43,8 +43,9 @@ const filteredListings = (listings, categories, tags) => {
     filtered = listings.filter((listing) => !!categories[listing.category]);
   console.log(filtered);
   if (tags.size > 0)
-    filtered = filtered.filter((l) =>
-      l.tags.reduce((accum, tag) => accum || tags.has(tag), false)
+    filtered = filtered.filter(
+      (l) =>
+        !!l.tags && l.tags.reduce((accum, tag) => accum || tags.has(tag), false)
     );
   return filtered;
 };
@@ -84,6 +85,7 @@ const ViewItems = (props) => {
 
   // Takes user to the page of the specified item
   const goToItem = (id) => props.history.push(`/item/${id}`);
+  const checkoutItem = (id) => props.history.push(`/checkout/${id}`);
 
   const map = (
     <Grid item className={classes.mapContainer}>
@@ -139,6 +141,7 @@ const ViewItems = (props) => {
               <ItemList
                 items={filteredListings(listings, categories, tags)}
                 goToItem={goToItem}
+                checkoutItem={checkoutItem}
               />
             )}
           </Grid>

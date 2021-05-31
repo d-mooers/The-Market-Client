@@ -50,6 +50,8 @@ const ItemView = (props) => {
   const [deleteClicked, setDeleteClicked] = useState(false);
   const [deleteError, setDeleteErorr] = useState(false);
 
+  const checkoutItem = () => props.history.push(`/checkout/${id}`);
+
   const classes = useStyles();
   const fetchItem = async () => {
     setLoading(true);
@@ -149,6 +151,7 @@ const ItemView = (props) => {
             {...item}
             isOwner={item.owner == user._id}
             handleDelete={() => setDeleteClicked(true)}
+            checkout={checkoutItem}
           />
         </Grid>
       </Grid>

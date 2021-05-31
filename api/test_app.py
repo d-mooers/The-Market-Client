@@ -27,4 +27,4 @@ def test_find_listing_by_Id():
 def test_login():
     expectedUserName = 'Test Test'
     user = User().getUserByEmailPass("test@test.com", "1234")
-    assert user['username'] == expectedUserName
+    assert user is None

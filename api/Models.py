@@ -99,3 +99,24 @@ class User(Model):
     def addUser(self):
         self['authId'] = uuid.uuid4()
         self.save()
+
+
+class Transaction(Model):
+    load_dotenv()
+    MONGODB_URI = os.environ['MONGODB_URI']
+    db_client = pymongo.MongoClient(MONGODB_URI)
+    db = db_client['users']
+
+    collection = db.db_client['transactions']
+
+    def find_all(self):
+        transactions = list(self.collection.find())
+        for transaction in transactions:
+            transaction["_id"] = str(transaction['_id'])
+        return transactions
+
+    def find_seller_transactions(self, ownerId):
+        transactions = list(self.collection.find({ "seller" : ownerId}))
+        for transaction in transactions:
+            transaction["_id"] = str(transaction['_id'])
+        return transactions

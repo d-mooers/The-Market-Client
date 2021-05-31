@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from Utils import verifyListingShape, verifyUserShape, verifyUser, verifyLoginShape, verifyAuthShape
-from Models import Listings, User
+from Utils import verifyListingShape, verifyUserShape, verifyUser, verifyLoginShape, verifyAuthShape, verifyTransacationShape
+from Models import Listings, User, Transaction
 from basicauth import decode
 app = Flask(__name__)
 CORS(app)
@@ -76,3 +76,26 @@ def register():
         user = User(newUser)
         user.addUser()
         return jsonify(user), 201
+    
+@app.route('/transactions', methods=['POST'])
+def checkout():
+    if request.method == 'POST':
+        auth = request.headers
+        transaction = request.get_json()
+        if (not verifyUser(auth['Auth'], auth['User'])) :
+            return jsonify({'message': 'User is unauthorized'}), 401
+        missingFields = verifyTransacationShape(transaction)
+        if len(missingFields) > 0:
+            return jsonify({"message": "Bad request, missing fields",
+                "details": missingFields}), 400
+        if transaction['card'][-4:] == "1111":
+            return jsonify({'message': 'Card rejected!'}), 403
+
+        listing = Listings({'_id': transaction['listingId']})
+        listing.reload()
+        transaction['listing'] = listing
+        listing.remove()
+        toAdd = Transaction(transaction)
+        toAdd.save()
+        return jsonify('success'), 201
+ 
