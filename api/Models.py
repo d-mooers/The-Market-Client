@@ -63,7 +63,7 @@ class Messages(Model):
         messages = sent + receieved
         for msg in messages:
             msg["_id"] = str(msg['_id'])
-        return res
+        return messages
 
 
 

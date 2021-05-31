@@ -87,9 +87,11 @@ def register():
 def get_messages(id):
     subject = request.args.get('subject')
     if subject:
-        return jsonify({"messages": Messages().find_conversation(id, subject)}), 200
-    return jsonify({"messages": Messages().find_all(id)}), 200
-
+        messages = Messages().find_conversation(id, subject)
+    else:
+        messages = Messages().find_all(id)
+    messages.sort(key=(lambda m: m['date']))
+    return jsonify({'messages': messages}), 200
 
 # POST: time and date taken from datetime import, user info passed. Verify all fields and save to collection
 # POST: sender/reciever info must be passed. Must be user._id NOT username
