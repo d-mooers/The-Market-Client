@@ -56,6 +56,15 @@ class Messages(Model):
             if msg['sender'] == user_id or msg['reciever'] == user_id:
                 res.append(msg)
         return res
+    
+    def find_conversation(self, user_id, subject):
+        sent = list(self.collection.find({'subject': subject, 'sender': user_id}))
+        receieved = list(self.collection.find({'subject': subject, 'receiver': user_id}))
+        messages = sent + receieved
+        for msg in messages:
+            msg["_id"] = str(msg['_id'])
+        return res
+
 
 
 class Listings(Model):

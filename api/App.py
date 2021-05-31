@@ -85,6 +85,9 @@ def register():
 # sender/reciever info is decoded in user._id - you will have to find the user in the data base to conver to username
 @app.route('/messages/<id>', methods=['GET'])
 def get_messages(id):
+    subject = request.args.get('subject')
+    if subject:
+        return jsonify({"messages": Messages().find_conversation(id, subject)}), 200
     return jsonify({"messages": Messages().find_all(id)}), 200
 
 

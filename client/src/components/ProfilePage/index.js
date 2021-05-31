@@ -11,16 +11,32 @@ import { getUserItems } from "../../utils/requests/items";
 import ItemList from "../ViewItems/ItemList";
 import Loading from "../shared/Loading";
 import styled from "styled-components";
+import MessageSummary from "../Messages/MessageSummary";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: "flex",
+    flexDirection: "column",
     "& > *": {
       margin: theme.spacing(1),
     },
   },
+  container: {
+    width: "90%",
+    padding: "1rem",
+    display: "flex",
+    justifyContent: "space-around",
+  },
+  accordions: {
+    width: "min(1280px, 70%)",
+  },
   button: {
-    marginLeft: "45rem",
-    marginBottom: "3rem",
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "fit-content",
+    padding: "0.5rem",
+    paddingRight: "1rem",
+    paddingLeft: "1rem",
   },
 }));
 
@@ -109,31 +125,42 @@ const ProfilePage = (props) => {
   };
 
   return (
-    <div>
-      <Accordion
-        square
-        expanded={expanded === "panel1"}
-        onChange={handleChange("panel1")}
-      >
-        <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-          <Typography>Username</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>{user.username}</Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion
-        square
-        expanded={expanded === "panel2"}
-        onChange={handleChange("panel2")}
-      >
-        <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-          <Typography>Email</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>{user.email}</Typography>
-        </AccordionDetails>
-      </Accordion>
+    <div className={classes.root}>
+      <div className={classes.container}>
+        <div className={classes.accordions}>
+          <Accordion
+            square
+            expanded={expanded === "panel1"}
+            onChange={handleChange("panel1")}
+          >
+            <AccordionSummary
+              aria-controls="panel1d-content"
+              id="panel1d-header"
+            >
+              <Typography>Username</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>{user.username}</Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            square
+            expanded={expanded === "panel2"}
+            onChange={handleChange("panel2")}
+          >
+            <AccordionSummary
+              aria-controls="panel2d-content"
+              id="panel2d-header"
+            >
+              <Typography>Email</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>{user.email}</Typography>
+            </AccordionDetails>
+          </Accordion>
+        </div>
+        <MessageSummary history={props.history} />
+      </div>
 
       {listings.length > 0 ? (
         <>
