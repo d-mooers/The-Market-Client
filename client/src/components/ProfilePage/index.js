@@ -204,8 +204,8 @@ const ProfilePage = (props) => {
 
       {listings.length > 0 ? (
         <>
-          <h1 className="Title">
-            <StyledText>Your listed items</StyledText>
+          <h1 className={classes.StyledText}>
+            Your listed items
           </h1>
 
           <Grid item xl={7} lg={9} md={9} sm={9}>
@@ -217,8 +217,8 @@ const ProfilePage = (props) => {
           </Grid>
         </>
       ) : (
-        <h1 className="Title">
-          <StyledText>You have no items up for sale</StyledText>
+        <h1 className={classes.StyledText}>
+          You have no items up for sale
         </h1>
       )}
 
