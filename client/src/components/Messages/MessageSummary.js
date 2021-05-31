@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles, Typography } from "@material-ui/core";
+import { getMessageSummary } from "../../utils/requests/messages";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const messages = [
   {
-    subject: "Toyota Tacoma",
+    subject: "Inquiry on a bike",
     user_1: "1234",
     user_2: "5678",
   },
@@ -38,8 +39,23 @@ const messages = [
 const MessageSummary = (props) => {
   const classes = useStyles();
   const { userId } = props;
+  const [messages, setMessages] = useState([]);
+
+  const fetchMessages = async () => {
+    const resp = await getMessageSummary(userId);
+    if (resp.success) {
+      setMessages(resp.messageSummaries);
+    }
+  };
+
+  useEffect(() => fetchMessages(), []);
+
+  const goToMessage = (subject) => {
+    props.history.push("/messages/" + subject);
+  };
+
   const summaries = messages.map((m) => (
-    <div className={classes.message}>
+    <div className={classes.message} onClick={() => goToMessage(m.subject)}>
       <Typography variant="h6">{m.subject}</Typography>
       <Typography variant="subtitle1">
         From: {m.user_1 == userId ? m.user_2 : m.user_1}

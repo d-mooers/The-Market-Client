@@ -53,7 +53,7 @@ class Messages(Model):
             msg["_id"] = str(msg['_id'])
         res = list()
         for msg in messages:
-            if msg['sender'] == user_id or msg['reciever'] == user_id:
+            if msg['sender'] == user_id or msg['receiver'] == user_id:
                 res.append(msg)
         return res
     

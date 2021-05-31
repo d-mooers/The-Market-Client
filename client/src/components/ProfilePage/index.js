@@ -128,6 +128,7 @@ const ProfilePage = (props) => {
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.accordions}>
+          <Typography variant="h6">User Info</Typography>
           <Accordion
             square
             expanded={expanded === "panel1"}
@@ -159,7 +160,7 @@ const ProfilePage = (props) => {
             </AccordionDetails>
           </Accordion>
         </div>
-        <MessageSummary history={props.history} />
+        <MessageSummary history={props.history} userId={user._id} />
       </div>
 
       {listings.length > 0 ? (

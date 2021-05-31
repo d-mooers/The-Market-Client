@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Paper, makeStyles, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -9,16 +9,19 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     marginTop: "1rem",
+    borderRadius: "2rem",
   },
   rootSent: {
     background: theme.palette.accent1Light,
     marginLeft: "auto",
-    minWidth: "60%",
+    minWidth: "55%",
+    paddingRight: "2rem",
   },
   rootReceived: {
     background: theme.palette.lightGrey,
     marginRight: "auto",
-    minWidth: "60%",
+    minWidth: "55%",
+    paddingLeft: "2rem",
   },
   recieved: {
     marginRight: "auto",
@@ -40,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
 const Message = (props) => {
   const { from, message } = props;
   const classes = useStyles();
+
   return (
     <Paper
       className={`${classes.root} ${

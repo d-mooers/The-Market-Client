@@ -45,8 +45,7 @@ export const getMessageSummary = async (id) => {
 };
 
 export const getConversation = async (id, subject) => {
-  const formattedSubject = document.write(encodeURIComponent(subject.trim()));
-  const url = `${config.api_base.development}messages/${id}?subject=${formattedSubject}`;
+  const url = `${config.api_base.development}messages/${id}?subject=${subject}`;
   try {
     const resp = await axios.get(url);
     return {
@@ -62,5 +61,17 @@ export const getConversation = async (id, subject) => {
 };
 
 export const sendMessage = async (message) => {
-  return;
+  const url = `${config.api_base.development}messages`;
+  try {
+    const resp = await axios.post(url, message);
+    return {
+      success: resp.status === 201,
+      message: resp.data,
+    };
+  } catch (e) {
+    return {
+      success: false,
+      error: e,
+    };
+  }
 };

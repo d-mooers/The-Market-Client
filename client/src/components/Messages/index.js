@@ -1,6 +1,16 @@
-import React, { useState } from "react";
-import { Grid, makeStyles, Typography, Divider } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import {
+  Grid,
+  makeStyles,
+  Typography,
+  TextField,
+  Button,
+} from "@material-ui/core";
 import Message from "./Message";
+import UserContext from "../../UserContext";
+import { getConversation, sendMessage } from "../../utils/requests/messages";
+import Loading from "../shared/Loading";
+import { GiClawSlashes } from "react-icons/gi";
 
 const messages = {
   subject: "Test messages",
@@ -29,13 +39,88 @@ const useStyles = makeStyles((theme) => ({
     marginRight: "auto",
     marginLeft: "auto",
   },
+  textInput: {
+    marginTop: "3rem",
+  },
 }));
 
-const Messages = (props) => {
-  const user = {
-    _id: "1234",
+const parseSubject = (path) => {
+  const toks = path.split("/");
+  if (toks.length < 3) {
+    console.log("Not sure what to do here");
+    return null;
+  }
+  if (toks.length === 3)
+    return {
+      subject: toks[2],
+    };
+  return {
+    subject: toks[2],
+    to: toks[3],
   };
-  return (
+};
+
+const Messages = (props) => {
+  const { subject, to } = parseSubject(props.location.pathname);
+  const classes = useStyles();
+  const { user } = React.useContext(UserContext);
+  const [messages, setMessages] = useState({
+    subject: "",
+    messages: [],
+  });
+  const [otherUser, setOtherUser] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const [newMessage, setNewMessage] = useState("");
+
+  const fetchConversation = async () => {
+    setLoading(true);
+    const resp = await getConversation(user._id, subject);
+    if (resp.success) {
+      setMessages(resp.conversation);
+      setError(false);
+      if (resp.conversation.messages.length === 0) {
+        setOtherUser(to);
+      } else {
+        setOtherUser(
+          resp.conversation.messages[0].receiver === user._id
+            ? resp.conversation.messages[0].sender
+            : resp.conversation.messages[0].receiver
+        );
+      }
+    } else {
+      setError(true);
+    }
+    setLoading(false);
+  };
+
+  const handleSend = async () => {
+    const payload = {
+      subject: subject,
+      sender: user._id,
+      receiver: otherUser,
+      message: newMessage,
+    };
+    setLoading(true);
+    const resp = await sendMessage(payload);
+    if (resp.success) {
+      setError(false);
+      setMessages({
+        ...messages,
+        messages: [...messages.messages, resp.message],
+      });
+      setNewMessage("");
+    } else {
+      setError(true);
+    }
+    setLoading(false);
+  };
+
+  useEffect(() => fetchConversation(), []);
+
+  return loading ? (
+    <Loading />
+  ) : (
     <Grid container xs={12} justify="center">
       <Grid container item xs={9} justify="center" spacing={1}>
         <Grid item container xs={12} justify="center">
@@ -45,11 +130,27 @@ const Messages = (props) => {
         {messages.messages.map((m) => (
           <Grid item xs={8}>
             <Message
-              from={m.from === user._id ? "You" : m.from}
+              from={m.sender === user._id ? "You" : m.sender}
               message={m.message}
             />
           </Grid>
         ))}
+        <Grid item container xs={8} className={classes.textInput}>
+          <Grid item xs={10}>
+            <TextField
+              fullWidth
+              multiline
+              rows={3}
+              variant="outlined"
+              label="Type a message..."
+              onChange={(e) => setNewMessage(e.target.value)}
+              value={newMessage}
+            />
+          </Grid>
+          <Grid item container alignItems="center" xs={2}>
+            <Button onClick={handleSend}>Send</Button>
+          </Grid>
+        </Grid>
       </Grid>
     </Grid>
   );
