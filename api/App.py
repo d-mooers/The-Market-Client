@@ -90,7 +90,7 @@ def get_messages(id):
         messages = Messages().find_conversation(id, subject)
     else:
         messages = Messages().find_all(id)
-    messages.sort(key=(lambda m: m['date']))
+    messages.sort(key=(lambda m: m['date'] + m['time']))
     return jsonify({'messages': messages}), 200
 
 # POST: time and date taken from datetime import, user info passed. Verify all fields and save to collection
