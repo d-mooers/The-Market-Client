@@ -26,9 +26,18 @@ def verifyLoginShape(login: dict) -> list:
     return findMissingFields(login, LOGIN_FIELDS)
 
 
+def verifyMessageShape(msg: dict) -> list:
+    MSG_FIELDS = ['sender', 'receiver', 'message', 'subject']
+    return findMissingFields(msg, MSG_FIELDS)
+
+
 def verifyAuthShape(auth: dict) -> list:
     AUTH_FIELDS = ['authId', '_id']
     return findMissingFields(auth, AUTH_FIELDS)
+
+def verifyTransacationShape(obj: dict) -> list:
+    TRANS_FIELDS = ['listingId', 'buyer', 'date', 'card', 'street', 'city', 'state']
+    return findMissingFields(obj, TRANS_FIELDS)
 
 
 def verifyUser(authId, userId) -> bool:

@@ -50,6 +50,8 @@ const ItemView = (props) => {
   const [deleteClicked, setDeleteClicked] = useState(false);
   const [deleteError, setDeleteErorr] = useState(false);
 
+  const checkoutItem = () => props.history.push(`/checkout/${id}`);
+
   const classes = useStyles();
   const fetchItem = async () => {
     setLoading(true);
@@ -77,6 +79,13 @@ const ItemView = (props) => {
   useEffect(() => {
     fetchItem();
   }, []);
+
+  const askQuestion = () => {
+    const subject = `Inquiry on ${item.title}`;
+    const to = item.owner;
+    const newPath = `/messages/${subject}/${to}`;
+    props.history.push(newPath);
+  };
 
   return loading || error ? (
     <>
@@ -149,6 +158,8 @@ const ItemView = (props) => {
             {...item}
             isOwner={item.owner == user._id}
             handleDelete={() => setDeleteClicked(true)}
+            askQuestion={askQuestion}
+            checkout={checkoutItem}
           />
         </Grid>
       </Grid>

@@ -29,6 +29,25 @@ const useStyles = makeStyles((theme) => ({
     margin: '0',
     marginLeft: '1rem',
   },
+  bouncyText: {
+    margin: 0,
+    padding: 0,
+    animation: "1s ease-in 0s 1 $bounce",
+    "&:hover": {
+      animation: "1s ease-in 0s 1 $bounce",
+    },
+  },
+  "@keyframes bounce": {
+    "0%": {
+      transform: "translate3d(0, 0, 0)",
+    },
+    "50%": {
+      transform: "translate3d(0, 100%, 0)",
+    },
+    "0%": {
+      transform: "translate3d(0, 0, 0)",
+    },
+  },
 }));
 
 const LandingPage = (props) => {

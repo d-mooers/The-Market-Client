@@ -87,7 +87,7 @@ const Register = (props) => {
     ) {
       try {
         const resp = await axios.post("http://127.0.0.1:5000/users", {
-          ...user,
+          ...{ username: user.username, email: user.email },
           password: sha256(user.password),
         });
         setUser(resp.data);

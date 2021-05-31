@@ -17,9 +17,13 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+import styled from "styled-components";
+import MessageSummary from "../Messages/MessageSummary";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: "flex",
+    flexDirection: "column",
     "& > *": {
       margin: theme.spacing(1),
     },
@@ -42,6 +46,23 @@ const useStyles = makeStyles((theme) => ({
     margin: '0',
     marginLeft: '1rem',
     textAlign: "center",
+  },
+  container: {
+    width: "90%",
+    padding: "1rem",
+    display: "flex",
+    justifyContent: "space-around",
+  },
+  accordions: {
+    width: "min(1280px, 70%)",
+  },
+  button: {
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "fit-content",
+    padding: "0.5rem",
+    paddingRight: "1rem",
+    paddingLeft: "1rem",
   },
 }));
 
@@ -142,56 +163,66 @@ const ProfilePage = (props) => {
     setExpanded(newExpanded ? panel : false);
   };
 
-    return (
-      <div>
-        <Accordion
-          square
-          expanded={expanded === "panel1"}
-          onChange={handleChange("panel1")}
-        >
-          <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-            <Typography>Username</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{user.username}</Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion
-          square
-          expanded={expanded === "panel2"}
-          onChange={handleChange("panel2")}
-        >
-          <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-            <Typography>Email</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{user.email}</Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion
-          square
-          expanded={expanded === "panel3"}
-          onChange={handleChange("panel3")}
-        >
-          <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-            <Typography>Password</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{user.password}</Typography>
-          </AccordionDetails>
-        </Accordion>
+  return (
+    <div className={classes.root}>
+      <div className={classes.container}>
+        <div className={classes.accordions}>
+          <Typography variant="h6">User Info</Typography>
+          <Accordion
+            square
+            expanded={expanded === "panel1"}
+            onChange={handleChange("panel1")}
+          >
+            <AccordionSummary
+              aria-controls="panel1d-content"
+              id="panel1d-header"
+            >
+              <Typography>Username</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>{user.username}</Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            square
+            expanded={expanded === "panel2"}
+            onChange={handleChange("panel2")}
+          >
+            <AccordionSummary
+              aria-controls="panel2d-content"
+              id="panel2d-header"
+            >
+              <Typography>Email</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>{user.email}</Typography>
+            </AccordionDetails>
+          </Accordion>
+        </div>
+        <MessageSummary history={props.history} userId={user._id} />
+      </div>
 
-        {listings.length === 0 ? <h1 className={classes.styledText}>You have no items up for sale</h1>:
-        [<h1 className={classes.styledText}>Your listed items</h1>, 
+      {listings.length > 0 ? (
+        <>
+          <h1 className="Title">
+            <StyledText>Your listed items</StyledText>
+          </h1>
+
           <Grid item xl={7} lg={9} md={9} sm={9}>
-          {loading ? (
-            <Loading />
-          ) : (
-            <ItemList items={listings} goToItem={goToItem} />
-          )}
-        </Grid>] }
-        
-        <Button
+            {loading ? (
+              <Loading />
+            ) : (
+              <ItemList items={listings} goToItem={goToItem} />
+            )}
+          </Grid>
+        </>
+      ) : (
+        <h1 className="Title">
+          <StyledText>You have no items up for sale</StyledText>
+        </h1>
+      )}
+
+<Button
           className={classes.button1}
           variant="contained"
           color="secondary"
@@ -239,8 +270,8 @@ const ProfilePage = (props) => {
           </Button>
         </DialogActions>
       </Dialog>
-      </div>
-    );  
+    </div>
+  );
 };
 
 export default ProfilePage;

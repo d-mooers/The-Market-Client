@@ -17,6 +17,8 @@ const theme = createMuiTheme({
   palette: {
     accent1: "#2196F3",
     accent2: "#21CBF3",
+    accent1Light: "#2196f385",
+    lightGrey: "#dad7cd",
   },
 });
 

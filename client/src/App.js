@@ -10,6 +10,7 @@ import ViewProfilePage from "./containers/ViewProfilePage";
 import ViewLoginPage from "./containers/ViewLoginPage";
 import ListItemPage from "./containers/ListItemPage";
 import Checkout from "./containers/CheckoutContainer";
+import Messages from "./containers/MessagesContainer";
 import { UserProvider } from "./UserContext";
 
 const RoutedHeader = withRouter(Header);
@@ -39,6 +40,7 @@ const App = () => {
         <Route path="/questions" component={Questions} />
         <Route path="/register" exact component={Register} />
         <Route path="/checkout" component={Checkout} />
+        <Route path="/messages" component={Messages} />
         {/*Add new routes here!*/}
       </Suspense>
     </UserProvider>
