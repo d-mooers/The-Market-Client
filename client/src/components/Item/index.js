@@ -80,6 +80,13 @@ const ItemView = (props) => {
     fetchItem();
   }, []);
 
+  const askQuestion = () => {
+    const subject = `Inquiry on ${item.title}`;
+    const to = item.owner;
+    const newPath = `/messages/${subject}/${to}`;
+    props.history.push(newPath);
+  };
+
   return loading || error ? (
     <>
       <Dialog
@@ -151,6 +158,7 @@ const ItemView = (props) => {
             {...item}
             isOwner={item.owner == user._id}
             handleDelete={() => setDeleteClicked(true)}
+            askQuestion={askQuestion}
             checkout={checkoutItem}
           />
         </Grid>

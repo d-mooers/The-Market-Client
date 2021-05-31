@@ -38,6 +38,7 @@ const Details = (props) => {
     xs,
     isOwner,
     handleDelete,
+    askQuestion,
     checkout,
   } = props;
   const classes = useStyles();
@@ -70,10 +71,7 @@ const Details = (props) => {
             <Button className={classes.button} onClick={checkout}>
               Purchase
             </Button>
-            <Button
-              onClick={() => console.log("User wants to ask a question")}
-              className={classes.button}
-            >
+            <Button onClick={askQuestion} className={classes.button}>
               Ask A Question
             </Button>
           </Box>

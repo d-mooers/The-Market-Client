@@ -26,6 +26,11 @@ def verifyLoginShape(login: dict) -> list:
     return findMissingFields(login, LOGIN_FIELDS)
 
 
+def verifyMessageShape(msg: dict) -> list:
+    MSG_FIELDS = ['sender', 'receiver', 'message', 'subject']
+    return findMissingFields(msg, MSG_FIELDS)
+
+
 def verifyAuthShape(auth: dict) -> list:
     AUTH_FIELDS = ['authId', '_id']
     return findMissingFields(auth, AUTH_FIELDS)
