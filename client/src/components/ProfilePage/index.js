@@ -29,12 +29,13 @@ const useStyles = makeStyles((theme) => ({
   button1: {
     marginTop: "1.5rem",
     marginLeft: "45rem",
-    marginBottom: "2rem",
+    marginBottom: "1rem",
+    maxWidth: '100px',
   },
   button2: {
-    marginLeft: "43rem",
+    marginLeft: "42.75rem",
     marginBottom: "2rem",
-    
+    maxWidth: '170px',
   },
   styledText: {
     background: `linear-gradient(${theme.palette.accent1}, ${theme.palette.accent2})`,
