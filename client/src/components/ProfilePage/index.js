@@ -16,8 +16,6 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
-import styled from "styled-components";
 import MessageSummary from "../Messages/MessageSummary";
 
 const useStyles = makeStyles((theme) => ({
@@ -204,7 +202,7 @@ const ProfilePage = (props) => {
 
       {listings.length > 0 ? (
         <>
-          <h1 className={classes.StyledText}>
+          <h1 className={classes.styledText}>
             Your listed items
           </h1>
 
@@ -217,7 +215,7 @@ const ProfilePage = (props) => {
           </Grid>
         </>
       ) : (
-        <h1 className={classes.StyledText}>
+        <h1 className={classes.styledText}>
           You have no items up for sale
         </h1>
       )}
