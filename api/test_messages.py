@@ -34,9 +34,9 @@ def test_missing_two_fields(message_shape: dict):
 
 
 def test_find_all_messages():
-    assert len(Messages().find_all('60b4750fdf660cb51463eca3')) > 0
+    assert len(Messages().find_all('60ab1600e933a30ddc3ed417')) > 0
 
 
 def test_find_conversation():
     assert len(Messages().find_conversation(
-        '60b4750fdf660cb51463eca3', 'Inquiry on a bike')) > 0
+        '60ab1600e933a30ddc3ed417', 'Inquiry on a bike')) > 0
