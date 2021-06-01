@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import "./Register.css";
 import { Button, makeStyles, TextField } from "@material-ui/core";
-import Dialog from "../shared/Dialog"
+import Dialog from "../shared/Dialog";
 import LoginPage from "../LoginPage";
 import axios from "axios";
-import sha256 from 'js-sha256';
+import sha256 from "js-sha256";
+import styled from "styled-components";
+import UserContext from "../../UserContext";
 
 const styles = makeStyles((theme) => ({
   textBox: {
@@ -27,12 +29,11 @@ const styles = makeStyles((theme) => ({
 }));
 
 const Register = (props) => {
-
   const [userError, setUserError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [error, setError] = useState(false);
-  const [user, setUser] = useState({
+  const [user, setUserInfo] = useState({
     username: "",
     email: "",
     password: "",
@@ -87,39 +88,32 @@ const Register = (props) => {
   };
 
   const submitForm = async () => {
-
     // Place stuff in here to add person to database
     var validUser = validateUser();
     var validEmail = validateEmail();
     var validPassword = validatePassword();
-    if (
-      validUser === 0 &&
-      validEmail === 0 &&
-      validPassword === 0
-    ) {
-
-      let resp = getUser(user.email, user.password);
-      console.log("resp value: " + resp);
+    if (validUser === 0 && validEmail === 0 && validPassword === 0) {
+      let resp = await getUser(user.email, user.password);
+      console.log("resp value: " + resp.response.status);
       // resp.status == 200 means something was there
       // resp.status == 401 means the credentials were not taken
-      if (resp.status === 200) {
+      if (resp.response.status === 200) {
         console.log("Invalid credentials");
         setError(true);
-      }
-      else if (resp === 401) {
-        await axios.post("https://127.0.0.1/users", {
+      } else if (resp.response.status === 401) {
+        const newUser = await axios.post("http://127.0.0.1:5000/users", {
           username: user.username,
           password: sha256(user.password),
           email: user.email,
         });
-        window.location.href = "/browse";
+        setUser(newUser.data);
+        props.history.push("/browse");
       }
-    }
-    else {
+    } else {
       console.log("Bad field(s)");
       setError(true);
     }
-  }
+  };
 
   // does a GET /users call with temp's saved credentials
   async function getUser(emailID, passwordID) {
@@ -220,7 +214,11 @@ const Register = (props) => {
             label="Password"
             name="password"
             error={passwordError}
-            helperText={passwordError ? "Please check that passwords match and are longer than 7 characters": ""}
+            helperText={
+              passwordError
+                ? "Please check that passwords match and are longer than 7 characters"
+                : ""
+            }
             onChange={handleChange}
           />
           <br />
@@ -235,7 +233,7 @@ const Register = (props) => {
             error={passwordError}
             onChange={handleChange}
           />
-          <Dialog 
+          <Dialog
             title="Invalid Registration Info"
             description={`Invalid Registration`}
             closeButtonText="Close"
