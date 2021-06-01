@@ -155,9 +155,3 @@ class Transaction(Model):
         for transaction in transactions:
             transaction["_id"] = str(transaction['_id'])
         return transactions
-
-    def find_seller_transactions(self, ownerId):
-        transactions = list(self.collection.find({ "seller" : ownerId}))
-        for transaction in transactions:
-            transaction["_id"] = str(transaction['_id'])
-        return transactions
