@@ -18,8 +18,10 @@ class Model(dict):
         if not self._id:
             self.collection.insert(self)
         else:
+            id = ObjectId(self._id)
+            del self._id
             self.collection.update(
-                {"_id": ObjectId(self._id)}, self)
+                {"_id": id}, self)
         self._id = str(self._id)
 
     def reload(self):

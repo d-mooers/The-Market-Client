@@ -15,12 +15,12 @@ def transaction_shape():
     })
 
 
-def test_correct_shape(message_shape):
+def test_correct_shape(transaction_shape):
     EXPECTED = []
     assert verifyTransacationShape(transaction_shape) == EXPECTED
 
 
-def test_missing_one_field(message_shape: dict):
+def test_missing_one_field(transaction_shape: dict):
     INPUT = transaction_shape
     INPUT.pop('buyer')
     EXPECTED = ['buyer']
