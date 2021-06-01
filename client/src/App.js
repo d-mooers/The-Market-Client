@@ -10,6 +10,7 @@ import ViewProfilePage from "./containers/ViewProfilePage";
 import ViewLoginPage from "./containers/ViewLoginPage";
 import ListItemPage from "./containers/ListItemPage";
 import Checkout from "./containers/CheckoutContainer";
+import Messages from "./containers/MessagesContainer";
 import { UserProvider } from "./UserContext";
 
 const RoutedHeader = withRouter(Header);
@@ -19,8 +20,8 @@ const App = () => {
     username: "",
     email: "",
     password: "",
-    _id: "609cb2b88951a63fccdcf790",
-    authId: "db3edf52-df87-45b9-9ea5-cd3a38cc2807",
+    _id: "",
+    authId: "",
     loggedIn: false,
   });
   //const user = "hello";
@@ -39,6 +40,7 @@ const App = () => {
         <Route path="/questions" component={Questions} />
         <Route path="/register" exact component={Register} />
         <Route path="/checkout" component={Checkout} />
+        <Route path="/messages" component={Messages} />
         {/*Add new routes here!*/}
       </Suspense>
     </UserProvider>

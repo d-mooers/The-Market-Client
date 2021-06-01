@@ -11,9 +11,23 @@ const styles = makeStyles((theme) => ({
     margin: 10,
     width: "80%",
   },
+  button: {
+    background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+    borderRadius: 3,
+    border: 0,
+    color: "white",
+    height: 40,
+    padding: "0 30px",
+    "&:hover": {
+      opacity: 0.75,
+      transtion: "all 1s ease-in-out",
+      boxShadow: "0 3px 5px 2px rgb(0 121 255 / 30%)",
+    },
+  },
 }));
 
 const Register = (props) => {
+
   const [userError, setUserError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
@@ -25,10 +39,20 @@ const Register = (props) => {
     secondPass: "",
   });
 
+  const StyledText = styled.h1`
+    background-image: linear-gradient(#2196f3, #21cbf3);
+    font-size: 2.5rem;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+    margin-left: 1rem;
+  `;
+  const { setUser } = React.useContext(UserContext);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "username") {
-      setUser({
+      setUserInfo({
         username: value,
         email: user["email"],
         password: user["password"],
@@ -36,7 +60,7 @@ const Register = (props) => {
       });
       setUserError(false);
     } else if (name === "email") {
-      setUser({
+      setUserInfo({
         username: user["username"],
         email: value,
         password: user["password"],
@@ -44,7 +68,7 @@ const Register = (props) => {
       });
       setEmailError(false);
     } else if (name === "password") {
-      setUser({
+      setUserInfo({
         username: user["username"],
         email: user["email"],
         password: value,
@@ -52,7 +76,7 @@ const Register = (props) => {
       });
       setPasswordError(false);
     } else if (name === "secondPass") {
-      setUser({
+      setUserInfo({
         username: user["username"],
         email: user["email"],
         password: user["password"],
@@ -63,6 +87,7 @@ const Register = (props) => {
   };
 
   const submitForm = async () => {
+
     // Place stuff in here to add person to database
     var validUser = validateUser();
     var validEmail = validateEmail();
@@ -72,6 +97,7 @@ const Register = (props) => {
       validEmail === 0 &&
       validPassword === 0
     ) {
+
       let resp = getUser(user.email, user.password);
       console.log("resp value: " + resp);
       // resp.status == 200 means something was there
@@ -150,10 +176,14 @@ const Register = (props) => {
   // Make sure to place proper link going into the login page in the href
   return (
     <div>
-      <h1 className="Title">Register</h1>
+      <h1 className="Title">
+        <StyledText>Register</StyledText>
+      </h1>
       <div className="box">
         <center>
-          <h1>The Market</h1>
+          <h1>
+            <StyledText>The Market</StyledText>
+          </h1>
         </center>
         <form>
           <TextField
@@ -217,7 +247,7 @@ const Register = (props) => {
           <br />
 
           <center>
-            <Button variant="outlined" onClick={submitForm}>
+            <Button className={classes.button} onClick={submitForm}>
               Submit
             </Button>
           </center>
