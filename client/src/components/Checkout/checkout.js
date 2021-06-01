@@ -107,6 +107,14 @@ function goBack() {
   window.location.href = "/browse";
 }
 
+const DEFAULT_ITEM = {
+  title: "",
+  desc: "",
+  lngLat: [0, 0],
+  imgUrl: "",
+  id: "",
+};
+
 const Checkout = (props) => {
   const classes = styles();
   const itemId = parseId(props.location.pathname);
