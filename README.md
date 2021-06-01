@@ -2,6 +2,12 @@
 
 [![Build Status](https://www.travis-ci.com/d-mooers/The-Market-Client.svg?branch=development)](https://www.travis-ci.com/d-mooers/The-Market-Client)
 
+## Project Blurb
+
+## UI Prototype
+
+## Developer Env Set Up
+
 Style Guides used
 
 Prettier extension inside VS code (for JavaScript)
@@ -10,4 +16,13 @@ Prettier extension inside VS code (for JavaScript)
 
 Pycodestyle (for Python)
 - To install, run pip install pycodestyle
+
+`pip install -r ./api/requirements.txt`
+
+`cd client`
+`npm i`
+
+
+## Diagrams
+
 
