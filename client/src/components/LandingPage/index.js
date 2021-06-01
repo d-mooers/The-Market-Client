@@ -28,6 +28,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    justifyContent: "space-around",
+    height: "100vh",
   },
   h1: {
     fontSize: "10.0rem",
@@ -38,8 +40,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-between",
     padding: "2rem",
+    margin: "auto",
     background: "white",
-    marginTop: "5rem",
     borderRadius: "1rem",
     boxShadow: `0 0 20px 0 ${theme.palette.accent1}, inset 0 0 5px 0 ${theme.palette.accent1}`,
     alignItems: "center",
@@ -53,7 +55,6 @@ const useStyles = makeStyles((theme) => ({
     height: 48,
     padding: "0 30px",
     boxShadow: "0 3px 5px 2px rgb(0 121 255 / 30%)",
-    marginTop: "11.25rem",
   },
   logo: {
     width: "30%",
@@ -71,7 +72,7 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
     padding: 0,
     background: `linear-gradient(${theme.palette.accent1}, ${theme.palette.accent2})`,
-    fontSize: "10rem",
+    fontSize: "10em",
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
     transition: "all 0.2s linear",
@@ -83,9 +84,13 @@ const useStyles = makeStyles((theme) => ({
       textShadow: "3px 3px " + theme.palette.accent1,
       fontStretch: "condensed",
     },
+    "@media (max-width:1280px)": {
+      fontSize: "8em",
+    },
   },
   titleContainer: {
     display: "flex",
+    width: "65%",
   },
   space: {
     width: "1.5rem",
