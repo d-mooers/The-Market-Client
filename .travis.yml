@@ -20,4 +20,4 @@ jobs:
       install:
         - npm install
       script:
-        - npm run build
+        - CI=false npm run build
