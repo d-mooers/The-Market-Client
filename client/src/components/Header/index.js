@@ -7,6 +7,7 @@ import {
   makeStyles,
   Divider,
 } from "@material-ui/core";
+import UserContext from "../../UserContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,22 +39,26 @@ const useStyles = makeStyles((theme) => ({
   styledText: {
     background: `linear-gradient(${theme.palette.accent1}, ${theme.palette.accent2})`,
     fontSize: "2.5rem",
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    margin: '0',
-    marginLeft: '1rem',
-    cursor: 'pointer',
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    margin: "0",
+    marginLeft: "1rem",
+    cursor: "pointer",
   },
 }));
 
 const Header = (props) => {
   const classes = useStyles({ buttonIsBlue: true });
+  const { user } = React.useContext(UserContext);
 
   return props.location.pathname == "/" ? null : (
     <div className={classes.root}>
       <Grid container justify="space-between" align-items="center" spacing={0}>
         <Grid item xs={3} alignItems="flex-end">
-          <h1 className={classes.styledText} onClick={() => props.history.push("/")}>
+          <h1
+            className={classes.styledText}
+            onClick={() => props.history.push("/")}
+          >
             The Market
           </h1>
         </Grid>
@@ -64,26 +69,28 @@ const Header = (props) => {
           alignItems="center"
           className={classes.buttonGroup}
         >
-          <ButtonGroup size="small" aria-label="website router">
-            <Button
-              onClick={() => props.history.push("/browse")}
-              className={classes.button}
-            >
-              Buy
-            </Button>
-            <Button
-              onClick={() => props.history.push("/sell")}
-              className={classes.button}
-            >
-              Sell
-            </Button>
-            <Button
-              onClick={() => props.history.push("/profile")}
-              className={classes.button}
-            >
-              Profile
-            </Button>
-          </ButtonGroup>
+          {!!user._id && (
+            <ButtonGroup size="small" aria-label="website router">
+              <Button
+                onClick={() => props.history.push("/browse")}
+                className={classes.button}
+              >
+                Buy
+              </Button>
+              <Button
+                onClick={() => props.history.push("/sell")}
+                className={classes.button}
+              >
+                Sell
+              </Button>
+              <Button
+                onClick={() => props.history.push("/profile")}
+                className={classes.button}
+              >
+                Profile
+              </Button>
+            </ButtonGroup>
+          )}
         </Grid>
       </Grid>
       <Divider />

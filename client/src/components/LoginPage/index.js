@@ -11,6 +11,13 @@ import Dialog from "../shared/Dialog";
 import axios from "axios";
 
 const styles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    justifyItems: "center",
+    height: "80vh",
+  },
   textBox: {
     margin: 10,
     width: "80%",
@@ -27,14 +34,13 @@ const styles = makeStyles((theme) => ({
   styledText: {
     background: `linear-gradient(${theme.palette.accent1}, ${theme.palette.accent2})`,
     fontSize: "2.5rem",
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    margin: '0',
-    marginLeft: '1rem',
-    textAlign: 'center',
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    margin: "0",
+    marginLeft: "1rem",
+    textAlign: "center",
   },
 }));
-
 
 // const [state name, function to update state]
 // body = default state
@@ -133,10 +139,10 @@ const LoginPage = (props) => {
   }
 
   return (
-    <div>
-        <h1 className={classes.styledText}>Login</h1>
+    <div className={classes.root}>
+      <h1 className={classes.styledText}>Login</h1>
       <div className="box">
-            <h1 className={classes.styledText}>The Market</h1>
+        <h1 className={classes.styledText}>The Market</h1>
         <form>
           <InputField
             handleChange={handleChange}
