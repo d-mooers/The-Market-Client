@@ -45,13 +45,12 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "2.5rem",
     WebkitBackgroundClip: "text",
     WebkitTextFillColor: "transparent",
-    margin: "0",
-    marginLeft: "1rem",
+    marginBottom: "2rem",
     textAlign: "center",
   },
   container: {
     width: "90%",
-    padding: "1rem",
+    padding: "0rem",
     display: "flex",
     //justifyContent: "space-evenly",
   },
@@ -67,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: "1rem",
   },
   itemView: {
-    marginTop: "10rem",
+    marginTop: "1rem",
   },
 }));
 
