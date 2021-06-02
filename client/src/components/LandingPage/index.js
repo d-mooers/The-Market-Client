@@ -140,6 +140,7 @@ const LandingPage = (props) => {
         direction="row"
         justify="space-evenly"
         alignItems="center"
+        style={{ margin: "auto" }}
       >
         {!!user.authId ? (
           <>
