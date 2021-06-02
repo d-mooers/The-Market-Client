@@ -206,7 +206,7 @@ const ProfilePage = (props) => {
         <div className={classes.itemView}>
           <h1 className={classes.styledText}>Your listed items</h1>
           <Grid container item xs={12} justify="center">
-            <Grid item xl={6} lg={6} md={6} sm={6}>
+            <Grid item xl={9} lg={8} md={8} sm={8}>
               {loading ? (
                 <Loading />
               ) : (
