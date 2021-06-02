@@ -148,8 +148,7 @@ const ItemView = (props) => {
                 className={classes.image}
                 alt={item.title}
               />
-            </Grid>
-            <Grid item>
+
               <StaticMap lngLat={item.lngLat} />
             </Grid>
           </Grid>

@@ -26,7 +26,7 @@ const App = () => {
   });
   //const user = "hello";
   //const setUser = () => null;
-
+  
   return (
     <UserProvider value={{ user, setUser }}>
       <RoutedHeader />

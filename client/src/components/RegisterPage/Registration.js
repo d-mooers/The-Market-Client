@@ -7,6 +7,10 @@ import UserContext from "../../UserContext";
 import axios from "axios";
 
 const styles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+  },
   textBox: {
     margin: 10,
     width: "80%",
@@ -27,10 +31,11 @@ const styles = makeStyles((theme) => ({
   styledText: {
     background: `linear-gradient(${theme.palette.accent1}, ${theme.palette.accent2})`,
     fontSize: "2.5rem",
-    WebkitBackgroundClip: 'text',
-    WebkitTextFillColor: 'transparent',
-    margin: '0',
-    marginLeft: '1rem',
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    margin: "0",
+    marginLeft: "auto",
+    marginRight: "auto",
   },
 }));
 
@@ -134,8 +139,8 @@ const Register = (props) => {
   // Make sure to insert proper href link in the button
   // Make sure to place proper link going into the login page in the href
   return (
-    <div>
-        <h1 className={classes.styledText}>Register</h1>
+    <div className={classes.root}>
+      <h1 className={classes.styledText}>Register</h1>
       <div className="box">
         <center>
           <h1>
