@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import UserContext from "../../UserContext";
-import { removeAccount } from "../../utils/requests/accounts";
-import { deleteUserItems } from "../../utils/requests/items";
+import { removeAccount, postImage } from "../../utils/requests/accounts";
+import { deleteUserItems, postItem } from "../../utils/requests/items";
+import { formatAuth } from "../../utils/utils";
 import {
   Grid,
   makeStyles,
   Typography,
+  TextField,
   Button,
   Dialog,
   DialogTitle,
@@ -19,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     border: "2px solid black",
     margin: "2rem 2rem",
     width: "35rem",
-    height: "32rem",
+    height: "35rem",
     borderRadius: "1rem",
     padding: "1rem",
   },
@@ -50,6 +52,16 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "2rem",
     marginLeft: "7rem",
   },
+
+  urlButton: {
+    width: "6rem",
+    background: "grey",
+    borderRadius: 3,
+    border: 0,
+    color: "white",
+    height: 50,
+    padding: "0 30px",
+  },
 }));
 
 const Profile = (props) => {
@@ -57,7 +69,10 @@ const Profile = (props) => {
   const { username, email, profilePic } = props;
   const { user, setUser } = React.useContext(UserContext);
   const [open, setOpen] = React.useState(false);
-
+  const [openURL, setOpenURL] = React.useState(false);
+  const [url, setUrl] = useState({
+    imageUrl: "",
+  });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -65,6 +80,14 @@ const Profile = (props) => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleOpenURL = () => {
+      setOpenURL(true);
+  };
+
+  const handleCloseURL = () => {
+      setOpenURL(false);
   };
 
   const deleteAccount = async () => {
@@ -77,11 +100,24 @@ const Profile = (props) => {
     console.log(resp);
   };
 
+  const submitImage = async() => {
+    handleCloseURL();
+    console.log("Submitting image url");
+    const resp = await postImage(user._id, url.imageUrl, formatAuth(user._id, user.authId));
+    props.history.push("/profile");
+  };
+
+  const handleChange = (e) => {
+      const { name, value } = e.target;
+      setUrl({imageUrl: value});
+      console.log("URL: " + value);
+  };
+
   async function logout() {
     // Set the user to nothing and then push them to the login page
     setUser({});
     window.location.href = "/login";
-  }
+  };
 
   return (
     <div className={classes.box}>
@@ -97,18 +133,28 @@ const Profile = (props) => {
             className={classes.picture}
             alt={username}
           />
+          <br />
+          <Button className={classes.urlButton} onClick={handleOpenURL}>Upload Image</Button>
+          <Dialog open={openURL}>
+            <DialogTitle id="enter-image-url">{"Enter image url"}</DialogTitle>
+            <DialogActions>
+                <TextField onChange={handleChange}></TextField>
+                <Button onClick={submitImage}>Submit</Button>
+            </DialogActions>
+          </Dialog>
+
         </center>
         <Typography className={classes.item}>Username: {username}</Typography>
         <Typography className={classes.item}>Email: {email}</Typography>
       </Grid>
 
       <Grid justify="space-between" direction="row" constainer spacing={4}>
-          <Button className={classes.button} onClick={logout}>
-            Logout
-          </Button>
-          <Button className={classes.button} onClick={handleClickOpen}>
-            Delete Account
-          </Button>
+        <Button className={classes.button} onClick={logout}>
+          Logout
+        </Button>
+        <Button className={classes.button} onClick={handleClickOpen}>
+          Delete Account
+        </Button>
       </Grid>
 
       <Dialog
