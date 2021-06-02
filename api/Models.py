@@ -18,8 +18,10 @@ class Model(dict):
         if not self._id:
             self.collection.insert(self)
         else:
+            id = ObjectId(self._id)
+            del self._id
             self.collection.update(
-                {"_id": ObjectId(self._id)}, self)
+                {"_id": id}, self)
         self._id = str(self._id)
 
     def reload(self):
@@ -127,18 +129,6 @@ class User(Model):
             self.collection.update_one(
                 {"_id": ObjectId(user['_id'])}, {'$set': {'authId': user['authId']}})
             return user
-        return None
-
-    def getUserByUsernamePass(self, username, password):
-        user = self.collection.find_one(
-            {"username": username, "password": password})
-        if user:
-            user['authId'] = uuid.uuid4()
-            user['_id'] = str(user['_id'])
-            self.collection.update_one(
-                {"_id": ObjectId(user['_id'])}, {'$set': {'authId': user['authId']}})
-            return user
-        return None
 
     def addUser(self):
         self['authId'] = uuid.uuid4()
@@ -155,12 +145,6 @@ class Transaction(Model):
 
     def find_all(self):
         transactions = list(self.collection.find())
-        for transaction in transactions:
-            transaction["_id"] = str(transaction['_id'])
-        return transactions
-
-    def find_seller_transactions(self, ownerId):
-        transactions = list(self.collection.find({ "seller" : ownerId}))
         for transaction in transactions:
             transaction["_id"] = str(transaction['_id'])
         return transactions
