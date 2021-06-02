@@ -19,3 +19,24 @@ export const removeAccount = async (accId) => {
     };
   }
 };
+
+export const postImage = async (accID, imageUrl, auth) => {
+  const url = `${BASE_URL}${USERS}/${accID}`;
+  try {
+    const resp = await axios.put(url, JSON.stringify(imageUrl), {
+      headers: {
+        "Content-Type": "application/json",
+        ...auth,
+      },
+    });
+    return {
+      success: resp.status === 200,
+      user: resp.data,
+    };
+  } catch (e) {
+    return {
+      success: false,
+      data: e.data,
+    };
+  }
+};

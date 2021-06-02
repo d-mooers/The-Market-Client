@@ -44,28 +44,27 @@ export const getUserItems = async (ownId) => {
   }
 };
 
-export const deleteUserItems = async (ownId) => {
-  const url = `${BASE_URL}${ITEMS}?owner=${ownId}`;
-  try {
-    const resp = await axios.delete(url);
-    console.log(resp.data.listings);
-    const listings = resp.data.listings.map((l) => ({
-      ...l,
-      tags: l.tags || [],
-    }));
-    return {
-      success: resp.status === 200,
-      listings: listings,
-    };
-  } catch (e) {
-    console.log(e);
-    return {
-      success: false,
-      err: e,
-    };
-  }
-};
-
+// export const deleteUserItems = async (ownId) => {
+//   const url = `${BASE_URL}${ITEMS}?owner=${ownId}`;
+//   try {
+//     const resp = await axios.delete(url);
+//     console.log(resp.data.listings);
+//     const listings = resp.data.listings.map((l) => ({
+//       ...l,
+//       tags: l.tags || [],
+//     }));
+//     return {
+//       success: resp.status === 200,
+//       listings: listings,
+//     };
+//   } catch (e) {
+//     console.log(e);
+//     return {
+//       success: false,
+//       err: e,
+//     };
+//   }
+// };
 
 export const getItem = async (id) => {
   const url = `${BASE_URL}${ITEMS}/${id}`;
@@ -102,6 +101,28 @@ export const postItem = async (details, auth) => {
     return {
       success: false,
       data: e.data,
+    };
+  }
+};
+
+export const deleteUserItems = async (ownId) => {
+  const url = `${BASE_URL}${ITEMS}?owner=${ownId}`;
+  try {
+    const resp = await axios.delete(url);
+    console.log(resp.data.listings);
+    const listings = resp.data.listings.map((l) => ({
+      ...l,
+      tags: l.tags || [],
+    }));
+    return {
+      success: resp.status === 200,
+      listings: listings,
+    };
+  } catch (e) {
+    console.log(e);
+    return {
+      success: false,
+      err: e,
     };
   }
 };
