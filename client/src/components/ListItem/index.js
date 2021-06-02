@@ -19,7 +19,8 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "space-around",
     width: "min(800px, 80%)",
-    marginTop: "1rem",
+    marginTop: "2rem",
+    marginBottom: "3rem",
   },
   button: {
     background: `linear-gradient(45deg, ${theme.palette.accent1} 30%, ${theme.palette.accent2} 90%)`,

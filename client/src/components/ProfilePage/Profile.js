@@ -22,9 +22,10 @@ const useStyles = makeStyles((theme) => ({
     border: "2px solid black",
     margin: "2rem 2rem",
     width: "35rem",
-    height: "35rem",
+    height: "37rem",
     borderRadius: "1rem",
     padding: "1rem",
+    marginLeft: "30rem",
   },
 
   heading: {
@@ -43,20 +44,27 @@ const useStyles = makeStyles((theme) => ({
   },
 
   button: {
-    width: "6rem",
-    background: "red",
+    width: "8rem",
     borderRadius: 3,
     border: 0,
     color: "white",
     height: 50,
     padding: "0 30px",
     marginTop: "2rem",
-    marginLeft: "7rem",
+    marginLeft: "5.5rem",
+    background: `linear-gradient(45deg, ${theme.palette.accent1} 30%, ${theme.palette.accent2} 90%)`,
   },
-
+  styledText: {
+    background: `linear-gradient(${theme.palette.accent1}, ${theme.palette.accent2})`,
+    fontSize: "2.5rem",
+    WebkitBackgroundClip: 'text',
+    WebkitTextFillColor: 'transparent',
+    margin: '0',
+    marginLeft: '13rem',
+  },
   urlButton: {
     width: "6rem",
-    background: "grey",
+    background: `linear-gradient(45deg, ${theme.palette.accent1} 30%, ${theme.palette.accent2} 90%)`,
     borderRadius: 3,
     border: 0,
     color: "white",
@@ -144,7 +152,7 @@ const Profile = (props) => {
   return (
     <div className={classes.box}>
       <Grid container item direction="column">
-        <Typography className={classes.heading}>Profile</Typography>
+        <h1 className={classes.styledText}>Profile</h1>
         <center>
           <img
             src={
@@ -187,7 +195,7 @@ const Profile = (props) => {
 
       <Grid justify="space-between" direction="row" constainer spacing={4}>
         <Button className={classes.button} onClick={logout}>
-          Logout
+          Log out
         </Button>
         <Button className={classes.button} onClick={handleClickOpen}>
           Delete Account
