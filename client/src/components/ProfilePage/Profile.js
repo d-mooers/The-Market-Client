@@ -1,5 +1,6 @@
 import React from "react";
 import UserContext from "../../UserContext";
+import removeAccount from "../../utils/requests/accounts";
 import { Grid, makeStyles, Typography, Button } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
@@ -52,6 +53,7 @@ const Profile = (props) => {
 
   async function deleteAccount() {
       setUser({});
+      removeAccount();
       window.location.href = "/login";
   }
 
