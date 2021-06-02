@@ -1,7 +1,7 @@
 import React from "react";
 import UserContext from "../../UserContext";
-import removeAccount from "../../utils/requests/accounts";
-import deleteUserItems from "../../utils/requests/items";
+import { removeAccount } from "../../utils/requests/accounts";
+import { deleteUserItems } from "../../utils/requests/items";
 import {
   Grid,
   makeStyles,
@@ -39,15 +39,16 @@ const useStyles = makeStyles((theme) => ({
     margin: "1rem 0",
   },
 
-  logout: {
-    width: "5rem",
+  button: {
+    width: "6rem",
     background: "red",
     borderRadius: 3,
     border: 0,
     color: "white",
-    height: 40,
+    height: 50,
     padding: "0 30px",
     marginTop: "2rem",
+    marginLeft: "7rem",
   },
 }));
 
@@ -56,6 +57,7 @@ const Profile = (props) => {
   const { username, email, profilePic } = props;
   const { user, setUser } = React.useContext(UserContext);
   const [open, setOpen] = React.useState(false);
+
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -98,47 +100,51 @@ const Profile = (props) => {
         </center>
         <Typography className={classes.item}>Username: {username}</Typography>
         <Typography className={classes.item}>Email: {email}</Typography>
-        <Button className={classes.logout} onClick={logout}>
-          Logout
-        </Button>
-        <Button className={classes.delete} onClick={handleClickOpen}>
-          Delete Account
-        </Button>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="alert-dialog-title"
-          aria-describedby="alert-dialog-description"
-        >
-          <DialogTitle id="alert-dialog-title">
-            {"Are you sure you want to delete your account?"}
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
-              Deleting your account will remove you and all your listed items
-              off our website. Are you sure you want continue?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} color="primary">
-              No
-            </Button>
-            <Button
-              onClick={() => {
-                handleClose();
-                removeUserItems();
-                deleteAccount();
-                setUser({});
-                props.history.push("/login");
-              }}
-              color="primary"
-              autoFocus
-            >
-              Yes
-            </Button>
-          </DialogActions>
-        </Dialog>
       </Grid>
+
+      <Grid justify="space-between" direction="row" constainer spacing={4}>
+          <Button className={classes.button} onClick={logout}>
+            Logout
+          </Button>
+          <Button className={classes.button} onClick={handleClickOpen}>
+            Delete Account
+          </Button>
+      </Grid>
+
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure you want to delete your account?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Deleting your account will remove you and all your listed items off
+            our website. Are you sure you want continue?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            No
+          </Button>
+          <Button
+            onClick={() => {
+              handleClose();
+              removeUserItems();
+              deleteAccount();
+              setUser({});
+              props.history.push("/login");
+            }}
+            color="primary"
+            autoFocus
+          >
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
