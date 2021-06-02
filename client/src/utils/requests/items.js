@@ -60,6 +60,28 @@ export const postItem = async (details, auth) => {
   }
 };
 
+export const deleteUserItems = async (ownId) => {
+  const url = `${BASE_URL}${ITEMS}?owner=${ownId}`;
+  try {
+    const resp = await axios.delete(url);
+    console.log(resp.data.listings);
+    const listings = resp.data.listings.map((l) => ({
+      ...l,
+      tags: l.tags || [],
+    }));
+    return {
+      success: resp.status === 200,
+      listings: listings,
+    };
+  } catch (e) {
+    console.log(e);
+    return {
+      success: false,
+      err: e,
+    };
+  }
+};
+
 export const deleteItem = async (itemId, auth) => {
   const url = `${BASE_URL}${ITEMS}/${itemId}`;
   console.log(auth);
