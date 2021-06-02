@@ -42,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
   textInput: {
     marginTop: "3rem",
   },
+  refresh: {
+    marginLeft: "auto",
+  },
 }));
 
 const parseSubject = (path) => {
@@ -123,6 +126,10 @@ const Messages = (props) => {
   ) : (
     <Grid container xs={12} justify="center">
       <Grid container item xs={9} justify="center" spacing={1}>
+        <Button className={classes.refresh} onClick={fetchConversation}>
+          Refresh Messages
+        </Button>
+
         <Grid item container xs={12} justify="center">
           <Typography variant="h3">Subject: {messages.subject}</Typography>
           <div style={{ width: "100%", height: "1px", background: "black" }} />
