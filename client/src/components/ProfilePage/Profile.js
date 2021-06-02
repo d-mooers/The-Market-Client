@@ -80,6 +80,8 @@ const Profile = (props) => {
         <Button className={classes.delete} onClick={deleteAccount}>
             Delete Account
         </Button>
+
+        
       </Grid>
     </div>
   );
