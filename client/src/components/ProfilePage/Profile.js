@@ -1,7 +1,17 @@
 import React from "react";
 import UserContext from "../../UserContext";
 import removeAccount from "../../utils/requests/accounts";
-import { Grid, makeStyles, Typography, Button } from "@material-ui/core";
+import {
+  Grid,
+  makeStyles,
+  Typography,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   box: {
@@ -54,15 +64,19 @@ const Profile = (props) => {
     setOpen(false);
   };
 
+  const deleteAccount = async () => {
+    const resp = await removeAccount(user._id);
+    console.log(resp);
+  };
+
+  const removeUserItems = async () => {
+    const resp = await deleteUserItems(user._id);
+    console.log(resp);
+  };
+
   async function logout() {
     // Set the user to nothing and then push them to the login page
     setUser({});
-    window.location.href = "/login";
-  }
-
-  async function deleteAccount() {
-    setUser({});
-    removeAccount();
     window.location.href = "/login";
   }
 
