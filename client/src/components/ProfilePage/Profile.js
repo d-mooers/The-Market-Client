@@ -44,6 +44,15 @@ const Profile = (props) => {
   const classes = useStyles();
   const { username, email, profilePic } = props;
   const { setUser } = React.useContext(UserContext);
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   async function logout() {
     // Set the user to nothing and then push them to the login page
@@ -52,9 +61,9 @@ const Profile = (props) => {
   }
 
   async function deleteAccount() {
-      setUser({});
-      removeAccount();
-      window.location.href = "/login";
+    setUser({});
+    removeAccount();
+    window.location.href = "/login";
   }
 
   return (
@@ -77,11 +86,43 @@ const Profile = (props) => {
         <Button className={classes.logout} onClick={logout}>
           Logout
         </Button>
-        <Button className={classes.delete} onClick={deleteAccount}>
-            Delete Account
+        <Button className={classes.delete} onClick={handleClickOpen}>
+          Delete Account
         </Button>
-
-        
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Are you sure you want to delete your account?"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Deleting your account will remove you and all your listed items
+              off our website. Are you sure you want continue?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              No
+            </Button>
+            <Button
+              onClick={() => {
+                handleClose();
+                removeUserItems();
+                deleteAccount();
+                setUser({});
+                props.history.push("/login");
+              }}
+              color="primary"
+              autoFocus
+            >
+              Yes
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Grid>
     </div>
   );
