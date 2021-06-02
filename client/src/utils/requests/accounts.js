@@ -20,17 +20,18 @@ export const removeAccount = async (accId) => {
   }
 };
 
-export const postImage = async(accID, imageUrl, auth) => {
+export const postImage = async (accID, imageUrl, auth) => {
   const url = `${BASE_URL}${USERS}/${accID}`;
   try {
-    const resp = await axios.post(url, JSON.stringify(imageUrl), {
+    const resp = await axios.put(url, JSON.stringify(imageUrl), {
       headers: {
         "Content-Type": "application/json",
         ...auth,
       },
     });
     return {
-      success: resp.status === 201,
+      success: resp.status === 200,
+      user: resp.data,
     };
   } catch (e) {
     return {
@@ -38,4 +39,4 @@ export const postImage = async(accID, imageUrl, auth) => {
       data: e.data,
     };
   }
-}
+};

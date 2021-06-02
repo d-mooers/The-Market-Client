@@ -6,9 +6,10 @@ from basicauth import decode
 from datetime import datetime, time, date
 app = Flask(__name__)
 CORS(app)
-
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 @app.route('/items', methods=['GET', 'POST'])
+@cross_origin()
 def get_items():
     if request.method == 'GET':
         ownerId = request.args.get('owner')
@@ -34,6 +35,7 @@ def get_items():
 
 
 @app.route('/items/<id>', methods=['GET', 'DELETE'])
+@cross_origin()
 def get_item(id):
     if request.method == 'GET' and id:
         item = Listings({'_id': id})
@@ -56,6 +58,7 @@ def get_item(id):
 
 
 @app.route('/users')
+@cross_origin()
 def register_user():
     if request.method == 'GET':
         auth = request.headers.get("Authorization")
@@ -66,9 +69,26 @@ def register_user():
             del user['password']
             return jsonify(user), 200
         return jsonify({"message": "Incorrect email and password combination"}), 401
+    
+@app.route('/users/<id>', methods=['PUT'])
+@cross_origin()
+def add_image(id):
+    if request.method == 'PUT' and id:
+        auth = request.headers
+        image = request.get_json()
+        if (not verifyUser(auth['Auth'], auth['User'])):
+            return jsonify({'message': 'User is unauthorized'}), 401
+        user = User({'_id': id})
+        user.reload()
+        user['imageUrl'] = image
+        user.save()
+        return jsonify(user), 200
+    return jsonify({}), 404
+
 
 
 @app.route('/users', methods=['POST'])
+@cross_origin()
 def register():
     if request.method == 'POST':
         newUser = request.get_json()
@@ -84,6 +104,7 @@ def register():
 # returns list of all messages that pertain to the logged in user (must include their id in GET url call)
 # sender/reciever info is decoded in user._id - you will have to find the user in the data base to conver to username
 @app.route('/messages/<id>', methods=['GET'])
+@cross_origin()
 def get_messages(id):
     subject = request.args.get('subject')
     if subject:
@@ -98,6 +119,7 @@ def get_messages(id):
 
 
 @app.route('/messages', methods=['POST', 'DELETE'])
+@cross_origin()
 def post_messages():
     if request.method == 'POST':
         msg = request.get_json()
@@ -121,6 +143,7 @@ def post_messages():
 
 
 @app.route('/transactions', methods=['POST'])
+@cross_origin()
 def checkout():
     if request.method == 'POST':
         auth = request.headers

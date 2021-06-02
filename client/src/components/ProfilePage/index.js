@@ -13,6 +13,7 @@ import ItemList from "../ViewItems/ItemList";
 import Loading from "../shared/Loading";
 import styled from "styled-components";
 import MessageSummary from "../Messages/MessageSummary";
+// import Profile from "./Profile";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,7 +85,7 @@ const AccordionDetails = withStyles((theme) => ({
 
 const ProfilePage = (props) => {
   const [expanded, setExpanded] = React.useState("panel1");
-  const { user } = React.useContext(UserContext);
+  const { user, setUser } = React.useContext(UserContext);
 
   if (!user.authId) {
     props.history.push("/login");
@@ -129,7 +130,7 @@ const ProfilePage = (props) => {
     <div className={classes.root}>
       <div className={classes.container}>
         <div className={classes.accordions}>
-          <Typography variant="h6">User Info</Typography>
+          {/* <Typography variant="h6">User Info</Typography>
           <Accordion
             square
             expanded={expanded === "panel1"}
@@ -159,7 +160,8 @@ const ProfilePage = (props) => {
             <AccordionDetails>
               <Typography>{user.email}</Typography>
             </AccordionDetails>
-          </Accordion>
+          </Accordion> */}
+          <Profile {...user} updateUser={setUser} history={props.history} />
         </div>
         <MessageSummary history={props.history} userId={user._id} />
       </div>
