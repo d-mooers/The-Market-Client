@@ -89,6 +89,9 @@ class Listings(Model):
             listing["_id"] = str(listing['_id'])
         return listings
 
+    def delete_user_listings(self, ownerId):
+        resp = self.collection.remove({ "owner" : ownerId})
+        return resp
 
 class User(Model):
     load_dotenv()

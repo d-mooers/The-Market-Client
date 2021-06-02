@@ -8,20 +8,6 @@ import { green, orange } from "@material-ui/core/colors";
 import logo from "../../assets/logo.png";
 import "./animatedBackground.css";
 
-//background-image: linear-gradient(#2196F3,#21CBF3);
-//background-image: linear-gradient(#41b8ff,#001283);
-
-const StyledText = styled.h1`
-  background-image: linear-gradient(#2196f3, #21cbf3);
-
-  font-size: 10rem;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 0;
-  margin-left: 1rem;
-  display: flex;
-`;
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -67,6 +53,14 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "0 0 10px 10px " + theme.palette.accent1,
       transform: "rotate(720deg)",
     },
+  },
+  styledText: {
+    background: `linear-gradient(${theme.palette.accent1}, ${theme.palette.accent2})`,
+    fontSize: "10rem",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    margin: "0",
+    marginLeft: "1rem",
   },
   bouncyText: {
     margin: 0,
@@ -118,6 +112,7 @@ const useStyles = makeStyles((theme) => ({
 
 const LandingPage = (props) => {
   const classes = useStyles();
+  console.log(classes);
   const { user } = React.useContext(UserContext);
   const numCircles = 40;
   return (

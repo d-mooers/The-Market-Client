@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
   button: {
     marginTop: "1rem",
-    background: "linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)",
+    background: `linear-gradient(45deg, ${theme.palette.accent1} 30%, ${theme.palette.accent2} 90%)`,
     borderRadius: 3,
     border: 0,
     color: "white",
