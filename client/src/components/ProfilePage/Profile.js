@@ -88,6 +88,7 @@ const Profile = (props) => {
 
   const handleCloseURL = () => {
       setOpenURL(false);
+      setUrl({imageUrl: ""})
   };
 
   const deleteAccount = async () => {
@@ -140,6 +141,7 @@ const Profile = (props) => {
             <DialogActions>
                 <TextField onChange={handleChange}></TextField>
                 <Button onClick={submitImage}>Submit</Button>
+                <Button onClick={handleCloseURL}>Cancel</Button>
             </DialogActions>
           </Dialog>
 
