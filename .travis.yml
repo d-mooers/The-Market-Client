@@ -11,7 +11,8 @@ jobs:
       install:
         - pip install -r api/requirements.txt
       script:
-        - pytest
+        - coverage run --source=. -m pytest
+        - coverage report
     - language: node_js
       node_js:
         - 16.2.0
