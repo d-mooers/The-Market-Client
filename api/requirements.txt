@@ -3,6 +3,7 @@ attrs==20.3.0
 basicauth==0.4.1
 click==7.1.2
 colorama==0.4.4
+coverage==5.5
 dnspython==2.1.0
 Flask==1.1.2
 Flask-Cors==3.0.10

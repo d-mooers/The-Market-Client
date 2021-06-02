@@ -14,7 +14,9 @@ const useStyles = makeStyles({
   grid: {
     maxWidth: "30rem",
     "&:hover": {
-      position: "absolute",
+      position: "relative",
+      left: "-50%",
+      top: "-25%",
       zIndex: 2,
       width: "200%",
       height: "200%",
@@ -59,7 +61,7 @@ export default function Item(props) {
   } = props;
 
   return (
-    <Grid item xl={4} lg={4} md={4} sm={5}>
+    <Grid item xl={2} lg={4} md={4} sm={4}>
       <div className={classes.grid}>
         <Card
           className={classes.root}

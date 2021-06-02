@@ -126,15 +126,15 @@ const ViewItems = (props) => {
               <Filters {...{ categories, setCategories }} />
             </Grid>
             <Divider />
-            <Grid item>
+            {/* <Grid item>
               <PriceSlider />
             </Grid>
-            <Divider />
+            <Divider /> */}
             {map}
           </Grid>
         </Grid>
         <Grid container item xl={8} lg={9} md={9} sm={9}>
-          <Grid item xl={7} lg={9} md={9} sm={9}>
+          <Grid item xs>
             {loading ? (
               <Loading />
             ) : (

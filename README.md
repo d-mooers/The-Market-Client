@@ -8,6 +8,7 @@
 
 
 ## UI Prototype
+https://www.figma.com/file/aweT6Lubsw0h6slzXWJ8Xw/Wireframe?node-id=0%3A1
 
 https://www.figma.com/file/aweT6Lubsw0h6slzXWJ8Xw/Wireframe?node-id=0%3A1
 
@@ -43,4 +44,6 @@ Pycodestyle (for Python)
 
 ## Diagrams
 
+Class Diagram: https://github.com/d-mooers/The-Market-Client/wiki/Class-Diagram
 
+UseCase Diagram: https://github.com/d-mooers/The-Market-Client/wiki/Class-Diagram

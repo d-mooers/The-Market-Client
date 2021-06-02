@@ -8,7 +8,15 @@ app = Flask(__name__)
 CORS(app)
 
 
-@app.route('/items', methods=['GET', 'POST'])
+@app.route('/users/<id>', methods=['DELETE'])
+def get_user(id):
+    if request.method == 'DELETE' and id:
+        user = User({'_id': id})
+        resp = user.remove()
+        return jsonify({}), 204
+
+
+@app.route('/items', methods=['GET', 'POST', 'DELETE'])
 def get_items():
     if request.method == 'GET':
         ownerId = request.args.get('owner')
@@ -31,6 +39,13 @@ def get_items():
         listing = Listings(listing)
         listing.save()
         return jsonify(listing), 201
+    if request.method == 'DELETE':
+        ownerId = request.args.get('owner')
+        if ownerId:
+            resp = Listings().delete_user_listings(ownerId)
+            return jsonify({}), 204
+        
+
 
 
 @app.route('/items/<id>', methods=['GET', 'DELETE'])
