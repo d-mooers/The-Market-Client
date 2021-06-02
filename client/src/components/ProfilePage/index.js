@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import LandingPage from "../LandingPage";
 import UserContext from "../../UserContext";
+import Profile from "./Profile";
 
 const useStyles = makeStyles((theme) => ({
   root: {

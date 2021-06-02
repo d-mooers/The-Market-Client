@@ -11,12 +11,10 @@ def test_verifyUser_failure():
     user = User().verifyUser("")
     assert user['message'] == 'unauthorized'
 
-
 def test_get_User_by_emailpass():
     expectedUserName = "Fizzpop"
     user = User().getUserByEmailPass("chase@test.com", "razeMain")
     assert user['username'] == expectedUserName
-
 
 def test_get_User_by_userpass():
     expectedUserName = "Fizzpop"
