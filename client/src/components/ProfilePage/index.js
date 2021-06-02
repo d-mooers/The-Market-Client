@@ -9,6 +9,8 @@ import Button from "@material-ui/core/Button";
 import UserContext from "../../UserContext";
 import { getUserItems, deleteUserItems } from "../../utils/requests/items";
 import { removeAccount } from "../../utils/requests/accounts";
+import Profile from "./Profile";
+
 import ItemList from "../ViewItems/ItemList";
 import Loading from "../shared/Loading";
 import Dialog from "@material-ui/core/Dialog";
@@ -17,6 +19,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import MessageSummary from "../Messages/MessageSummary";
+// import Profile from "./Profile";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
     width: "90%",
     padding: "1rem",
     display: "flex",
-    justifyContent: "space-around",
+    //justifyContent: "space-evenly",
   },
   accordions: {
     width: "min(1280px, 70%)",
@@ -166,39 +169,7 @@ const ProfilePage = (props) => {
   return (
     <div className={classes.root}>
       <div className={classes.container}>
-        <div className={classes.accordions}>
-          <Typography variant="h6">User Info</Typography>
-          <Accordion
-            square
-            expanded={expanded === "panel1"}
-            onChange={handleChange("panel1")}
-          >
-            <AccordionSummary
-              aria-controls="panel1d-content"
-              id="panel1d-header"
-            >
-              <Typography>Username</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>{user.username}</Typography>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion
-            square
-            expanded={expanded === "panel2"}
-            onChange={handleChange("panel2")}
-          >
-            <AccordionSummary
-              aria-controls="panel2d-content"
-              id="panel2d-header"
-            >
-              <Typography>Email</Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>{user.email}</Typography>
-            </AccordionDetails>
-          </Accordion>
-        </div>
+        <Profile {...user} updateUser={setUser} history={props.history} />
         <MessageSummary history={props.history} userId={user._id} />
       </div>
 
@@ -219,7 +190,7 @@ const ProfilePage = (props) => {
         <h1 className={classes.styledText}>You have no items up for sale</h1>
       )}
 
-      <Button
+      {/* <Button
         className={classes.button1}
         variant="contained"
         color="secondary"
@@ -272,7 +243,7 @@ const ProfilePage = (props) => {
             Yes
           </Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
     </div>
   );
 };

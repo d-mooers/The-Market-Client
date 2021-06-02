@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import "./Register.css";
 import { Button, makeStyles, TextField } from "@material-ui/core";
-import Dialog from "../shared/Dialog";
-import LoginPage from "../LoginPage";
-import axios from "axios";
-import sha256 from "js-sha256";
 import styled from "styled-components";
+import { sha256 } from "js-sha256";
 import UserContext from "../../UserContext";
+import axios from "axios";
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -42,10 +40,6 @@ const styles = makeStyles((theme) => ({
 }));
 
 const Register = (props) => {
-  const [userError, setUserError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
-  const [error, setError] = useState(false);
   const [user, setUserInfo] = useState({
     username: "",
     email: "",
@@ -64,7 +58,6 @@ const Register = (props) => {
         password: user["password"],
         secondPass: user["secondPass"],
       });
-      setUserError(false);
     } else if (name === "email") {
       setUserInfo({
         username: user["username"],
@@ -72,7 +65,6 @@ const Register = (props) => {
         password: user["password"],
         secondPass: user["secondPass"],
       });
-      setEmailError(false);
     } else if (name === "password") {
       setUserInfo({
         username: user["username"],
@@ -80,7 +72,6 @@ const Register = (props) => {
         password: value,
         secondPass: user["secondPass"],
       });
-      setPasswordError(false);
     } else if (name === "secondPass") {
       setUserInfo({
         username: user["username"],
@@ -88,60 +79,34 @@ const Register = (props) => {
         password: user["password"],
         secondPass: value,
       });
-      setPasswordError(false);
     }
   };
 
-  const submitForm = async () => {
+  async function submitForm() {
     // Place stuff in here to add person to database
-    var validUser = validateUser();
-    var validEmail = validateEmail();
-    var validPassword = validatePassword();
-    if (validUser === 0 && validEmail === 0 && validPassword === 0) {
-      let resp = await getUser(user.email, user.password);
-      console.log("resp value: " + resp.response.status);
-      // resp.status == 200 means something was there
-      // resp.status == 401 means the credentials were not taken
-      if (resp.response.status === 200) {
-        console.log("Invalid credentials");
-        setError(true);
-      } else if (resp.response.status === 401) {
-        const newUser = await axios.post("http://127.0.0.1:5000/users", {
-          username: user.username,
+    console.log("Submitting");
+    if (
+      validateUser() === 0 &&
+      validateEmail() === 0 &&
+      validatePassword() === 0
+    ) {
+      try {
+        const resp = await axios.post("http://127.0.0.1:5000/users", {
+          ...{ username: user.username, email: user.email },
           password: sha256(user.password),
-          email: user.email,
         });
-        setUser(newUser.data);
-        props.history.push("/browse");
+        setUser(resp.data);
+        props.history.push("/profile");
+      } catch (e) {
+        console.log(e);
       }
-    } else {
-      console.log("Bad field(s)");
-      setError(true);
-    }
-  };
-
-  // does a GET /users call with temp's saved credentials
-  async function getUser(emailID, passwordID) {
-    try {
-      const resp = await axios.get("http://127.0.0.1:5000/users", {
-        auth: {
-          username: emailID,
-          password: passwordID,
-        },
-      });
-
-      // Query went through successfully
-      return resp;
-    } catch (e) {
-      console.log("Log in failed");
-      return e;
     }
   }
 
   function validateUser() {
+    console.log("User");
     if (user.username.length === 0) {
-      setUserError(true);
-      setError(true);
+      alert("Please enter a Username");
       return -1;
     }
     return 0;
@@ -153,17 +118,17 @@ const Register = (props) => {
         user.email
       )
     ) {
-      setEmailError(true);
-      setError(true);
+      alert("Incorrect Email Address Format");
       return -1;
     }
     return 0;
   }
 
   function validatePassword() {
-    if (user.password.length < 7 || user.password !== user.secondPass) {
-      setPasswordError(true);
-      setError(true);
+    if (user.password.length < 7) {
+      alert("Make sure password is 7 characters or longer");
+    } else if (user.password !== user.secondPass) {
+      alert("Passwords do not match");
       return -1;
     }
     return 0;
@@ -190,8 +155,6 @@ const Register = (props) => {
             size="small"
             label="Username"
             name="username"
-            error={userError}
-            helperText={userError ? "Invalid Username" : ""}
             onChange={handleChange}
           />
           <br />
@@ -203,8 +166,6 @@ const Register = (props) => {
             size="small"
             label="Email"
             name="email"
-            error={emailError}
-            helperText={emailError ? "Invalid Email" : ""}
             onChange={handleChange}
           />
           <br />
@@ -216,12 +177,6 @@ const Register = (props) => {
             size="small"
             label="Password"
             name="password"
-            error={passwordError}
-            helperText={
-              passwordError
-                ? "Please check that passwords match and are longer than 7 characters"
-                : ""
-            }
             onChange={handleChange}
           />
           <br />
@@ -233,16 +188,7 @@ const Register = (props) => {
             size="small"
             label="Confirm Password"
             name="secondPass"
-            error={passwordError}
             onChange={handleChange}
-          />
-          <Dialog
-            title="Invalid Registration Info"
-            description={`Invalid Registration`}
-            closeButtonText="Close"
-            onClose={() => setError(false)}
-            onAccept={() => null}
-            open={error}
           />
           <br />
           <br />

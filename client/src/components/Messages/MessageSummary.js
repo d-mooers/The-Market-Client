@@ -5,6 +5,7 @@ import { getMessageSummary } from "../../utils/requests/messages";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "20%",
+    marginTop: "1.75rem",
   },
   message: {
     width: "100%",
