@@ -8,6 +8,23 @@
 
 ## Developer Env Set Up
 
+To Install Pyton Packages: 
+ - `pip install -r api/requirements.txt`
+
+To Install Node Packages:
+- `cd client`
+- `npm install`
+
+To Start Flask Backend:
+ - `cd api`
+ - `export FLASK_APP=App.py`
+ - `export FLASK_ENV=development`
+ - `flask run`
+
+To Start Frontend:
+- `cd client`
+- `npm run start`
+
 Style Guides used
 
 Prettier extension inside VS code (for JavaScript)
@@ -17,10 +34,6 @@ Prettier extension inside VS code (for JavaScript)
 Pycodestyle (for Python)
 - To install, run pip install pycodestyle
 
-`pip install -r ./api/requirements.txt`
-
-`cd client`
-`npm i`
 
 
 ## Diagrams
