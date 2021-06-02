@@ -1,6 +1,7 @@
 import React from "react";
 import UserContext from "../../UserContext";
 import removeAccount from "../../utils/requests/accounts";
+import deleteUserItems from "../../utils/requests/items";
 import {
   Grid,
   makeStyles,
@@ -53,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
 const Profile = (props) => {
   const classes = useStyles();
   const { username, email, profilePic } = props;
-  const { setUser } = React.useContext(UserContext);
+  const { user, setUser } = React.useContext(UserContext);
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
