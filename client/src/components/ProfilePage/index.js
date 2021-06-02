@@ -11,16 +11,32 @@ import { getUserItems } from "../../utils/requests/items";
 import ItemList from "../ViewItems/ItemList";
 import Loading from "../shared/Loading";
 import styled from "styled-components";
+import MessageSummary from "../Messages/MessageSummary";
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    display: "flex",
+    flexDirection: "column",
     "& > *": {
       margin: theme.spacing(1),
     },
   },
+  container: {
+    width: "90%",
+    padding: "1rem",
+    display: "flex",
+    justifyContent: "space-around",
+  },
+  accordions: {
+    width: "min(1280px, 70%)",
+  },
   button: {
-    marginLeft: "45rem",
-    marginBottom: "3rem",
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "fit-content",
+    padding: "0.5rem",
+    paddingRight: "1rem",
+    paddingLeft: "1rem",
   },
 }));
 
@@ -108,141 +124,83 @@ const ProfilePage = (props) => {
     setExpanded(newExpanded ? panel : false);
   };
 
-  //if user has no listings
-  if (listings.length == 0) {
-    return (
-      <div>
-        <Accordion
-          square
-          expanded={expanded === "panel1"}
-          onChange={handleChange("panel1")}
-        >
-          <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-            <Typography>Username</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{user.username}</Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion
-          square
-          expanded={expanded === "panel2"}
-          onChange={handleChange("panel2")}
-        >
-          <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-            <Typography>Email</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{user.email}</Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion
-          square
-          expanded={expanded === "panel3"}
-          onChange={handleChange("panel3")}
-        >
-          <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-            <Typography>Password</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{user.password}</Typography>
-          </AccordionDetails>
-        </Accordion>
+  return (
+    <div className={classes.root}>
+      <div className={classes.container}>
+        <div className={classes.accordions}>
+          <Typography variant="h6">User Info</Typography>
+          <Accordion
+            square
+            expanded={expanded === "panel1"}
+            onChange={handleChange("panel1")}
+          >
+            <AccordionSummary
+              aria-controls="panel1d-content"
+              id="panel1d-header"
+            >
+              <Typography>Username</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>{user.username}</Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            square
+            expanded={expanded === "panel2"}
+            onChange={handleChange("panel2")}
+          >
+            <AccordionSummary
+              aria-controls="panel2d-content"
+              id="panel2d-header"
+            >
+              <Typography>Email</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>{user.email}</Typography>
+            </AccordionDetails>
+          </Accordion>
+        </div>
+        <MessageSummary history={props.history} userId={user._id} />
+      </div>
 
+      {listings.length > 0 ? (
+        <>
+          <h1 className="Title">
+            <StyledText>Your listed items</StyledText>
+          </h1>
+
+          <Grid item xl={7} lg={9} md={9} sm={9}>
+            {loading ? (
+              <Loading />
+            ) : (
+              <ItemList items={listings} goToItem={goToItem} />
+            )}
+          </Grid>
+        </>
+      ) : (
         <h1 className="Title">
           <StyledText>You have no items up for sale</StyledText>
         </h1>
+      )}
 
-        <Button
-          className={classes.button}
-          variant="contained"
-          color="secondary"
-          onClick={() => {
-            user.username = "";
-            user.email = "";
-            user.password = "";
-            user._id = "";
-            user.authId = "";
-            user.loggedIn = false;
-            props.history.push("/login");
-          }}
-        >
-          LOG OUT
-        </Button>
-      </div>
-    );
-  }
-  //if user has at least 1 listing
-  else {
-    return (
-      <div>
-        <Accordion
-          square
-          expanded={expanded === "panel1"}
-          onChange={handleChange("panel1")}
-        >
-          <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-            <Typography>Username</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{user.username}</Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion
-          square
-          expanded={expanded === "panel2"}
-          onChange={handleChange("panel2")}
-        >
-          <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-            <Typography>Email</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{user.email}</Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion
-          square
-          expanded={expanded === "panel3"}
-          onChange={handleChange("panel3")}
-        >
-          <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-            <Typography>Password</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{user.password}</Typography>
-          </AccordionDetails>
-        </Accordion>
-        <h1 className="Title">
-          <StyledText>Your listed items</StyledText>
-        </h1>
-
-        <Grid item xl={7} lg={9} md={9} sm={9}>
-          {loading ? (
-            <Loading />
-          ) : (
-            <ItemList items={listings} goToItem={goToItem} />
-          )}
-        </Grid>
-
-        <Button
-          className={classes.button}
-          variant="contained"
-          color="secondary"
-          onClick={() => {
-            user.username = "";
-            user.email = "";
-            user.password = "";
-            user._id = "";
-            user.authId = "";
-            user.loggedIn = false;
-            props.history.push("/login");
-          }}
-        >
-          LOG OUT
-        </Button>
-      </div>
-    );
-  }
+      <Button
+        className={classes.button}
+        variant="contained"
+        color="secondary"
+        onClick={() => {
+          user.username = "";
+          user.email = "";
+          user.password = "";
+          user._id = "";
+          user.authId = "";
+          user.loggedIn = false;
+          props.history.push("/login");
+        }}
+      >
+        LOG OUT
+      </Button>
+    </div>
+  );
 };
 
 export default ProfilePage;

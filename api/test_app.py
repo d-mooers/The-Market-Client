@@ -25,6 +25,22 @@ def test_find_listing_by_Id():
 
 
 def test_login():
-    expectedUserName = 'BigJorn'
-    user = User().getUserByEmailPass("Bjorn@test.com", "03ac674216f3e15c761ee1a5e255f067953623c8b388b4459e13f978d7c846f4")
-    assert user['username'] == expectedUserName
+    expectedUserName = 'Test Test'
+    user = User().getUserByEmailPass("test@test.com", "1234")
+    assert user is None
+
+def test_reload_fail():
+    expected = False
+    assert User().reload() == expected
+    
+def test_remove():
+    expected = False
+    user = User({'name': 'Bob'})
+    user.save()
+    User({'_id': user['_id']}).remove()
+    assert User({'_id': user['_id']}).reload() == expected
+    
+def test_save_existing():
+    user = User({'_id': "60b6779f2024384d557b0877", 'username': 'BillyBob'})
+    user.save()
+    assert user['username'] == 'BillyBob'

@@ -13,6 +13,7 @@ import {
 import { getItem } from "../../utils/requests/items";
 import Loading from "../shared/Loading";
 import Dialog from "../shared/Dialog";
+import Details from "./Details";
 
 const styles = makeStyles((theme) => ({
   textBox: {
@@ -37,7 +38,7 @@ const styles = makeStyles((theme) => ({
   },
 
   image: {
-    width: "min(100%, 30rem)",
+    width: "min(50%, 30rem)",
     height: "auto",
     padding: 0,
   },
@@ -50,7 +51,7 @@ const styles = makeStyles((theme) => ({
   buttonR: {
     backgroundColor: "pink", 
     marginLeft: "60%",
-  }
+  },
 
 }));
 
@@ -129,18 +130,14 @@ const Questions = (props) => {
           <Grid item xs={6} sm container>
             <Grid item xs container direction="column" spacing={2}>
               <Grid item xs>
-                <Typography gutterBottom variant="h6">
-                  Item Name goes HERE!!!
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Typography variant="subtitle1">Price: xxx</Typography>
-                <Typography variant="subtitle1">Cost: xxx</Typography>
+                <Details xs={8} {...item} soldBy="Billy Bob"/>
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs>
-            <StaticMap lngLat={item.lngLat} />
+          <Grid item xs={3}>
+            <Box r={3}>
+              <StaticMap lngLat={item.lngLat} />
+            </Box>
           </Grid>
         </Grid>
       </div>
@@ -162,13 +159,22 @@ const Questions = (props) => {
       </div>
       <Grid justify="space-between" container spacing={2}>
         <Grid item xs>
-          <Button raised variant="outlined" className={classes.button} onClick={goBack} >
+          <Button
+            raised
+            variant="outlined"
+            className={classes.button}
+            onClick={goBack}
+          >
             Back
           </Button>
         </Grid>
 
         <Grid item xs>
-          <Button variant="outlined" className={classes.buttonR} onClick={submitForm} >
+          <Button
+            variant="outlined"
+            className={classes.buttonR}
+            onClick={submitForm}
+          >
             Send
           </Button>
         </Grid>
