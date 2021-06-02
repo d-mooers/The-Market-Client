@@ -25,4 +25,6 @@ Pycodestyle (for Python)
 
 ## Diagrams
 
+Class Diagram: https://github.com/d-mooers/The-Market-Client/wiki/Class-Diagram
 
+UseCase Diagram: https://github.com/d-mooers/The-Market-Client/wiki/Class-Diagram
